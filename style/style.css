@@ -1,16 +1,7 @@
-#title, #s-n-q {
+#title, #time, #s-n-q {
     display: inline;
 }
 
-#title {
-    margin-left: 1em;
-}
-
-#s-n-q {
-    margin-right: 2em;
-    float: right;
-}
-
-#component-nav {
-    margin-left: 1em;
+#game-header-div {
+    background-color: lightgray;
 }
