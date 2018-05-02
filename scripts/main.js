@@ -3,3 +3,4 @@ insertHTML('#header', gHeaderComp, function() {
         insertHTML('#game-foci', mapComp);
     });
 });
+

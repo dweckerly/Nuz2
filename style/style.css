@@ -1,12 +1,30 @@
 @import url(https://fonts.googleapis.com/css?family=Shadows+Into+Light);
+
 body {
     font-family: 'Shadows Into Light', cursive !important;
 }
 
+/*****************************************
+ * Components are ordered alphabetically *
+ *****************************************/
+
+/* game header*/
 #title, #time, #menu-toggle {
     display: inline;
 }
 
+/* location */
+
+#loc-div {
+    margin-top: 3em;
+}
+
+/* map */
+.map-item {
+    margin-top: 3em;
+}
+
+/* nav */ 
 #nav-div {
     height: 100%;
     width: 0;
@@ -15,8 +33,4 @@ body {
     right: 0;
     z-index: 1;
     background-color: lightgray;
-}
-
-.map-item {
-    margin-top: 3em;
 }
