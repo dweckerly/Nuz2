@@ -17,9 +17,9 @@ function appendHTML (id, path, callback) {
     });
 }
 
-function changeFoci(path, callback) {
-    $('#game-foci').children().fadeOut('fast', function() {
-        appendHTML('#game-foci', path);
+function changeSection(id, path, callback) {
+    $(id).first().fadeOut('fast', function() {
+        appendHTML(id, path);
         if(callback != undefined) {
             callback();
         }

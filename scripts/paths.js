@@ -1,0 +1,1 @@
+// thinking about using this for globally scoped paths to be used in other scripts

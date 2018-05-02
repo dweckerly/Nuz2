@@ -7,7 +7,7 @@ body {
     display: inline;
 }
 
-#component-nav {
+#nav-div {
     height: 100%;
     width: 0;
     position: fixed;
