@@ -1,3 +1,5 @@
-insertHTML('#header', 'components/gameHeader.html');
-insertHTML('#game-nav', 'components/nav.html');
-
+insertHTML('#header', 'components/gameHeader.html', function() {
+    insertHTML('#game-nav', 'components/nav.html', function() {
+        insertHTML('#game-foci', 'components/map.html');
+    });
+});
