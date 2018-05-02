@@ -18,7 +18,10 @@ function appendHTML (id, path, callback) {
 }
 
 function changeSection(id, path, callback) {
-    $(id).first().fadeOut('fast', function() {
+    var child = $(id).find(':first-child');
+    var cid = child.attr('id');
+    $("#" + cid).fadeOut('fast', function() {
+        $("#" + cid).remove();
         appendHTML(id, path);
         if(callback != undefined) {
             callback();
