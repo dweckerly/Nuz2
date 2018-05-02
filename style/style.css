@@ -1,0 +1,16 @@
+#title, #s-n-q {
+    display: inline;
+}
+
+#title {
+    margin-left: 1em;
+}
+
+#s-n-q {
+    margin-right: 2em;
+    float: right;
+}
+
+#component-nav {
+    margin-left: 1em;
+}
