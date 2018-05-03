@@ -1,3 +1,14 @@
+$(window).on('resize', function() {
+    var win = $(this);
+    if(win.width() > 600) {
+        $('#nav-div').width(250);
+    }
+
+    if(win.width() <= 600) {
+        $('#nav-div').width(0);
+    }
+});
+
 function insertHTML (id, path, callback) {
     $.get(path, function(data) {
         $(id).html(data).hide().fadeIn('fast', function () {});
@@ -28,4 +39,8 @@ function changeSection(id, path, callback) {
             callback();
         }
     });
+}
+
+function storeAndSwitch(path) {
+
 }

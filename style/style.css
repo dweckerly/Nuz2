@@ -8,35 +8,41 @@ button {
     cursor: pointer;
 }
 
+
+
 /*****************************************
  * Components are ordered alphabetically *
  *****************************************/
-
-/* game header */
-#title, #time, #menu-toggle {
+  /***************/
+ /* game header */
+/***************/
+#title, #time {
     display: inline;
 }
 
-/* location */
+  /************/
+ /* location */
+/************/
 #loc-div {
     margin-top: 3em;
 }
 
-/* map */
+  /*******/
+ /* map */
+/*******/
 .map-item {
     margin-top: 3em;
 }
 
-/* nav */ 
+  /*******/
+ /* nav */ 
+/*******/
 #nav-div {
     height: 100%;
-    width: 0;
     position: fixed;
     top: 0;
     right: 0;
-    z-index: 1;
     background-color: lightgray;
-    transition: 0.5s;
 }
 
 #nav-div a {
@@ -44,10 +50,49 @@ button {
     font-size: 25px;
     color: #fff;
     text-decoration: none;
-    display: block;
-    transition: 0.3s;
 }
 
-#close-menu {
-    font-size: 48px;
+/* smaller screens */
+@media only screen and (min-width: 100px) {
+    #link-list {
+        margin-top: 0;
+    }
+    #nav-div {
+        width: 0;
+        z-index: 1;
+        transition: 0.5s;
+    }
+    #close-menu {
+        display: block;
+        font-size: 48px;
+    }
+    #menu-toggle {
+        display: inline;
+    }
+    #nav-div a {
+        transition: 0.3s;
+    }
+    #game-foci, #header, #footer {
+        margin-right: 0;
+    }
+}
+
+/* larger screens */
+@media only screen and (min-width: 600px) {
+    #link-list {
+        margin-top: 60px;
+    }
+    #nav-div {
+        width: 250;
+    }
+    #close-menu {
+        display: none;
+    }
+    #menu-toggle {
+        display: none;
+    }
+
+    #game-foci, #header, #footer {
+        margin-right: 250px;
+    }
 }
