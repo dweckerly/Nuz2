@@ -3,7 +3,6 @@ $(window).on('resize', function() {
     if(win.width() > 600) {
         $('#nav-div').width(250);
     }
-
     if(win.width() <= 600) {
         $('#nav-div').width(0);
     }
