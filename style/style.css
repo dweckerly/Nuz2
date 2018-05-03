@@ -32,8 +32,22 @@ button {
     height: 100%;
     width: 0;
     position: fixed;
-    top: 60px;
+    top: 0;
     right: 0;
     z-index: 1;
     background-color: lightgray;
+    transition: 0.5s;
+}
+
+#nav-div a {
+    padding: 8px 32px 8px 32px;
+    font-size: 25px;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    transition: 0.3s;
+}
+
+#close-menu {
+    font-size: 48px;
 }
