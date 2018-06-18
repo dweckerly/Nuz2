@@ -1,6 +1,5 @@
 $('.map-btn').click(function () {
     var id = $(this).attr('data');
-    console.log(id);
     $.post('components/location/location.php', {id: id}, function(data) {
         var id = "#game-foci";
         var child = $(id).find(':first-child');

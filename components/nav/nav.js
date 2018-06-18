@@ -17,6 +17,9 @@ $('.nav-link').click(function () {
         case 'inv':
             storeAndSwitch(invComp);
             break;
+        case 'map':
+            changeSection('#game-foci', mapComp);
+            break;
         case 'snq':
             console.log('save and quit clicked');
             break;

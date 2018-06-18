@@ -45,5 +45,5 @@ if($row['gym'] != null) {
 ?>
         </div>
     </div>
-    <script type="text/javascript" src="components/locations/loc.js"></script>
+    <script type="text/javascript" src="components/location/loc.js"></script>
 </div>
