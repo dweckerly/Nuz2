@@ -1,5 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Shadows+Into+Light);
-
 body {
     font-family: 'Shadows Into Light', cursive !important;
 }
@@ -9,34 +8,72 @@ button {
 }
 
 
-
 /*****************************************
  * Components are ordered alphabetically *
  *****************************************/
-  /***************/
- /* game header */
+
+
 /***************/
-#title, #time {
+
+
+/* game header */
+
+
+/***************/
+
+#title,
+#time {
     display: inline;
 }
 
-  /************/
- /* location */
+
+/*************/
+
+
+/* inventory */
+
+
+/*************/
+
+.item-col {
+    width: 20%;
+}
+
+
 /************/
+
+
+/* location */
+
+
+/************/
+
 #loc-div {
     margin-top: 3em;
 }
 
-  /*******/
- /* map */
+
 /*******/
+
+
+/* map */
+
+
+/*******/
+
 .map-item {
     margin-top: 3em;
 }
 
-  /*******/
- /* nav */ 
+
 /*******/
+
+
+/* nav */
+
+
+/*******/
+
 #nav-div {
     height: 100%;
     position: fixed;
@@ -52,7 +89,9 @@ button {
     text-decoration: none;
 }
 
+
 /* smaller screens */
+
 @media only screen and (min-width: 100px) {
     #link-list {
         margin-top: 0;
@@ -72,12 +111,16 @@ button {
     #nav-div a {
         transition: 0.3s;
     }
-    #game-foci, #header, #footer {
+    #game-foci,
+    #header,
+    #footer {
         margin-right: 0;
     }
 }
 
+
 /* larger screens */
+
 @media only screen and (min-width: 600px) {
     #link-list {
         margin-top: 60px;
@@ -91,8 +134,9 @@ button {
     #menu-toggle {
         display: none;
     }
-
-    #game-foci, #header, #footer {
+    #game-foci,
+    #header,
+    #footer {
         margin-right: 250px;
     }
 }
