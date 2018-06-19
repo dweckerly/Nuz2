@@ -9,7 +9,7 @@ $row = mysqli_fetch_assoc($result);
 
 <div id="loc-div" class="container">
     <button id="back">Back to Map</button>
-    <div id="loc-card" class="card text-center">
+    <div id="loc-card" data="<?php echo $id; ?>" class="card text-center">
         <div class="card-body">
             <h4 id="loc-name" class="card-title"><?php echo $row['name']; ?></h4>
             <p id="loc-desc" class="card-text"><?php echo $row['description']; ?></p>
