@@ -41,5 +41,5 @@ function changeSection(id, path, callback) {
 }
 
 function storeAndSwitch(path) {
-
+    changeSection('#game-foci', path);
 }
