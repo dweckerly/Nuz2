@@ -16,7 +16,7 @@ if(!isset($_SESSION['login'])) {
     <link rel="stylesheet" type="text/css" media="screen" href="index.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 
-    <script src="index.js"></script>
+    <script src="game/scripts/utility.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-light navbar-expand-lg text-dark">
@@ -47,5 +47,7 @@ if(!isset($_SESSION['login'])) {
     <section id="heading"></section>
     <section id="main"></section>
     <section id="footer"></section>
+
+    <script src="index.js"></script>
 </body>
 </html>
