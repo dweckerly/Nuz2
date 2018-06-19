@@ -12,10 +12,11 @@ if(!isset($_SESSION['login'])) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>NuzMon</title>
-    <link rel="icon" type="image/png" href="../img/favicon.png"/>
+    <link rel="icon" type="image/png" href="game/img/favicon.png"/>
     <link rel="stylesheet" type="text/css" media="screen" href="index.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-
+    
+    <script src="game/scripts/jquery.js"></script>
     <script src="game/scripts/utility.js"></script>
 </head>
 <body>
