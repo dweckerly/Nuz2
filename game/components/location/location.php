@@ -28,8 +28,12 @@ if($row['store'] != null) {
 <?php
 }
 if($row['talk'] != null) {
+    $talkId = $row['talk'];
+    $sql = "SELECT * FROM talk WHERE id = '$talkId'";
+    $res = mysqli_query($conn, $sql);
+    $assoc = mysqli_fetch_assoc($res);
 ?>
-            <button id="talk-btn" data="<?php echo $row['talk']; ?>" class="btn btn-outline-secondary btn-lg btn-block">Talk to Someone</button>
+            <button id="talk-btn" data="<?php echo $row['talk']; ?>" class="btn btn-outline-secondary btn-lg btn-block"><?php echo $assoc['text']; ?></button>
 <?php
 }
 if($row['search'] != null) {
