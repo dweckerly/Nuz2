@@ -30,6 +30,9 @@ function appendHTML(id, path, callback) {
 // gets the first child of a section, removes it, and appends new data
 function changeSection(id, path, callback) {
     var child = $(id).find(':first-child');
+    if(child == null) {
+        appendHTML(id, path);
+    }
     var cid = child.attr('id');
     $("#" + cid).fadeOut('fast', function() {
         $("#" + cid).remove();

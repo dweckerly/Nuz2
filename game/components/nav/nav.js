@@ -24,6 +24,9 @@ $('.nav-link').click(function () {
             console.log('save and quit clicked');
             break;
     }
+    if($('#close-menu').is(':visible')) {
+        closeMenu();
+    }
 })
 
 function closeMenu() {
