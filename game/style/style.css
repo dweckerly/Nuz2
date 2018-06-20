@@ -35,8 +35,12 @@ button {
 
 /*************/
 
+#inventory-div {
+    margin-top: 3em;
+}
+
 .item-col {
-    width: 20%;
+    width: 80px;
 }
 
 

@@ -25,3 +25,7 @@ $('.nav-link').click(function () {
             break;
     }
 })
+
+function closeMenu() {
+    $('#nav-div').width(0);
+}

@@ -1,6 +1,6 @@
 <div id="inventory-div" class="container">
     <h4>Inventory</h4>
-    <div id="information pane">
+    <div id="information pane" align="center">
         <h5 id="item-name"></h5>
         <p id="item-description"></p>
     </div>
@@ -24,9 +24,11 @@ if(mysqli_num_rows($result) > 0) {
         $sql = "SELECT * FROM items WHERE id = '$id'";
         $res = mysqli_query($conn, $sql);
         $item = mysqli_fetch_assoc($res);
+
+        // need to create method for adding effect to the button meta data
     ?>
                 <td class="item-col">
-                    <button class="btn btn-link item-btn" data-name="<?php echo $item['name'];?>" data-description="<?php echo $item['description']; ?>">
+                    <button class="btn btn-link item-btn" data-name="<?php echo $item['name'];?>" data-description="<?php echo $item['description']; ?>" data-effect="<?php echo $item['effect']; ?>">
                         <img height="64px" width="64px" src="img/items/<?php echo $item['img']; ?>">
                         <h3><span class="badge badge-light"><?php echo $rows['quantity']; ?></span></h3>
                     </button>
@@ -51,5 +53,6 @@ if(mysqli_num_rows($result) > 0) {
 <?php
 }
 ?>
+    <script src="components/inventory/inv.js"></script>
 </div>
-<script src="components/inventory/inv.js"></script>
+
