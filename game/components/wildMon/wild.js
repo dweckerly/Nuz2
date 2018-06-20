@@ -25,3 +25,20 @@ $('#again-btn').click(function () {
         });
     });
 });
+
+$(document).ready(function() {
+    setInterval(function() {
+        console.log('calling timeout');
+        shakeImg()
+    }, 3000);
+});
+
+
+function shakeImg() {
+    var h = $('#mon-img').width();
+    $('#mon-img').animate({width: '300px'}, "fast");
+    $('#mon-img').animate({width: w}, "fast");
+    $('#mon-img').animate({width: '300px'}, "fast");
+    $('#mon-img').animate({width: w}, "fast");
+}
+
