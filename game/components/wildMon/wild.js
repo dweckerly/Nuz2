@@ -26,19 +26,28 @@ $('#again-btn').click(function () {
     });
 });
 
+
+// need to figure out how to clear interval.
+// might just make this a css animation and add the class to the image...
+/*
 $(document).ready(function() {
     setInterval(function() {
-        console.log('calling timeout');
-        shakeImg()
+        console.log("shaking");
+        if($('#mon-img')) {
+            shakeImg();
+        } else {
+            clearInterval();
+        }
     }, 3000);
 });
 
 
 function shakeImg() {
-    var h = $('#mon-img').width();
+    var w = $('#mon-img').width();
     $('#mon-img').animate({width: '300px'}, "fast");
     $('#mon-img').animate({width: w}, "fast");
     $('#mon-img').animate({width: '300px'}, "fast");
     $('#mon-img').animate({width: w}, "fast");
 }
 
+*/
