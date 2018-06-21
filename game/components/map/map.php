@@ -13,7 +13,8 @@ $j = 1;
 while($row = mysqli_fetch_assoc($results)) {
 ?>
         <div id="map-<?php echo $j; ?>-<?php echo $i; ?>" class="col-4 map-item" align="center">
-            <button data="<?php echo $i; ?>" class="map-btn"><?php echo $row['name']; ?></button>
+            <button data="<?php echo $i; ?>" class="map-btn btn btn-outline-secondary"><img class="map-img" src="img/places/<?php echo $row['icon'];?>"></button>
+            <p><?php echo $row['name']; ?></p>
         </div>
 <?php
     if($i % 3 == 0){
