@@ -43,6 +43,16 @@ function changeSection(id, path, callback) {
     });
 }
 
+function removeSection(id) {
+    var child = $(id).find(':first-child');
+    if(child != null) {
+        var cid = child.attr('id');
+        $("#" + cid).fadeOut('fast', function () {
+            $("#" + cid).remove();
+        });
+    }
+}
+
 function storeAndSwitch(path) {
     changeSection('#game-foci', path);
 }

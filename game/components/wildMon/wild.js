@@ -26,28 +26,15 @@ $('#again-btn').click(function () {
     });
 });
 
-
-// need to figure out how to clear interval.
-// might just make this a css animation and add the class to the image...
-/*
-$(document).ready(function() {
-    setInterval(function() {
-        console.log("shaking");
-        if($('#mon-img')) {
-            shakeImg();
-        } else {
-            clearInterval();
-        }
-    }, 3000);
+$('#fight-btn').click(function () {
+    var id = $(this).attr('data');
+    var type = 'wild';
+    var locId = $('#back-btn').attr('data');
+    removeSection('header');
+    removeSection('game-nav');
+    removeSection('game-foci');
+    removeSection('footer');
+    $.post(bHeaderComp, {id: id, type: type, locId: locId}, function(data) {
+        $('#header').append(data).hide().fadeIn('fast');
+    });
 });
-
-
-function shakeImg() {
-    var w = $('#mon-img').width();
-    $('#mon-img').animate({width: '300px'}, "fast");
-    $('#mon-img').animate({width: w}, "fast");
-    $('#mon-img').animate({width: '300px'}, "fast");
-    $('#mon-img').animate({width: w}, "fast");
-}
-
-*/
