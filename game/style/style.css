@@ -120,6 +120,10 @@ button {
     #footer {
         margin-right: 0;
     }
+    .map-img {
+        width: 64px;
+        height: 64px;
+    }
 }
 
 
