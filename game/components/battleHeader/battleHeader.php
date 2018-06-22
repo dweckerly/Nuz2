@@ -63,10 +63,11 @@ if($type == 'wild') {
     var wildMon = {
         'id': '<?php echo $mid; ?>',
         'name': '<?php echo $name; ?>',
+        'img': '<?php echo $img; ?>',
         'type1': '<?php echo $type1; ?>',
         'type2': '<?php echo $type2; ?>',
         'maxHp': '<?php echo $maxHp; ?>',
-        'currentHP': '<?php echo $currentHp; ?>',
+        'currentHp': '<?php echo $currentHp; ?>',
         'atk': '<?php echo $atk; ?>',
         'def': '<?php echo $def; ?>',
         'sAtk': '<?php echo $sAtk; ?>',
@@ -122,10 +123,11 @@ while($rows = mysqli_fetch_assoc($query)) {
 ?>
         '<?php echo $rows['inParty'];?>': {
             'name': '<?php echo $rows['name']; ?>',
+            'img': '<?php echo $rows['img']; ?>',
             'type1': '<?php echo $rows['type1']; ?>',
             'type2': '<?php echo $rows['type2']; ?>',
             'maxHp': '<?php echo $rows['maxHp']; ?>',
-            'currentHP': '<?php echo $rows['currentHp']; ?>',
+            'currentHp': '<?php echo $rows['currentHp']; ?>',
             'atk': '<?php echo $rows['atk']; ?>',
             'def': '<?php echo $rows['def']; ?>',
             'sAtk': '<?php echo $rows['sAtk']; ?>',
