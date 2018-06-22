@@ -38,9 +38,6 @@ $('#fight-btn').click(function () {
         $('#header').append(data).hide().fadeIn('fast');
         $.get(battleComp, function(data) {
             $('#game-foci').append(data).hide().fadeIn('fast');
-        });
-        $.get(bFooterComp, function(data) {
-            $('#footer').append(data).hide().fadeIn('fast');
         }); 
     });
 });

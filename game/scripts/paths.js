@@ -8,4 +8,4 @@ const invComp = "components/inventory/inventory.php";
 const wildComp = "components/wildMon/wildMon.php";
 const battleComp = "components/battle/battle.html";
 const bHeaderComp = "components/battleHeader/battleHeader.php";
-const bFooterComp = "components/battleFooter/battleFooter.php";
+const bFooterComp = "components/battleFooter/battleFooter.html";
