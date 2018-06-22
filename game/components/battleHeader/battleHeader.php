@@ -7,7 +7,110 @@ if($type == 'wild') {
     $sql = "SELECT * FROM mons WHERE id = '$id'";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
+    
+    $mid = $row['id'];
+    $name = $row['name'];
+    $img = $row['img'];
+    $type1 = $row['type1'];
+    $type2 = $row['type2'];
 
+    $hpMod = rand(0, 20) - 10;
+    $atkMod = rand(0, 20) - 10;
+    $defMod = rand(0, 20) - 10;
+    $sAtkMod = rand(0, 20) - 10;
+    $sDefMod = rand(0, 20) - 10;
+    $speedMod = rand(0, 20) - 10;
+
+    $maxHp = $hpMod + $row['hp'];
+    $currentHp = $hpMod + $row['hp'];
+    $atk = $atkMod + $row['atk'];
+    $def = $defMod + $row['def'];
+    $sAtk = $sAtkMod + $row['sAtk'];
+    $sDef = $sDefMod + $row['sDef'];
+    $speed = $speedMod + $row['speed'];
+
+    $modAvg = round(($hpMod + $atkMod + $defMod + $sAtkMod + $sDefMod + $speedMod) / 6, 2);
+    if($modAvg < -5){
+        $potential = "Terrible";
+    } else if($modAvg < 0) {
+        $potential = "Poor";
+    } else if($modAvg < 5) {
+        $potential = "Decent";
+    } else if($modAvg < 10) {
+        $potential = "Excellent";
+    } else if($modAvg >= 10) {
+        $potential = "Legendary";
+    }
+    
+    $movePool = $row['movePool'];
+    $sql = "SELECT * FROM movePools WHERE id = '$movePool'";
+    $res = mysqli_query($conn, $sql);
+    $moveIds = mysqli_fetch_assoc($res);
+
+    $moveId1 = $moveIds['moveId1'];
+    $moveId2 = $moveIds['moveId2'];
+
+    $sql = "SELECT * FROM moves WHERE id = '$moveId1'";
+    $q = mysqli_query($conn, $sql);
+    $move1 = mysqli_fetch_assoc($q);
+
+    $sql = "SELECT * FROM moves WHERE id = '$moveId2'";
+    $q = mysqli_query($conn, $sql);
+    $move2 = mysqli_fetch_assoc($q);
+?>
+<script>
+    var wildMon = {
+        'id': '<?php echo $mid; ?>',
+        'name': '<?php echo $name; ?>',
+        'type1': '<?php echo $type1; ?>',
+        'type2': '<?php echo $type2; ?>',
+        'maxHp': '<?php echo $maxHp; ?>',
+        'currentHP': '<?php echo $currentHp; ?>',
+        'atk': '<?php echo $atk; ?>',
+        'def': '<?php echo $def; ?>',
+        'sAtk': '<?php echo $sAtk; ?>',
+        'sDef': '<?php echo $sDef; ?>',
+        'speed': '<?php echo $speed; ?>',
+        'status': '',
+        'perk1': '',
+        'perk2': '',
+        'moves': {
+            '1': {
+                'id': '<?php echo $move1['id']; ?>',
+                'name': '<?php echo $move1['name']; ?>',
+                'dmg': '<?php echo $move1['dmg']; ?>',
+                'acc': '<?php echo $move1['acc']; ?>',
+                'crit': '<?php echo $move1['crit']; ?>',
+                'type': '<?php echo $move1['type']; ?>',
+                'special': '<?php echo $move1['special']; ?>',
+                'contact': '<?php echo $move1['contact']; ?>',
+                'e1': '<?php echo $move1['effect1']; ?>',
+                'e2': '<?php echo $move1['effect2']; ?>',
+                'e3': '<?php echo $move1['effect3']; ?>',
+                'anim': '<?php echo $move1['anim']; ?>'
+            },
+            '2': {
+                'id': '<?php echo $move2['id']; ?>',
+                'name': '<?php echo $move2['name']; ?>',
+                'dmg': '<?php echo $move2['dmg']; ?>',
+                'acc': '<?php echo $move2['acc']; ?>',
+                'crit': '<?php echo $move2['crit']; ?>',
+                'type': '<?php echo $move2['type']; ?>',
+                'special': '<?php echo $move2['special']; ?>',
+                'contact': '<?php echo $move2['contact']; ?>',
+                'e1': '<?php echo $move2['effect1']; ?>',
+                'e2': '<?php echo $move2['effect2']; ?>',
+                'e3': '<?php echo $move2['effect3']; ?>',
+                'anim': '<?php echo $move2['anim']; ?>'
+            }
+        },
+        'potential': '<?php echo $potential; ?>'
+    }
+<?php
 } else if($type == 'trainer') {
-
+    // would use this to query npc mons
 }
+
+session_start();
+$uid = $_SESSION['uid'];
+$sql = "SELECT * FROM ownedMons WHERE uid = '$uid' AND inParty > 0";
