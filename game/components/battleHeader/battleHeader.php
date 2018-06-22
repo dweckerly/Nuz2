@@ -1,3 +1,4 @@
+<div id="battle-header">
 <?php
 include_once("../../includes/db.php");
 $id = $_POST['id'];
@@ -58,7 +59,7 @@ if($type == 'wild') {
     $q = mysqli_query($conn, $sql);
     $move2 = mysqli_fetch_assoc($q);
 ?>
-<script>
+    <script>
     var wildMon = {
         'id': '<?php echo $mid; ?>',
         'name': '<?php echo $name; ?>',
@@ -105,12 +106,71 @@ if($type == 'wild') {
             }
         },
         'potential': '<?php echo $potential; ?>'
-    }
+    };
 <?php
 } else if($type == 'trainer') {
     // would use this to query npc mons
 }
-
+?>
+    var pMons = {
+<?php
 session_start();
 $uid = $_SESSION['uid'];
 $sql = "SELECT * FROM ownedMons WHERE uid = '$uid' AND inParty > 0";
+$query = mysqli_query($conn, $sql);
+while($rows = mysqli_fetch_assoc($query)) {
+?>
+        '<?php echo $rows['inParty'];?>': {
+            'name': '<?php echo $rows['name']; ?>',
+            'type1': '<?php echo $rows['type1']; ?>',
+            'type2': '<?php echo $rows['type2']; ?>',
+            'maxHp': '<?php echo $rows['maxHp']; ?>',
+            'currentHP': '<?php echo $rows['currentHp']; ?>',
+            'atk': '<?php echo $rows['atk']; ?>',
+            'def': '<?php echo $rows['def']; ?>',
+            'sAtk': '<?php echo $rows['sAtk']; ?>',
+            'sDef': '<?php echo $rows['sDef']; ?>',
+            'speed': '<?php echo $rows['speed']; ?>',
+            'status': '<?php echo $rows['status']; ?>',
+            'perk1': '<?php echo $rows['perk1']; ?>',
+            'perk2': '<?php echo $rows['perk2']; ?>',
+            'moves': {
+                <?php
+    $atk1 = $rows['move1'];
+    $atk2 = $rows['move2'];
+    $atk3 = $rows['move3'];
+    $atk4 = $rows['move4'];
+    $sql = "SELECT * FROM moves WHERE id = '$atk1' OR id = '$atk2' OR id = '$atk3' OR id = '$atk4'";
+    $result = mysqli_query($conn, $sql);
+    $i = 1;
+    while($aRow = mysqli_fetch_assoc($result)) {
+                ?>
+                '<?php echo $i; ?>': {
+                    'id': '<?php echo $aRow['id']; ?>',
+                    'name': '<?php echo $aRow['name']; ?>',
+                    'dmg': '<?php echo $aRow['dmg']; ?>',
+                    'acc': '<?php echo $aRow['acc']; ?>',
+                    'crit': '<?php echo $aRow['crit']; ?>',
+                    'type': '<?php echo $aRow['type']; ?>',
+                    'special': '<?php echo $aRow['special']; ?>',
+                    'contact': '<?php echo $aRow['contact']; ?>',
+                    'e1': '<?php echo $aRow['effect1']; ?>',
+                    'e2': '<?php echo $aRow['effect2']; ?>',
+                    'e3': '<?php echo $aRow['effect3']; ?>',
+                    'anim': '<?php echo $aRow['anim']; ?>'
+                },
+<?php
+        $i++;
+    }
+?>
+            }
+        },
+<?php
+}
+?>
+    }
+    </script>
+    <div id="top-bar">
+    <p id="battle-marque"></p>
+    </div>
+</div>
