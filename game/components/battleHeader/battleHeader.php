@@ -173,6 +173,6 @@ while($rows = mysqli_fetch_assoc($query)) {
     }
     </script>
     <div id="top-bar">
-    <p id="battle-marque"></p>
+        <p id="battle-marque"></p>
     </div>
 </div>
