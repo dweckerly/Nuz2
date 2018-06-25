@@ -56,3 +56,17 @@ function removeSection(id) {
 function storeAndSwitch(path) {
     changeSection('#game-foci', path);
 }
+
+function typeWriter(text, id) {
+    clearTimeout(typeEffect);
+    document.getElementById(id).innerHTML = "";
+    var i = 0;
+    var typeEffect = setInterval(function() {
+        if (i < text.length) {
+            document.getElementById(id).innerHTML += text.charAt(i);
+            i++;
+        } else {
+            clearTimeout(typeEffect);
+        }
+    }, 60);
+}
