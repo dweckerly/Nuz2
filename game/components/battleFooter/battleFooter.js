@@ -3,7 +3,7 @@ var currentNpcMon = 1;
 
 var roundSegs = {};
 var segIndex = 0;
-var segInterval = 2000;
+var segInterval = 2500;
 
 var turn;
 var rounds = 0;
@@ -208,6 +208,16 @@ function addBattleAction(action) {
 
 function checkStatus() {
     // will check for and apply status effects
+    switch (atkMon['status']) {
+        case 'burn' :
+            break;
+        case 'stun' :
+            break;
+        case 'wound' :
+            break;
+        default:
+            break;
+    }
 }
 
 function randomMoveSelect(monMoves) {
@@ -306,7 +316,7 @@ function hitOrMiss() {
 function critCheck() {
     var crit = atkMon['moves'][atkMonMove]['crit']
     crit += atkMonMods['crit'];
-    var chance = Math.floor(Math.random * 100) + 1;
+    var chance = Math.floor(Math.random() * 100) + 1;
     if(chance <= crit) {
         addBattleText("Critical hit!");
         return true;
@@ -337,7 +347,7 @@ function calculateDamage() {
     if(roundDmg < 1) {
         roundDmg = 1; 
     }
-    if(critCheck) {
+    if(critCheck()) {
         roundDmg *= 2;
     }
     addBattleAction({'damage-enemy' : roundDmg});
