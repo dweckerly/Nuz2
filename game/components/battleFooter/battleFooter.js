@@ -221,7 +221,6 @@ function checkStatus() {
 }
 
 function randomMoveSelect(monMoves) {
-    console.log((Math.floor(Math.random() * Object.keys(monMoves).length) + 1));
     enemyMove = (Math.floor(Math.random() * Object.keys(monMoves).length) + 1);
 }
 
@@ -419,6 +418,7 @@ function addStatus(mon, status, eff) {
     status.html(eff.toUpperCase());
 }
 
+// need to check for maximum and minimum amount that the stats can be effected
 function decreaseStat(stat, target, amount) {
     if(amount == 1) {
         var flavor = " decreased!";
@@ -429,11 +429,20 @@ function decreaseStat(stat, target, amount) {
     }
 
     if(target == 'self') {
-        atkMonMods[stat] -= (Math.round(atkMon[stat] * mod)) * amount; 
-        addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor); 
+        if(atkMonMods[stat] >= ((atkMon[stat] / 2) * -1)) {
+            atkMonMods[stat] -= (Math.round(atkMon[stat] * mod)) * amount; 
+            addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+        } else {
+            addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + " can't go any lower!");
+        }
+         
     } else if(target == 'target') {
-        defMonMods[stat] -= (Math.round(defMon[stat] * mod)) * amount;
-        addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor); 
+        if(defMonMods[stat] >= ((defMon[stat] / 2) * -1)) {
+            defMonMods[stat] -= (Math.round(defMon[stat] * mod)) * amount;
+            addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor); 
+        } else {
+            addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + " can't go any lower!");
+        }
     }
 }
 
@@ -447,11 +456,19 @@ function increaseStat(stat, target, amount) {
     }
 
     if(target == 'self') {
-        atkMonMods[stat] += (Math.round(atkMon[stat] * mod)) * amount;
-        addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor); 
+        if(atkMonMods[stat] <= (atkMon[stat] / 2)) {
+            atkMonMods[stat] += (Math.round(atkMon[stat] * mod)) * amount;
+            addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor); 
+        } else {
+            addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + " can't go any higher!");
+        }
     } else if(target == 'target') {
-        defMonMods[stat] += (Math.round(defMon[stat] * mod)) * amount; 
-        addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor); 
+        if(defMonMods[stat] <= (defMon[stat] / 2)) {
+            defMonMods[stat] += (Math.round(defMon[stat] * mod)) * amount; 
+            addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor); 
+        } else {
+            addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + " can't go any higher!");
+        }
     }
 }
 
