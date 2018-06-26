@@ -531,7 +531,7 @@ function decreaseStat(stat, target, amount) {
                     defMonMods[stat]['mod'] -= (Math.round(defMon[stat] * mod)) * amount;
                 }
                 defMonMods[stat]['count'] -= amount;
-                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+                addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor);
             } else {
                 var adjAmount = defMonMods[stat]['count'] - minMod;
                 defMonMods[stat]['count'] = minMod;
@@ -541,7 +541,7 @@ function decreaseStat(stat, target, amount) {
                     defMonMods[stat]['mod'] -= (Math.round(defMon[stat] * mod)) * adjAmount;
                 }
                 
-                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+                addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor);
             } 
         } else {
             addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + " can't go any lower!");
@@ -589,9 +589,8 @@ function increaseStat(stat, target, amount) {
                 } else {
                     defMonMods[stat]['mod'] += (Math.round(defMon[stat] * mod)) * amount;
                 }
-                defMonMods[stat]['mod'] += (Math.round(defMon[stat] * mod)) * amount;
                 defMonMods[stat]['count'] += amount;
-                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+                addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor);
             } else {
                 var adjAmount = maxMod - defMonMods[stat]['count'];
                 defMonMods[stat]['count'] = maxMod;
@@ -600,7 +599,7 @@ function increaseStat(stat, target, amount) {
                 } else {
                     defMonMods[stat]['mod'] += (Math.round(defMon[stat] * mod)) * adjAmount;
                 }
-                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+                addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor);
             } 
         } else {
             addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + " can't go any higher!");
