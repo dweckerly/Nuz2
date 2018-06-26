@@ -135,6 +135,12 @@ $('#fight-btn').click(function() {
     });
 });
 
+$('#back-battle-btn').click(function () {
+    $('#move-btns').fadeOut("fast", function() {
+        $('#battle-btns').fadeIn("fast");
+    });
+});
+
 $('.move-btn').click(function() {
     var id = $(this).attr('data');
     playerMove = id;
