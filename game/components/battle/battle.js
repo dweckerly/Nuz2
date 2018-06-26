@@ -19,6 +19,7 @@ $(document).ready(function () {
 
 
 $('#player-img').on('animationend', function () {
+    $('#player-img').removeClass('battle-anim-slidein-left');
     $.get(bFooterComp, function(data) {
         $('#footer').append(data).hide().fadeIn('fast');
     });

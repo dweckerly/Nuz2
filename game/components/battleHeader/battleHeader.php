@@ -60,6 +60,7 @@ if($type == 'wild') {
     $move2 = mysqli_fetch_assoc($q);
 ?>
     <script>
+        var locId = <?php echo $locId; ?>;
     var wildMon = {
         'id': '<?php echo $mid; ?>',
         'name': '<?php echo $name; ?>',

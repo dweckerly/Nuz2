@@ -104,6 +104,20 @@ $(document).ready(function() {
     populateMoves(1);
 });
 
+$('#run-btn').click(function () {
+    removeSection('#header');
+    removeSection('#game-nav');
+    removeSection('#game-foci');
+    removeSection('#footer');
+    $.post(locComp, {id: locId}, function(data) {
+        $('#game-foci').append(data).hide().fadeIn('fast');
+        insertHTML('#header', gHeaderComp, function() {
+            insertHTML('#game-nav', navComp);
+        });
+    });
+});
+
+
 $('#opponent-img').on("animationend webkitAnimationEnd", function () {
     console.log('opponent end animation');
     $('#opponent-img').removeClass('battle-anim-slidein-right');
@@ -129,6 +143,8 @@ $('.move-btn').click(function() {
         startRound();
     });
 });
+
+
 
 function populateMoves(id) {
     $('#move1-btn').html(pMons[id]['moves']['1']['name']);
