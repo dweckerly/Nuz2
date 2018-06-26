@@ -5,32 +5,85 @@ var roundSegs = {};
 var segIndex = 0;
 var segInterval = 2500;
 
-var turn;
 var rounds = 0;
 
 var playerMove;
 var enemyMove;
 
 var mod = 0.1;
+var minMod = -6;
+var maxMod = 6;
+
+var crtiEvaAccMod = 10;
 
 var playerMods = {
-    'atk' : 0,
-    'def' : 0,
-    'sAtk' : 0,
-    'sDef' : 0,
-    'speed' : 0,
-    'acc' : 0,
-    'crit' : 0
+    'atk' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'def' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'sAtk' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'sDef' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'speed' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'acc' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'crit' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'evasion' : {
+        'mod' : 0,
+        'count' : 0
+    }
 }
 
 var enemyMods = {
-    'atk' : 0,
-    'def' : 0,
-    'sAtk' : 0,
-    'sDef' : 0,
-    'speed' : 0,
-    'acc' : 0,
-    'crit' : 0
+    'atk' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'def' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'sAtk' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'sDef' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'speed' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'acc' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'crit' : {
+        'mod' : 0,
+        'count' : 0
+    },
+    'evasion' : {
+        'mod' : 0,
+        'count' : 0
+    }
 }
 
 var atkMon;
@@ -49,6 +102,16 @@ var roundDmg = 0;
 
 $(document).ready(function() {
     populateMoves(1);
+});
+
+$('#opponent-img').on("animationend webkitAnimationEnd", function () {
+    console.log('opponent end animation');
+    $('#opponent-img').removeClass('battle-anim-slidein-right');
+});
+
+$('#player-img').on('animationend', function () {
+    console.log('player end animation');
+    $('#player-img').removeClass('battle-anim-slidein-left');
 });
 
 $('#fight-btn').click(function() {
@@ -133,15 +196,15 @@ function declareAttacker() {
 function whoseTurn() {
     if(wildMon) {
         randomMoveSelect(wildMon['moves']);
-        var enemySpeed = wildMon['speed'] + enemyMods['speed'];
+        var enemySpeed = wildMon['speed'] + enemyMods['speed']['mod'];
         var enemyPriority = priorityCheck(wildMon['moves'], enemyMove);
     } else {
        randomMoveSelect(npcMons[currentNpcMon]['moves']);
-       var enemySpeed = npcMons[currentNpcMon]['speed'] + enemyMods['speed'];
+       var enemySpeed = npcMons[currentNpcMon]['speed'] + enemyMods['speed']['mod'];
        var enemyPriority = priorityCheck(npcMons[currentNpcMon]['moves'], enemyMove);
     }
 
-    var playerSpeed = pMons[currentPlayerMon]['speed'] + playerMods['speed'];
+    var playerSpeed = pMons[currentPlayerMon]['speed'] + playerMods['speed']['mod'];
     var playerPriority = priorityCheck(pMons[currentPlayerMon]['moves'], playerMove);
 
     if(playerPriority == enemyPriority) {
@@ -182,6 +245,13 @@ function round() {
 }
 
 function endRound() {
+    if(turn == 'player'){
+        playerMods = atkMonMods;
+        enemyMods = defMonMods;
+    } else if (turn =='enemy'){
+        enemyMods = atkMonMods;
+        playerMods = defMonMods;
+    }
     rounds = 0;
     $('#battle-text').fadeOut('fast', function () {
         $('#battle-btns').fadeIn("fast");
@@ -305,7 +375,8 @@ function parseMove() {
 function hitOrMiss() {
     var chance = Math.floor(Math.random() * 100) + 1;
     var acc = atkMon['moves'][atkMonMove]['acc'];
-    acc += atkMonMods['acc'];
+    acc += atkMonMods['acc']['mod'];
+    acc -= defMonMods['evasion']['mod'];
     if(acc > 100) {
         acc = 100;
     }
@@ -314,7 +385,7 @@ function hitOrMiss() {
 
 function critCheck() {
     var crit = atkMon['moves'][atkMonMove]['crit']
-    crit += atkMonMods['crit'];
+    crit += atkMonMods['crit']['mod'];
     var chance = Math.floor(Math.random() * 100) + 1;
     if(chance <= crit) {
         addBattleText("Critical hit!");
@@ -332,11 +403,11 @@ function typeCheck() {
 function calculateDamage() {
     var base = atkMon['moves'][atkMonMove]['dmg'];
     if(atkMon['moves'][atkMonMove]['special'] == 1) {
-        var a = atkMon['sAtk'] + atkMonMods['sAtk'];
-        var d = defMon['sDef'] + defMonMods['sDef'];
+        var a = atkMon['sAtk'] + atkMonMods['sAtk']['mod'];
+        var d = defMon['sDef'] + defMonMods['sDef']['mod'];
     } else {
-        var a = atkMon['atk'] + atkMonMods['atk'];
-        var d = defMon['def'] + defMonMods['def'];
+        var a = atkMon['atk'] + atkMonMods['atk']['mod'];
+        var d = defMon['def'] + defMonMods['def']['mod'];
     }
     roundDmg = Math.round(base * (a / d));
     if(roundDmg < 1) {
@@ -418,7 +489,6 @@ function addStatus(mon, status, eff) {
     status.html(eff.toUpperCase());
 }
 
-// need to check for maximum and minimum amount that the stats can be effected
 function decreaseStat(stat, target, amount) {
     if(amount == 1) {
         var flavor = " decreased!";
@@ -429,17 +499,50 @@ function decreaseStat(stat, target, amount) {
     }
 
     if(target == 'self') {
-        if(atkMonMods[stat] >= ((atkMon[stat] / 2) * -1)) {
-            atkMonMods[stat] -= (Math.round(atkMon[stat] * mod)) * amount; 
-            addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+        if(atkMonMods[stat]['count'] >= minMod) {
+            if((atkMonMods[stat]['count'] - amount) >= minMod) {
+                if(stat == 'evasion' || stat =='crit' || stat == 'acc') {
+                    atkMonMods[stat]['mod'] -= (crtiEvaAccMod * amount);
+                } else {
+                    atkMonMods[stat]['mod'] -= (Math.round(atkMon[stat] * mod)) * amount;
+                }
+                atkMonMods[stat]['count'] -= amount;
+                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+            } else {
+                var adjAmount = atkMonMods[stat]['count'] - minMod;
+                atkMonMods[stat]['count'] = minMod;
+                if(stat == 'evasion' || stat =='crit' || stat == 'acc') {
+                    atkMonMods[stat]['mod'] -= (crtiEvaAccMod * adjAmount);
+                } else {
+                    atkMonMods[stat]['mod'] -= (Math.round(atkMon[stat] * mod)) * adjAmount;
+                }
+                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+            } 
         } else {
             addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + " can't go any lower!");
         }
          
     } else if(target == 'target') {
-        if(defMonMods[stat] >= ((defMon[stat] / 2) * -1)) {
-            defMonMods[stat] -= (Math.round(defMon[stat] * mod)) * amount;
-            addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor); 
+        if(defMonMods[stat]['count'] >= minMod) {
+            if((defMonMods[stat]['count'] - amount) >= minMod){
+                if(stat == 'evasion' || stat =='crit' || stat == 'acc') {
+                    defMonMods[stat]['mod'] -= (crtiEvaAccMod * amount);
+                } else {
+                    defMonMods[stat]['mod'] -= (Math.round(defMon[stat] * mod)) * amount;
+                }
+                defMonMods[stat]['count'] -= amount;
+                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+            } else {
+                var adjAmount = defMonMods[stat]['count'] - minMod;
+                defMonMods[stat]['count'] = minMod;
+                if(stat == 'evasion' || stat =='crit' || stat == 'acc') {
+                    defMonMods[stat]['mod'] -= (crtiEvaAccMod * adjAmount);
+                } else {
+                    defMonMods[stat]['mod'] -= (Math.round(defMon[stat] * mod)) * adjAmount;
+                }
+                
+                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+            } 
         } else {
             addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + " can't go any lower!");
         }
@@ -456,16 +559,49 @@ function increaseStat(stat, target, amount) {
     }
 
     if(target == 'self') {
-        if(atkMonMods[stat] <= (atkMon[stat] / 2)) {
-            atkMonMods[stat] += (Math.round(atkMon[stat] * mod)) * amount;
-            addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor); 
+        if(atkMonMods[stat]['count'] <= maxMod) {
+            if((atkMonMods[stat]['count'] - amount) <= maxMod){
+                if(stat == 'evasion' || stat =='crit' || stat == 'acc') {
+                    atkMonMods[stat]['mod'] += (crtiEvaAccMod * amount);
+                } else {
+                    atkMonMods[stat]['mod'] += (Math.round(atkMon[stat] * mod)) * amount;
+                }
+                atkMonMods[stat]['count'] += amount;
+                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+            } else {
+                var adjAmount = maxMod - atkMonMods[stat]['count'];
+                atkMonMods[stat]['count'] = maxMod;
+                if(stat == 'evasion' || stat =='crit' || stat == 'acc') {
+                    atkMonMods[stat]['mod'] += (crtiEvaAccMod * adjAmount);
+                } else {
+                    atkMonMods[stat]['mod'] += (Math.round(atkMon[stat] * mod)) * adjAmount;
+                }
+                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+            } 
         } else {
             addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + " can't go any higher!");
         }
     } else if(target == 'target') {
-        if(defMonMods[stat] <= (defMon[stat] / 2)) {
-            defMonMods[stat] += (Math.round(defMon[stat] * mod)) * amount; 
-            addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor); 
+        if(defMonMods[stat]['count'] <= maxMod) {
+            if((defMonMods[stat]['count'] - amount) <= maxMod){
+                if(stat == 'evasion' || stat =='crit' || stat == 'acc') {
+                    defMonMods[stat]['mod'] += (crtiEvaAccMod * amount);
+                } else {
+                    defMonMods[stat]['mod'] += (Math.round(defMon[stat] * mod)) * amount;
+                }
+                defMonMods[stat]['mod'] += (Math.round(defMon[stat] * mod)) * amount;
+                defMonMods[stat]['count'] += amount;
+                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+            } else {
+                var adjAmount = maxMod - defMonMods[stat]['count'];
+                defMonMods[stat]['count'] = maxMod;
+                if(stat == 'evasion' || stat =='crit' || stat == 'acc') {
+                    defMonMods[stat]['mod'] += (crtiEvaAccMod * adjAmount);
+                } else {
+                    defMonMods[stat]['mod'] += (Math.round(defMon[stat] * mod)) * adjAmount;
+                }
+                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+            } 
         } else {
             addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + " can't go any higher!");
         }
@@ -474,7 +610,6 @@ function increaseStat(stat, target, amount) {
 
 function multi(amount) {
     var hits = Math.floor(Math.random() * amount) + 1;
-    var critCount = 1;
     for(i = 1; i < hits; i++) {
         calculateDamage();
     }

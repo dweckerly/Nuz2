@@ -203,6 +203,57 @@ button {
     transform: scaleX(-1);
 }
 
+.off {
+    -moz-animation-name: none;
+	-webkit-animation-name: none;
+	animation-name: none;	
+}
+
+.battle-anim-hit-enemy {
+    -webkit-animation-duration: 2s;
+    -webkit-animation-name: hit-enemy;
+    -webkit-animation-iteration-count: 1;
+    -moz-animation-duration: 2s;
+    -moz-animation-name: hit-enemy;
+    -moz-animation-iteration-count: 1;
+    animation-duration: 2s;
+    animation-name: hit-enemy;
+    animation-iteration-count: 1;
+}
+
+@keyframes hit-enemy {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    20% {
+        opacity: 0;
+        transform: translate(15px, 10px);
+    }
+    30% {
+        opacity: 1;
+        transform: rotate(20deg);
+    }
+    40% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    60% {
+        transform: translateX(-25px);
+    }
+    70% {
+        transform: rotate(-20deg);
+    }
+    100% {
+        transform: rotate(0deg);
+        transform: translate(0px, 0px);
+    }
+}
+
 .battle-anim-slidein-right {
     -webkit-animation-duration: 2s;
     -webkit-animation-name: slidein-right;
