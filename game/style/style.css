@@ -221,32 +221,40 @@ button {
     0% {
         opacity: 0;
     }
-    10% {
+    5% {
         opacity: 1;
     }
-    20% {
-        opacity: 0;
+    10% {
         transform: translate(15px, 10px);
     }
-    30% {
-        opacity: 1;
+    15% {
         transform: rotate(20deg);
     }
-    40% {
-        opacity: 0;
-    }
     50% {
-        opacity: 1;
-    }
-    60% {
-        transform: translateX(-25px);
-    }
-    70% {
-        transform: rotate(-20deg);
+        transform: translate(0px, 0px);
+        transform: rotate(0deg);
     }
     100% {
-        transform: rotate(0deg);
         transform: translate(0px, 0px);
+        transform: rotate(0deg);
+    }
+}
+
+.battle-anim-spin {
+    -webkit-animation-duration: 1s;
+    -webkit-animation-name: spin;
+    -webkit-animation-iteration-count: 1;
+    -moz-animation-duration: 1s;
+    -moz-animation-name: spin;
+    -moz-animation-iteration-count: 1;
+    animation-duration: 1s;
+    animation-name: spin;
+    animation-iteration-count: 1;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
     }
 }
 

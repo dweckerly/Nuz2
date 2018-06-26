@@ -3,7 +3,7 @@ var currentNpcMon = 1;
 
 var roundSegs = {};
 var segIndex = 0;
-var segInterval = 2500;
+var segInterval = 2000;
 
 var rounds = 0;
 
@@ -118,7 +118,7 @@ $('#run-btn').click(function () {
     });
 });
 
-
+/*
 $('#opponent-img').on("animationend webkitAnimationEnd", function () {
     console.log('opponent end animation');
     $('#opponent-img').removeClass('battle-anim-slidein-right');
@@ -128,6 +128,7 @@ $('#player-img').on('animationend', function () {
     console.log('player end animation');
     $('#player-img').removeClass('battle-anim-slidein-left');
 });
+*/
 
 $('#fight-btn').click(function() {
     $('#battle-btns').fadeOut("fast", function() {
@@ -335,6 +336,7 @@ function priorityCheck(monMoves, id) {
 
 function playSegments() {
     var i = 0;
+    console.log(roundSegs);
     segments = setInterval(function() {
         if(roundSegs[i]) {
             if('text' in roundSegs[i]) {
@@ -343,8 +345,22 @@ function playSegments() {
                 applyDamage(roundSegs[i]['damage-self'], atkMon, atkMonHealth);
             } else if('damage-enemy' in roundSegs[i]) {
                 applyDamage(roundSegs[i]['damage-enemy'], defMon, defMonHealth);
+            } else if('animation-enemy' in roundSegs[i]) {
+                if(turn == 'player'){
+                    var el = $('#opponent-img');
+                } else if (turn == 'enemy') {
+                    var el = $('#player-img');
+                    var player = true;
+                }
+                el = resetAnimation(el);
+                if(player) {
+                    el.addClass("flip-img battle-img " + roundSegs[i]['animation-enemy']);
+                } else {
+                    el.addClass("battle-img " + roundSegs[i]['animation-enemy']);
+                }
             }
             i++;
+            console.log(i);
         } else {
             clearInterval(segments);
             round();
@@ -425,12 +441,8 @@ function calculateDamage() {
         var a = parseInt(atkMon['atk']) + parseInt(atkMonMods['atk']['mod']);
         var d = parseInt(defMon['def']) + parseInt(defMonMods['def']['mod']);
     }
-    console.log(a);
-    console.log(d)
-    console.log(base)
-    console.log(base * (a / d));
+    
     roundDmg = Math.round(base * (a / d));
-    console.log(roundDmg);
     if(roundDmg < 1) {
         roundDmg = 1; 
     }
@@ -441,9 +453,16 @@ function calculateDamage() {
     if(critCheck()) {
         roundDmg *= 2;
     }
+    addBattleAction({'animation-enemy': 'battle-anim-hit-enemy'});
     addBattleAction({'damage-enemy' : roundDmg});
 }
 
+function resetAnimation(element) {
+    element.removeClass();
+    var newElem = element.clone(false);
+    element.replaceWith(newElem);
+    return newElem;
+}
 
 // effect stuff 
 // (priority is checked in method above)
