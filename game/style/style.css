@@ -11,8 +11,14 @@ button {
 /*****************************************
  * Components are ordered alphabetically *
  *****************************************/
+
+
 /**********/
+
+
 /* battle */
+
+
 /*********/
 
 .battle-btn {
@@ -26,7 +32,11 @@ button {
 
 
 /***************/
+
+
 /* game header */
+
+
 /***************/
 
 #title,
@@ -36,7 +46,11 @@ button {
 
 
 /*************/
+
+
 /* inventory */
+
+
 /*************/
 
 #inventory-div {
@@ -49,7 +63,11 @@ button {
 
 
 /************/
+
+
 /* location */
+
+
 /************/
 
 #loc-div {
@@ -58,7 +76,11 @@ button {
 
 
 /*******/
+
+
 /* map */
+
+
 /*******/
 
 .map-item {
@@ -67,7 +89,11 @@ button {
 
 
 /*******/
+
+
 /* nav */
+
+
 /*******/
 
 #nav-div {
@@ -116,7 +142,6 @@ button {
         width: 64px;
         height: 64px;
     }
-
     .battle-img {
         height: 200px;
         width: 200px;
@@ -144,19 +169,16 @@ button {
     #footer {
         margin-right: 250px;
     }
-
     #battle-header,
     #battle-main,
     #battle-footer {
         margin-right: -150px;
         margin-left: 100px;
     }
-
     .map-img {
         width: 128px;
         height: 128px;
     }
-
     .battle-img {
         height: 300px;
         width: 300px;
@@ -165,18 +187,21 @@ button {
 
 
 /************/
+
+
 /* wildMon */
+
+
 /***********/
 
 
-
-
-
-
-
-
-
 /***************** ANIMATIONS **********************/
+
+.flip-img {
+    -webkit-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
 
 .battle-anim-slidein-right {
     -webkit-animation-duration: 2s;
@@ -225,8 +250,6 @@ button {
         transform: translateX(0px);
     }
 }
-
-
 
 .mon-img-anim-hop {
     -webkit-animation-duration: 2s;
