@@ -101,6 +101,7 @@ var roundDmg = 0;
 
 
 $(document).ready(function() {
+    $('#move-btns').hide();
     populateMoves(1);
 });
 

@@ -24,3 +24,7 @@ $('#player-img').on('animationend', function () {
         $('#footer').append(data).hide().fadeIn('fast');
     });
 });
+
+$('#opponent-img').on('animationend', function () {
+    $('#opponent-img').removeClass('battle-anim-slidein-right');
+});

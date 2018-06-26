@@ -21,15 +21,11 @@ button {
 
 /*********/
 
-.battle-btn {
+.battle-btn,
+.move-btn {
     width: 20%;
     padding: 10px;
 }
-
-#move-btns {
-    display: none;
-}
-
 
 /***************/
 
