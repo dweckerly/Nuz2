@@ -104,6 +104,11 @@ var roundDmg = 0;
 
 $(document).ready(function() {
     $('#move-btns').hide();
+    $('.switch-mon-btn').each(function () {
+        if($(this).attr('data') == currentPlayerMon) {
+            $(this).prop('disabled', true);
+        }
+    });
     populateMoves(1);
 });
 
@@ -120,17 +125,6 @@ $('#run-btn').click(function() {
     });
 });
 
-/*
-$('#opponent-img').on("animationend webkitAnimationEnd", function () {
-    console.log('opponent end animation');
-    $('#opponent-img').removeClass('battle-anim-slidein-right');
-});
-
-$('#player-img').on('animationend', function () {
-    console.log('player end animation');
-    $('#player-img').removeClass('battle-anim-slidein-left');
-});
-*/
 
 $('#fight-btn').click(function() {
     $('#battle-btns').fadeOut("fast", function() {
@@ -144,6 +138,16 @@ $('#back-battle-btn').click(function() {
     });
 });
 
+$('#nuzmon-btn').click(function () {
+    $('#battle-main').fadeOut('fast');
+    $('#battle-footer').fadeOut('fast', function () {
+        $('#item-select').hide();
+        $('#game-nav').fadeIn('fast', function () {
+            $('#battle-util').fadeIn('fast');
+        });
+    });
+});
+
 $('.move-btn').click(function() {
     var id = $(this).attr('data');
     playerMove = id;
@@ -154,7 +158,15 @@ $('.move-btn').click(function() {
     });
 });
 
+$('.nuz-list-item').click(function () {
+    jQuery('.collapse').collapse('hide');
+    console.log('clicked');
+});
 
+$('.switch-mon-btn').click(function () {
+    var id = $(this).attr('data');
+    console.log("switch to mon with this id: " + id);
+});
 
 function populateMoves(id) {
     $('#move1-btn').html(pMons[id]['moves']['1']['name']);
@@ -271,7 +283,6 @@ function round() {
 }
 
 function endRound() {
-
     rounds = 0;
     $('#battle-text').fadeOut('fast', function() {
         $('#battle-btns').fadeIn("fast");
@@ -461,18 +472,13 @@ function parseMove() {
 function hitOrMiss() {
     var chance = Math.floor(Math.random() * 100) + 1;
     var acc = parseInt(atkMon['moves'][atkMonMove]['acc']);
-    console.log(acc);
     acc += parseInt(atkMonMods['acc']['mod']);
-    console.log(atkMonMods['acc']['mod'])
     acc -= parseInt(defMonMods['evasion']['mod']);
-    console.log(defMonMods['evasion']['mod']);
     if (acc > 100) {
         acc = 100;
     } else if(acc < 1) {
         acc = 1;
     }
-    console.log(acc);
-    console.log(chance);
     return (chance <= acc) ? true : false;
 }
 

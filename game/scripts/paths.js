@@ -9,3 +9,4 @@ const wildComp = "components/wildMon/wildMon.php";
 const battleComp = "components/battle/battle.html";
 const bHeaderComp = "components/battleHeader/battleHeader.php";
 const bFooterComp = "components/battleFooter/battleFooter.html";
+const bUtilComp = "components/battleUtil/battleUtil.php";

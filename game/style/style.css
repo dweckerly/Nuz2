@@ -27,6 +27,13 @@ button {
     padding: 10px;
 }
 
+.nuz-list-item {
+    cursor: pointer;
+}
+
+.nuz-list-item:hover {
+    background-color: lightgray;
+}
 
 /***************/
 
