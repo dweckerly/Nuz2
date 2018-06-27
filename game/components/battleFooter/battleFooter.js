@@ -1,11 +1,15 @@
 var currentPlayerMon = 1;
 var currentNpcMon = 1;
 
+var turn = 'player';
+
 var endFight = false;
+var switching = false;
 
 var roundSegs = {};
 var segIndex = 0;
 var segInterval = 2000;
+var segments;
 
 var rounds = 0;
 
@@ -160,13 +164,45 @@ $('.move-btn').click(function() {
 
 $('.nuz-list-item').click(function () {
     jQuery('.collapse').collapse('hide');
-    console.log('clicked');
 });
 
 $('.switch-mon-btn').click(function () {
+    switching = true;
+    addBattleText(pMons[currentPlayerMon]['name'] + " come back!");
+    addBattleAction({'switch-mon-player': 'out'});
     var id = $(this).attr('data');
-    console.log("switch to mon with this id: " + id);
+    currentPlayerMon = id;
+    addBattleText(pMons[currentPlayerMon]['name'] + ", go!");
+    addBattleAction({'switch-mon-player': 'in'});
+    $('#battle-btns').hide();
+    $('#game-nav').fadeOut('fast', function (){
+        $('#battle-main').fadeIn('fast');
+        $('#battle-footer').fadeIn('fast', function () {
+            $('#battle-text').html("");
+            $('#battle-text').fadeIn("fast");
+            playSegments();
+        });
+    });
 });
+
+function switchPlayerMons() {
+    $('#player-health').attr('aria-valuenow', pMons[currentPlayerMon]['currentHp']);
+    $('#player-health').attr('aria-valuemax', pMons[currentPlayerMon]['maxHp']);
+    
+    var pHealth = Math.round((pMons[currentPlayerMon]['currentHp'] / pMons[currentPlayerMon]['maxHp']) * 100);
+    $('#player-health').css('width', pHealth + '%');
+    $('#player-img').attr('src', "img/mons/" + pMons[currentPlayerMon]['img']);
+    $('#player-name').html(pMons[currentPlayerMon]['name']);
+    $('#player-status').html(pMons[currentPlayerMon]['status']);
+    populateMoves(currentPlayerMon);
+    $('.switch-mon-btn').each(function () {
+        if($(this).attr('data') == currentPlayerMon) {
+            $(this).prop('disabled', true);
+        } else {
+            $(this).prop('disabled', false);
+        }
+    });
+}
 
 function populateMoves(id) {
     $('#move1-btn').html(pMons[id]['moves']['1']['name']);
@@ -284,6 +320,8 @@ function round() {
 
 function endRound() {
     rounds = 0;
+    roundSegs = {};
+    segIndex = 0;
     $('#battle-text').fadeOut('fast', function() {
         $('#battle-btns').fadeIn("fast");
     });
@@ -349,6 +387,7 @@ function priorityCheck(monMoves, id) {
 
 function playSegments() {
     var i = 0;
+    console.log(roundSegs);
     segments = setInterval(function() {
         if (roundSegs[i]) {
             if ('text' in roundSegs[i]) {
@@ -396,17 +435,31 @@ function playSegments() {
                 enemy.fadeOut('slow');
             } else if ('die-self' in roundSegs[i]) {
                 if (turn == 'player') {
-                    var self = $('#player-img');
+                    var selfMon = $('#player-img');
                 } else if (turn == 'enemy') {
-                    var self = ('#opponent-img');
+                    var selfMon = ('#opponent-img');
                 }
-                self.fadeOut('slow');
+                selfMon.fadeOut('slow');
+            } else if('switch-mon-player' in roundSegs[i]) {
+                if(roundSegs[i]['switch-mon-player'] == 'in') {
+                    switching = true;
+                    switchPlayerMons();
+                    $('#player-info-div').animate({opacity: 1});
+                    $('#player-img-div').animate({opacity: 1});
+                } else if (roundSegs[i]['switch-mon-player'] == 'out') {
+                    $('#player-info-div').animate({opacity: 0});
+                    $('#player-img-div').animate({opacity: 0});
+                    resetMods(playerMods);
+                }
             }
             i++;
         } else {
             clearInterval(segments);
             if (endFight) {
 
+            } else if(switching){
+                switching = false;
+                endRound();
             } else {
                 round();
             }
@@ -772,4 +825,23 @@ function recover(target, amount) {
         addBattleText(defMon['name'] + " recovered health!");
         addBattleAction({'heal-enemy': amount});
     }
+}
+
+function resetMods(mod) {
+    mod['atk']['mod'] = 0;
+    mod['atk']['count'] = 0;
+    mod['def']['mod'] = 0;
+    mod['def']['count'] = 0;
+    mod['sAtk']['mod'] = 0;
+    mod['sAtk']['count'] = 0;
+    mod['sDef']['mod'] = 0;
+    mod['sDef']['count'] = 0;
+    mod['speed']['mod'] = 0;
+    mod['speed']['count'] = 0;
+    mod['acc']['mod'] = 0;
+    mod['acc']['count'] = 0;
+    mod['crit']['mod'] = 0;
+    mod['crit']['count'] = 0;
+    mod['evasion']['mod'] = 0;
+    mod['evasion']['count'] = 0;
 }
