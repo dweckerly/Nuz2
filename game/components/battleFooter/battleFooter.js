@@ -556,6 +556,15 @@ function critCheck() {
     return false;
 }
 
+function stabCheck() {
+    if(atkMon['type1'] == atkMon['moves'][atkMonMove]['type']) {
+        return true;
+    } else if(atkMon['type2'] == atkMon['moves'][atkMonMove]['type']){
+        return true;
+    }
+    return false;
+}
+
 function typeCheck() {
     // will return the amount dmg should be multiplied
 
@@ -580,6 +589,10 @@ function calculateDamage() {
     if (roundDmg < 1) {
         roundDmg = 1;
     }
+    if(stabCheck()) {
+        roundDmg *= 1.5;
+        roundDmg = Math.round(roundDmg);
+    } 
     if (critCheck()) {
         roundDmg *= 2;
     }
