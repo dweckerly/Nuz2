@@ -373,6 +373,10 @@ function playSegments() {
                 } else {
                     el.addClass("battle-img " + roundSegs[i]['animation-self']);
                 }
+            } else if('heal-self' in roundSegs[i]) {
+                applyHeal(roundSegs[i]['heal-self'], atkMon, atkMonHealth);
+            } else if('heal-enemy' in roundSegs[i]) {
+                applyHeal(roundSegs[i]['heal-enemy'], defMon, defMonHealth);
             } else if ('die-enemy' in roundSegs[i]) {
                 if (turn == 'player') {
                     var enemy = $('#opponent-img');
@@ -427,6 +431,17 @@ function applyDamage(amount, mon, health) {
     health.css('width', hPercent + '%');
 }
 
+function applyHeal(amount, mon, health) {
+    var recover = Math.round(mon['maxHp'] * (amount/100));
+    if((mon['currentHp'] + recover) > mon['maxHp']) {
+
+    } else {
+        mon['currentHp'] += recover;
+    }
+    var hPercent = Math.round((mon['currentHp'] / mon['maxHp']) * 100);
+    health.attr('aria-valuenow', mon['currentHp']);
+    health.css('width', hPercent + '%');
+}
 
 function parseMove() {
     addBattleText(atkMon['name'] + " used " + atkMon['moves'][atkMonMove]['name'] + "!");
@@ -532,6 +547,12 @@ function parseEffect() {
                 case 'recoil':
                     recoil(p[1]);
                     break;
+                case 'recover':
+                    recover(p[1], p[2]);
+                    break;
+                case 'sleep':
+                    statusEffect(p[1], p[2], 'sleep');
+                    break;
                 case 'stun':
                     statusEffect(p[1], p[2], 'stun');
                     break;
@@ -567,6 +588,10 @@ function statusEffect(target, chance, eff) {
 function addStatus(mon, status, eff) {
     if (eff == 'wet') {
         addBattleText(mon['name'] + " is " + eff + "!");
+    } else if(eff == 'sleep') {
+        addBattleText(mon['name'] + " fell a" + eff + "!");
+    } else if(eff == 'stun') {
+        addBattleText(mon['name'] + " is " + eff + "ned!");
     } else {
         addBattleText(mon['name'] + " is " + eff + "ed!");
     }
@@ -726,4 +751,14 @@ function recoil(amount) {
     addBattleText(atkMon['name'] + " took recoil damage.");
     var recoilDmg = Math.round(atkMon['maxHp'] * (amount / 100));
     addBattleAction({ 'damage-self': recoilDmg });
+}
+
+function recover(target, amount) {
+    if(target == 'self') {
+        addBattleText(atkMon['name'] + " recovered health!");
+        addBattleAction({'heal-self': amount});
+    } else {
+        addBattleText(defMon['name'] + " recovered health!");
+        addBattleAction({'heal-enemy': amount});
+    }
 }
