@@ -27,6 +27,7 @@ button {
     padding: 10px;
 }
 
+
 /***************/
 
 
@@ -201,8 +202,8 @@ button {
 
 .off {
     -moz-animation-name: none;
-	-webkit-animation-name: none;
-	animation-name: none;	
+    -webkit-animation-name: none;
+    animation-name: none;
 }
 
 .battle-anim-hit-enemy {
