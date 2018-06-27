@@ -338,7 +338,6 @@ function priorityCheck(monMoves, id) {
 
 function playSegments() {
     var i = 0;
-    console.log(roundSegs);
     segments = setInterval(function() {
         if (roundSegs[i]) {
             if ('text' in roundSegs[i]) {
@@ -393,7 +392,6 @@ function playSegments() {
                 self.fadeOut('slow');
             }
             i++;
-            console.log(i);
         } else {
             clearInterval(segments);
             if (endFight) {
@@ -432,9 +430,9 @@ function applyDamage(amount, mon, health) {
 }
 
 function applyHeal(amount, mon, health) {
-    var recover = Math.round(mon['maxHp'] * (amount/100));
+    var recover = Math.round(mon['maxHp'] * (amount / 100));
     if((mon['currentHp'] + recover) > mon['maxHp']) {
-
+        mon['currentHp'] = mon['maxHp'];
     } else {
         mon['currentHp'] += recover;
     }
@@ -462,12 +460,19 @@ function parseMove() {
 
 function hitOrMiss() {
     var chance = Math.floor(Math.random() * 100) + 1;
-    var acc = atkMon['moves'][atkMonMove]['acc'];
-    acc += atkMonMods['acc']['mod'];
-    acc -= defMonMods['evasion']['mod'];
+    var acc = parseInt(atkMon['moves'][atkMonMove]['acc']);
+    console.log(acc);
+    acc += parseInt(atkMonMods['acc']['mod']);
+    console.log(atkMonMods['acc']['mod'])
+    acc -= parseInt(defMonMods['evasion']['mod']);
+    console.log(defMonMods['evasion']['mod']);
     if (acc > 100) {
         acc = 100;
+    } else if(acc < 1) {
+        acc = 1;
     }
+    console.log(acc);
+    console.log(chance);
     return (chance <= acc) ? true : false;
 }
 
