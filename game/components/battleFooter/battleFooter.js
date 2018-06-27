@@ -491,6 +491,9 @@ function applyDamage(amount, mon, health) {
     }
     health.attr('aria-valuenow', mon['currentHp']);
     health.css('width', hPercent + '%');
+    if(turn == 'enemy') {
+        updateMonView();
+    }
 }
 
 function applyHeal(amount, mon, health) {
@@ -503,6 +506,13 @@ function applyHeal(amount, mon, health) {
     var hPercent = Math.round((mon['currentHp'] / mon['maxHp']) * 100);
     health.attr('aria-valuenow', mon['currentHp']);
     health.css('width', hPercent + '%');
+    if(turn == 'player') {
+        updateMonView();
+    }
+}
+
+function updateMonView() {
+    $("#" + currentPlayerMon + "-hp").html(pMons[currentPlayerMon]['currentHp'] + "/" + pMons[currentPlayerMon]['maxHp'] )
 }
 
 function parseMove() {

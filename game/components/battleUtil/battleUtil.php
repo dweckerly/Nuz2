@@ -19,7 +19,7 @@ while($row = mysqli_fetch_assoc($q)) {
                         <p><?php echo $row['name']; ?></p>
                     </div>
                     <div class="col-3">
-                        <p><?php echo $row['currentHp']; ?>/<?php echo $row['maxHp']; ?></p>
+                        <p id="<?php echo $row['inParty']?>-hp"><?php echo $row['currentHp']; ?>/<?php echo $row['maxHp']; ?></p>
                     </div>
                     <div class="col-3">
                         <p><?php echo $row['status']; ?></p>
