@@ -120,7 +120,9 @@ session_start();
 $uid = $_SESSION['uid'];
 $sql = "SELECT * FROM ownedMons WHERE uid = '$uid' AND inParty > 0";
 $query = mysqli_query($conn, $sql);
+$j = 0;
 while($rows = mysqli_fetch_assoc($query)) {
+    $j++;
 ?>
         '<?php echo $rows['inParty'];?>': {
             'id': <?php echo $rows['id']; ?>,
@@ -173,6 +175,7 @@ while($rows = mysqli_fetch_assoc($query)) {
 }
 ?>
     }
+        var totalPlayerMons = <?php echo $j; ?>;
     </script>
     <div id="top-bar">
         <p id="battle-marque"></p>

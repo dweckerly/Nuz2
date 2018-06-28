@@ -19,14 +19,17 @@ function addBattleAction(action) {
 }
 
 function backToLocation() {
-    removeSection('#header');
-    removeSection('#game-nav');
-    removeSection('#game-foci');
-    removeSection('#footer');
-    $.post(locComp, { id: locId }, function(data) {
-        $('#game-foci').append(data).hide().fadeIn('fast');
-        insertHTML('#header', gHeaderComp, function() {
-            insertHTML('#game-nav', navComp);
+    $.post(updateMonsTrans, {pMons: pMons, count: totalPlayerMons}, function(data) {
+        removeSection('#header');
+        removeSection('#game-nav');
+        removeSection('#game-foci');
+        removeSection('#footer');
+        $('#footer').append(data);
+        $.post(locComp, { id: locId }, function(data) {
+            $('#game-foci').append(data).hide().fadeIn('fast');
+            insertHTML('#header', gHeaderComp, function() {
+                insertHTML('#game-nav', navComp);
+            });
         });
     });
 }
