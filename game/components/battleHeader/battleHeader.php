@@ -140,6 +140,7 @@ while($rows = mysqli_fetch_assoc($query)) {
             'status': '<?php echo $rows['status']; ?>',
             'perk1': '<?php echo $rows['perk1']; ?>',
             'perk2': '<?php echo $rows['perk2']; ?>',
+            'alive': '<?php echo $rows['alive']; ?>',
             'moves': {
                 <?php
     $atk1 = $rows['move1'];

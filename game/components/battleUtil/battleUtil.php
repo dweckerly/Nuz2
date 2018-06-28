@@ -26,7 +26,16 @@ while($row = mysqli_fetch_assoc($q)) {
                     </div>
                 </div>
                 <div id="mon<?php echo $row['inParty']?>" class="collapse">
+                <?php
+                if($row['alive'] == 1) {
+                    ?>
                     <button data="<?php echo $row['inParty']?>" class="btn btn-secondary switch-mon-btn">Switch</button>
+                    <?php
+                    
+                } else {
+
+                }
+                ?>
                 </div>
             </li>
 <?php
