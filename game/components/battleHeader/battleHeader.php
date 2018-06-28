@@ -123,6 +123,7 @@ $query = mysqli_query($conn, $sql);
 while($rows = mysqli_fetch_assoc($query)) {
 ?>
         '<?php echo $rows['inParty'];?>': {
+            'id': <?php echo $rows['id']; ?>,
             'name': '<?php echo $rows['name']; ?>',
             'img': '<?php echo $rows['img']; ?>',
             'type1': '<?php echo $rows['type1']; ?>',
