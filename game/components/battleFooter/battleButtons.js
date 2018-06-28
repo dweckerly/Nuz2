@@ -12,13 +12,7 @@ $('#back-battle-btn').click(function() {
 });
 
 $('#nuzmon-btn').click(function () {
-    $('#battle-main').fadeOut('fast');
-    $('#battle-footer').fadeOut('fast', function () {
-        $('#item-select').hide();
-        $('#game-nav').fadeIn('fast', function () {
-            $('#battle-util').fadeIn('fast');
-        });
-    });
+    nuzMonView();
 });
 
 $('.nuz-list-item').click(function () {

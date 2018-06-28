@@ -9,9 +9,12 @@ $('.move-btn').click(function() {
 });
 
 $('.switch-mon-btn').click(function () {
+    $('#back-util').prop('disabled', false);
     switching = true;
-    addBattleText(pMons[currentPlayerMon]['name'] + " come back!");
-    addBattleAction({'switch-mon-player': 'out'});
+    if(pMons[currentPlayerMon]['alive'] == 1) {
+        addBattleText(pMons[currentPlayerMon]['name'] + " come back!");
+        addBattleAction({'switch-mon-player': 'out'});
+    }
     var id = $(this).attr('data');
     currentPlayerMon = id;
     addBattleText(pMons[currentPlayerMon]['name'] + ", go!");
@@ -211,41 +214,42 @@ function playSegments() {
                 applyHeal(roundSegs[i]['heal-enemy'], defMon, defMonHealth);
             } else if ('die-enemy' in roundSegs[i]) {
                 if (turn == 'player') {
-                    var monImg = $('#opponent-img');
-                    var monInfo = $('#opponent-info-div');
+                    $('#opponent-img-div').animate({opacity: 0});;
+                    $('#opponent-info-div').animate({opacity: 0});
                 } else if (turn == 'enemy') {
-                    var monImg = ('#player-img');
-                    var monInfo = $('#player-info-div');
+                    $('#player-img-div').animate({opacity: 0});
+                    $('#player-info-div').animate({opacity: 0});
                 }
-                monImg.animate({opacity: 0});
-                monInfo.animate({opacity: 0});
             } else if ('die-self' in roundSegs[i]) {
                 if (turn == 'player') {
-                    var monImg = $('#player-img');
-                    var monInfo = $('#player-info-div');
+                    $('#player-img-div').animate({opacity: 0});
+                    $('#player-info-div').animate({opacity: 0});
                 } else if (turn == 'enemy') {
-                    var monImg = ('#opponent-img');
-                    var monInfo = $('#opponent-info-div');
+                    ('#opponent-img-div').animate({opacity: 0});
+                    $('#opponent-info-div').animate({opacity: 0});
                 }
-                monImg.animate({opacity: 0});
-                monInfo.animate({opacity: 0});
             } else if('switch-mon-player' in roundSegs[i]) {
                 if(roundSegs[i]['switch-mon-player'] == 'in') {
                     switching = true;
-                    switchPlayerMons();
-                    $('#player-info-div').animate({opacity: 1});
-                    $('#player-img-div').animate({opacity: 1});
+                    switchPlayerMons(function () {
+                        $('#player-info-div').animate({opacity: 1});
+                        $('#player-img-div').animate({opacity: 1});
+                    });
                 } else if (roundSegs[i]['switch-mon-player'] == 'out') {
                     $('#player-info-div').animate({opacity: 0});
                     $('#player-img-div').animate({opacity: 0});
                     resetMods(playerMods);
+                }
+            } else if('select-mon' in roundSegs[i]) {
+                if(roundSegs[i]['select-mon'] == 'player') {
+                    nuzMonView();
                 }
             }
             i++;
         } else {
             clearInterval(segments);
             if (endFight) {
-                backToLocation();
+                endBattle();
             } else if(switching){
                 switching = false;
                 endRound();
@@ -257,6 +261,9 @@ function playSegments() {
 }
 
 function die(mon) {
+    clearInterval(segments);
+    segIndex = 0;
+    roundSegs = {};
     console.log("kilt 'em...");
     if (mon == atkMon) {
         addBattleAction({ 'die-self': 'die' });
@@ -267,9 +274,32 @@ function die(mon) {
     }
 
     if(mon == pMons[currentPlayerMon]) {
-
+        pMons[currentPlayerMon]['alive'] = 0;
+        $('.switch-mon-btn').each(function () {
+            if($(this).attr('data') == currentPlayerMon) {
+                $(this).remove();
+            }
+        });
+        if(checkMonsAvailable()) {
+            switching = true;
+            $('#back-util').prop('disabled', true);
+            addBattleAction({"select-mon": "player"});
+        } else {
+            addBattleText("You're out of NuzMon!");
+            endFight = true;
+            win = false;
+        }
     } else if(mon == wildMon) {
         endFight = true;
+    }
+    playSegments();
+}
+
+function endBattle() {
+    if(win) {
+        backToLocation();
+    } else {
+        backtoMap();
     }
 }
 
@@ -277,6 +307,7 @@ function applyDamage(amount, mon, health) {
     mon['currentHp'] -= amount;
     var hPercent = Math.round((mon['currentHp'] / mon['maxHp']) * 100);
     if (mon['currentHp'] <= 0) {
+        mon['currentHp'] = 0;
         die(mon);
     } else {
         if (hPercent <= 0) {

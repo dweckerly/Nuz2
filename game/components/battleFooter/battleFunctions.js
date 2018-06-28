@@ -18,13 +18,26 @@ function addBattleAction(action) {
     segIndex++;
 }
 
+function backtoMap() {
+    $.post(updateMonsTrans, {pMons: pMons, count: totalPlayerMons}, function(data) {
+        removeSection('#header');
+        removeSection('#game-nav');
+        removeSection('#game-foci');
+        removeSection('#footer');
+        insertHTML('#header', gHeaderComp, function() {
+            insertHTML('#game-nav', navComp, function() {
+                insertHTML('#game-foci', mapComp);
+            });
+        });
+    });
+}   
+
 function backToLocation() {
     $.post(updateMonsTrans, {pMons: pMons, count: totalPlayerMons}, function(data) {
         removeSection('#header');
         removeSection('#game-nav');
         removeSection('#game-foci');
         removeSection('#footer');
-        $('#footer').append(data);
         $.post(locComp, { id: locId }, function(data) {
             $('#game-foci').append(data).hide().fadeIn('fast');
             insertHTML('#header', gHeaderComp, function() {
@@ -58,6 +71,15 @@ function checkMiss() {
     return (chance <= acc) ? true : false;
 }
 
+function checkMonsAvailable() {
+    for(i = 1; i <= totalPlayerMons; i++) {
+        if(pMons[i]['alive'] == 1) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function checkStab() {
     if(atkMon['type1'] == atkMon['moves'][atkMonMove]['type']) {
         return true;
@@ -71,6 +93,16 @@ function checkType() {
     // will return the amount dmg should be multiplied
 
     return 1;
+}
+
+function nuzMonView() {
+    $('#battle-main').fadeOut('fast');
+    $('#battle-footer').fadeOut('fast', function () {
+        $('#item-select').hide();
+        $('#game-nav').fadeIn('fast', function () {
+            $('#battle-util').fadeIn('fast');
+        });
+    });
 }
 
 function populateMoves(id) {
@@ -121,7 +153,7 @@ function resetMods(mod) {
     mod['evasion']['count'] = 0;
 }
 
-function switchPlayerMons() {
+function switchPlayerMons(callback) {
     $('#player-health').attr('aria-valuenow', pMons[currentPlayerMon]['currentHp']);
     $('#player-health').attr('aria-valuemax', pMons[currentPlayerMon]['maxHp']);
     
@@ -138,6 +170,9 @@ function switchPlayerMons() {
             $(this).prop('disabled', false);
         }
     });
+    if(callback) {
+        callback();
+    }
 }
 
 function switchTurn() {
