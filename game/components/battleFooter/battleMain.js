@@ -46,7 +46,11 @@ $('.item-btn').click(function () {
         var rand = Math.floor(Math.random() * 100) + 1;
         if(rand <= rate) {
             addBattleText('You caught ' + wildMon['name'] + '!');
-            $.post(catchMonTrans, wildMon);
+
+            //will retrun whether or not it went into the party
+            $.post(catchMonTrans, {wildMon: wildMon}, function(data) {
+                addBattleText(data);
+            });
             endFight = true;
         } else {
             addBattleText(wildMon['name'] + ' escaped!');
