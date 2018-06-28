@@ -1,4 +1,4 @@
-var currentPlayerMon = 1;
+var currentPlayerMon = firstMon;
 var currentNpcMon = 1;
 
 var turn = 'player';

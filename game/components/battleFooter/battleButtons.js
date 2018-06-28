@@ -11,6 +11,10 @@ $('#back-battle-btn').click(function() {
     });
 });
 
+$('#catch-btn').click(function () {
+    itemView();
+});
+
 $('#nuzmon-btn').click(function () {
     nuzMonView();
 });

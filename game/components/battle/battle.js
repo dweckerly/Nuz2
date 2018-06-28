@@ -1,20 +1,29 @@
+var firstMon;
+
 $(document).ready(function () {
+    for(i = 1; i <= totalPlayerMons; i++) {
+        if(pMons[i]['alive'] == 1) {
+            firstMon = i;
+            break;
+        }
+    }
+
     $('#opponent-health').attr('aria-valuenow', wildMon['currentHp']);
     $('#opponent-health').attr('aria-valuemax', wildMon['maxHp']);
     $('#opponent-health').css('width', '100%');
     
-    $('#player-health').attr('aria-valuenow', pMons['1']['currentHp']);
-    $('#player-health').attr('aria-valuemax', pMons['1']['maxHp']);
+    $('#player-health').attr('aria-valuenow', pMons[firstMon]['currentHp']);
+    $('#player-health').attr('aria-valuemax', pMons[firstMon]['maxHp']);
     
-    var pHealth = Math.round((pMons['1']['currentHp'] / pMons['1']['maxHp']) * 100);
+    var pHealth = Math.round((pMons[firstMon]['currentHp'] / pMons[firstMon]['maxHp']) * 100);
     $('#player-health').css('width', pHealth + '%');
 
     $('#opponent-img').attr('src', "img/mons/" + wildMon['img']);
-    $('#player-img').attr('src', "img/mons/" + pMons['1']['img']);
+    $('#player-img').attr('src', "img/mons/" + pMons[firstMon]['img']);
 
     $('#opponent-name').html(wildMon['name']);
-    $('#player-name').html(pMons['1']['name']);
-    $('#player-status').html(pMons['1']['status']);
+    $('#player-name').html(pMons[firstMon]['name']);
+    $('#player-status').html(pMons[firstMon]['status']);
 });
 
 

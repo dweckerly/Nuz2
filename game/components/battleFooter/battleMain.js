@@ -30,6 +30,40 @@ $('.switch-mon-btn').click(function () {
     });
 });
 
+$('.item-btn').click(function () {
+    clearSegment();
+    var id = $(this).attr('data');
+    var effect = $(this).attr('data-effect');
+    var iName = $(this).attr('data-name');
+    $.post(useItemTrans, {id: id}, function (data) {
+        updateItemView(data);
+    });
+    addBattleText('You use the ' + iName + '!');
+    var ef = effect.split('-');
+    if(ef[0] == 'catch') {
+        var rate = ((((wildMon['currentHp'] / wildMon['maxHp']) * 100) - 100) * (-1));
+        rate += parseInt(ef[1]);
+        var rand = Math.floor(Math.random() * 100) + 1;
+        if(rand <= rate) {
+            addBattleText('You caught ' + wildMon['name'] + '!');
+            $.post(catchMonTrans, wildMon);
+            endFight = true;
+        } else {
+            addBattleText(wildMon['name'] + ' escaped!');
+        }
+    }
+
+    $('#battle-btns').hide();
+    $('#game-nav').fadeOut('fast', function (){
+        $('#battle-main').fadeIn('fast');
+        $('#battle-footer').fadeIn('fast', function () {
+            $('#battle-text').html("");
+            $('#battle-text').fadeIn("fast");
+            playSegments();
+        });
+    });
+});
+
 function startRound() {
     whoseTurn();
     round();

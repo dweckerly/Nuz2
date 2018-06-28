@@ -168,6 +168,7 @@ while($rows = mysqli_fetch_assoc($query)) {
                 },
 <?php
         $i++;
+        
     }
 ?>
             }

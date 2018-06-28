@@ -5,7 +5,7 @@ $(document).ready(function() {
             $(this).prop('disabled', true);
         }
     });
-    populateMoves(1);
+    populateMoves(currentPlayerMon);
 });
 
 function addBattleText(str) {
@@ -95,11 +95,29 @@ function checkType() {
     return 1;
 }
 
+function clearSegment() {
+    roundSegs = {};
+    segIndex = 0;
+    clearInterval(segInterval);
+}
+
+function itemView() {
+    $('#battle-main').fadeOut('fast');
+    $('#battle-footer').fadeOut('fast', function () {
+        $('#mon-select').hide();
+        $('#game-nav').fadeIn('fast', function () {
+            $('#item-select').show();
+            $('#battle-util').fadeIn('fast');
+        });
+    });   
+}
+
 function nuzMonView() {
     $('#battle-main').fadeOut('fast');
     $('#battle-footer').fadeOut('fast', function () {
         $('#item-select').hide();
         $('#game-nav').fadeIn('fast', function () {
+            $('#mon-select').show();
             $('#battle-util').fadeIn('fast');
         });
     });
@@ -181,6 +199,10 @@ function switchTurn() {
     } else if (turn == 'enemy') {
         turn = 'player';
     }
+}
+
+function updateItemView(data) {
+
 }
 
 function updateMonView() {

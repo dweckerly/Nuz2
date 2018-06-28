@@ -35,12 +35,13 @@ $('#fight-btn').click(function () {
     removeSection('#game-foci');
     removeSection('#footer');
     $.post(bHeaderComp, {id: id, type: type, locId: locId}, function(data) {
-        $('#header').append(data).hide().fadeIn('fast');
-        $.get(bUtilComp, function(data) {
-            $('#game-nav').append(data).hide();
+        $('#header').append(data).hide().fadeIn('fast', function () {
+            $.get(bUtilComp, function(data) {
+                $('#game-nav').append(data).hide();
+            });
+            $.get(battleComp, function(data) {
+                $('#game-foci').append(data).hide().fadeIn('fast');
+            }); 
         });
-        $.get(battleComp, function(data) {
-            $('#game-foci').append(data).hide().fadeIn('fast');
-        }); 
     });
 });

@@ -53,21 +53,26 @@ while($row = mysqli_fetch_assoc($q)) {
     $sql = "SELECT * FROM items WHERE id = '$iid'";
     $iq = mysqli_query($conn, $sql);
     $item = mysqli_fetch_assoc($iq);
+    if($item['battle'] == 1) {
 ?>
             <li class="list-group-item">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-3">
                         <img height="64px" width="64px" src="img/items/<?php echo $item['img']; ?>">
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <p><?php echo $item['name']; ?></p>
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <p><?php echo $row['quantity']; ?></p>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-secondary item-btn" data="<?php echo $row['id']; ?>" data-effect="<?php echo $item['effect']; ?>" data-name="<?php echo $item['name']; ?>">Use</button>
                     </div>
                 </div>
             </li>
 <?php
+    }
 }
 ?>
         </ul>
