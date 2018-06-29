@@ -105,3 +105,4 @@ var defMonHealth;
 
 var roundDmg = 0;
 var win = true;
+var canAttack = true;

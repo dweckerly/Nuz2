@@ -23,7 +23,8 @@ $(document).ready(function () {
 
     $('#opponent-name').html(wildMon['name']);
     $('#player-name').html(pMons[firstMon]['name']);
-    $('#player-status').html(pMons[firstMon]['status']);
+    var status = pMons[firstMon]['status'];
+    $('#player-status').html(status.toUpperCase());
 });
 
 

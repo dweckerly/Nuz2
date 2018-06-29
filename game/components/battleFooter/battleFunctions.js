@@ -179,7 +179,8 @@ function switchPlayerMons(callback) {
     $('#player-health').css('width', pHealth + '%');
     $('#player-img').attr('src', "img/mons/" + pMons[currentPlayerMon]['img']);
     $('#player-name').html(pMons[currentPlayerMon]['name']);
-    $('#player-status').html(pMons[currentPlayerMon]['status']);
+    var status = pMons[currentPlayerMon]['status'];
+    $('#player-status').html(status.toUpperCase());
     populateMoves(currentPlayerMon);
     $('.switch-mon-btn').each(function () {
         if($(this).attr('data') == currentPlayerMon) {

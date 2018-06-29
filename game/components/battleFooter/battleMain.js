@@ -53,7 +53,7 @@ $('.item-btn').click(function () {
             });
             endFight = true;
         } else {
-            addBattleText(wildMon['name'] + ' escaped!');
+            addBattleAction({'escape' : wildMon['name'] + ' escaped!'});
         }
     }
 
@@ -143,8 +143,8 @@ function whoseTurn() {
 }
 
 function round() {
-    roundSegs = {};
-    segIndex = 0;
+    clearSegment();
+    canAttack = true;
     rounds++;
     if (rounds > 2) {
         endRound();
@@ -152,11 +152,15 @@ function round() {
         switchTurn();
         declareAttacker();
         checkStatus();
-        parseMove();
+        if(canAttack) {
+            parseMove();
+        }
     } else if (rounds == 1) {
         declareAttacker();
         checkStatus();
-        parseMove();
+        if(canAttack) {
+            parseMove();
+        }
     }
 }
 
@@ -169,19 +173,6 @@ function endRound() {
     });
 }
 
-function checkStatus() {
-    // will check for and apply status effects
-    switch (atkMon['status']) {
-        case 'burn':
-            break;
-        case 'stun':
-            break;
-        case 'wound':
-            break;
-        default:
-            break;
-    }
-}
 
 function randomMoveSelect(monMoves) {
     enemyMove = (Math.floor(Math.random() * Object.keys(monMoves).length) + 1);
@@ -282,6 +273,11 @@ function playSegments() {
                 if(roundSegs[i]['select-mon'] == 'player') {
                     nuzMonView();
                 }
+            } else if('escape' in roundSegs[i]) {
+                randomMoveSelect(wildMon['moves']);
+                typeWriter(roundSegs[i]['escape'], "battle-text");
+                turn = 'player';
+                rounds = 1;
             }
             i++;
         } else {
@@ -356,6 +352,10 @@ function applyDamage(amount, mon, health) {
     health.css('width', hPercent + '%');
     if(turn == 'enemy') {
         updateMonView();
+    }
+
+    if(mon['status'].includes("sleep")) {
+        wakeUp(mon);
     }
 }
 

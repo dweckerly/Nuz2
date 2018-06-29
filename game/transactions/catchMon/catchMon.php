@@ -11,7 +11,7 @@ while($row = mysqli_fetch_assoc($query)) {
         $party = $row['inParty'];
     }
 }
-$party += 1;
+$party++;
 if($party > 6) {
     $party = 0;
     echo $wm['name'] . " was sent to the Ranch.";

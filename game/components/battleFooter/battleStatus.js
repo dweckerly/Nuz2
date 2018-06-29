@@ -1,3 +1,5 @@
+var sleepRounds = 0;
+
 function parseEffect() {
     var e1 = atkMon['moves'][atkMonMove]['e1'];
     var e2 = atkMon['moves'][atkMonMove]['e2'];
@@ -50,28 +52,49 @@ function statusEffect(target, chance, eff) {
     if (prob <= chance) {
         if (target == 'self') {
             if (atkMonStatus != eff) {
-                addStatus(atkMon, atkMonStatus, eff);
+                addStatus(atkMon, eff);
             }
         } else if (target == 'target') {
             if (defMonStatus != eff) {
-                addStatus(defMon, defMonStatus, eff);
+                addStatus(defMon, eff);
             }
         }
     }
 }
 
-function addStatus(mon, status, eff) {
+function addStatus(mon, eff) {
     if (eff == 'wet') {
         addBattleText(mon['name'] + " is " + eff + "!");
     } else if(eff == 'sleep') {
-        addBattleText(mon['name'] + " fell a" + eff + "!");
+        addBattleText(mon['name'] + " fell a " + eff + "!");
     } else if(eff == 'stun') {
         addBattleText(mon['name'] + " is " + eff + "ned!");
     } else {
         addBattleText(mon['name'] + " is " + eff + "ed!");
     }
-    mon['status'] = eff;
-    status.html(eff.toUpperCase());
+    if(mon['status'] == '') {
+        mon['status'] = eff;
+    } else {
+        mon['status'] = mon['status'] + '-' + eff;
+    }
+    
+    updateStatusDisplay();
+}
+
+function checkStatus() {
+    // will check for and apply status effects
+    switch (atkMon['status']) {
+        case 'burn':
+            break;
+        case 'sleep':
+            break;
+        case 'stun':
+            break;
+        case 'wound':
+            break;
+        default:
+            break;
+    }
 }
 
 function decreaseStat(stat, target, amount) {
@@ -236,4 +259,34 @@ function recover(target, amount) {
         addBattleText(defMon['name'] + " recovered health!");
         addBattleAction({'heal-enemy': amount});
     }
+}
+
+function removeStatus(mon, status) {
+    var str = mon['status'].split('-');
+    var nStr = "";
+    str.forEach(function (s) {
+        if(s != status) {
+            nStr = nStr + s + '-'
+        }
+    });
+    nStr.slice(0, -1);
+    mon['status'] = nStr;
+    updateStatusDisplay();
+}
+
+function updateStatusDisplay() {
+    var pMonStatus = pMons[currentPlayerMon]['status'];
+    $('#player-status').html(pMonStatus.toUpperCase());
+    if(wildMon) {
+        var eMonStatus = wildMon['status'];
+        $('#opponent-status').html(eMonStatus.toUpperCase());
+    } else {
+        var eMonStatus = npcMons[currentNpcMon]['status']
+        $('#opponent-status').html(eMonStatus.toUpperCase());
+    }
+}
+
+function wakeUp(mon) {
+    addBattleText(mon['name'] + ' woke up!');
+    removeStatus(mon, 'sleep');
 }
