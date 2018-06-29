@@ -19,12 +19,12 @@ $row = mysqli_fetch_assoc($result);
 <?php
 if($row['wild'] != null) {
     ?>
-            <button id="wild-btn" data="<?php echo $row['wild']; ?>" class="btn btn-outline-secondary btn-lg btn-block">Look for NuzMon</button>
+            <button id="wild-btn" data="<?php echo $row['wild']; ?>" class="btn btn-outline-secondary btn-lg btn-block loc-btn">Look for NuzMon</button>
 <?php
 }
 if($row['store'] != null) {
 ?>
-            <button id="store-btn" data="<?php echo $row['store']; ?>" class="btn btn-outline-secondary btn-lg btn-block">Shop</button>
+            <button id="store-btn" data="<?php echo $row['store']; ?>" class="btn btn-outline-secondary btn-lg btn-block loc-btn">Shop</button>
 <?php
 }
 if($row['talk'] != null) {
@@ -33,17 +33,17 @@ if($row['talk'] != null) {
     $res = mysqli_query($conn, $sql);
     $assoc = mysqli_fetch_assoc($res);
 ?>
-            <button id="talk-btn" data="<?php echo $row['talk']; ?>" class="btn btn-outline-secondary btn-lg btn-block"><?php echo $assoc['text']; ?></button>
+            <button id="talk-btn" data="<?php echo $row['talk']; ?>" class="btn btn-outline-secondary btn-lg btn-block loc-btn"><?php echo $assoc['text']; ?></button>
 <?php
 }
 if($row['search'] != null) {
 ?>
-            <button id="search-btn" data="<?php echo $row['search']; ?>" class="btn btn-outline-secondary btn-lg btn-block">Search the Area</button>
+            <button id="search-btn" data="<?php echo $row['search']; ?>" class="btn btn-outline-secondary btn-lg btn-block loc-btn">Search the Area</button>
 <?php
 }
 if($row['gym'] != null) {
     ?>
-            <button id="gym-btn" data="<?php echo $row['gym']; ?>" class="btn btn-outline-secondary btn-lg btn-block">Challenge the Gym</button>
+            <button id="gym-btn" data="<?php echo $row['gym']; ?>" class="btn btn-outline-secondary btn-lg btn-block loc-btn">Challenge the Gym</button>
 <?php
 }
 ?>

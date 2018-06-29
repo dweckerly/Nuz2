@@ -1,5 +1,11 @@
+$(document).ready(function () {
+    $('.wild-btn').prop('disabled', false);
+});
+
+
 // back button functionality copied from map page
 $('#back-btn').click(function() {
+    $('.wild-btn').prop('disabled', true);
     var id = $(this).attr('data');
     $.post(locComp, { id: id }, function(data) {
         var id = "#game-foci";
@@ -13,6 +19,7 @@ $('#back-btn').click(function() {
 });
 
 $('#again-btn').click(function () {
+    $('.wild-btn').prop('disabled', true);
     var id = $(this).attr('data');
     var locId = $('#back-btn').attr('data');
     $.post(wildComp, {id: id, locId: locId}, function(data) {
@@ -27,6 +34,7 @@ $('#again-btn').click(function () {
 });
 
 $('#fight-btn').click(function () {
+    $('.wild-btn').prop('disabled', true);
     var id = $(this).attr('data');
     var type = 'wild';
     var locId = $('#back-btn').attr('data');

@@ -1,8 +1,13 @@
+$(document).ready(function () {
+    $('.loc-btn').prop('disabled', false);
+});
+
 $('#back').click(function () {
     changeSection('#game-foci', mapComp);
 });
 
 $('#wild-btn').click(function () {
+    $('.loc-btn').prop('disabled', true);
     var id = $(this).attr('data');
     var locId = $('#loc-card').attr('data');
     $.post(wildComp, {id: id, locId: locId}, function(data) {

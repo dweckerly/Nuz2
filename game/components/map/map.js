@@ -1,4 +1,9 @@
+$(document).ready(function () {
+    $('.map-btn').prop('disabled', false);
+});
+
 $('.map-btn').click(function () {
+    $('.map-btn').prop('disabled', true);
     var id = $(this).attr('data');
     $.post(locComp, {id: id}, function(data) {
         var id = "#game-foci";

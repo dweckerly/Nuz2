@@ -27,9 +27,9 @@ $row = mysqli_fetch_assoc($result);
         <img id="mon-img" class="card-img-top mon-img-anim-<?php echo $row['anim']; ?>" src="img/mons/<?php echo $row['img']; ?>">
         <div class="card-body">
             <h5 class="card-title">You found a wild <?php echo $row['name']; ?>!</h5>
-            <button class="btn btn-outline-secondary" id="fight-btn" data="<?php echo $monId; ?>">Fight</button>
-            <button class="btn btn-outline-secondary" id="again-btn" data="<?php echo $id; ?>">Look Again</button>
-            <button class="btn btn-outline-secondary" id="back-btn" data="<?php echo $locId; ?>">Back</button>
+            <button class="btn btn-outline-secondary wild-btn" id="fight-btn" data="<?php echo $monId; ?>">Fight</button>
+            <button class="btn btn-outline-secondary wild-btn" id="again-btn" data="<?php echo $id; ?>">Look Again</button>
+            <button class="btn btn-outline-secondary wild-btn" id="back-btn" data="<?php echo $locId; ?>">Back</button>
         </div>
     </div>
     <script src="components/wildMon/wild.js"></script>
