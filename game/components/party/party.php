@@ -38,3 +38,6 @@ while($row = mysqli_fetch_assoc($q)) {
         </li>
 <?php
 }
+?>
+    <script type="text/javascript" src="components/party/party.js"></script>
+</div>
