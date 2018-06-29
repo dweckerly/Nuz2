@@ -280,6 +280,7 @@ function playSegments() {
                 rounds = 1;
             }
             i++;
+            updateStatusDisplay();
         } else {
             clearInterval(segments);
             if (endFight) {

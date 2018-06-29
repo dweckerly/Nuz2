@@ -10,13 +10,13 @@ function parseEffect() {
             var p = e.split('-');
             switch (p[0]) {
                 case 'burn':
-                    statusEffect(p[1], p[2], 'burn')
+                    statusEffect(p[1], p[2], 'burn');
                     break;
                 case 'decrease':
-                    decreaseStat(p[1], p[2], p[3])
+                    decreaseStat(p[1], p[2], parseInt(p[3]));
                     break;
                 case 'increase':
-                    increaseStat(p[1], p[2], p[3])
+                    increaseStat(p[1], p[2], parseInt(p[3]));
                     break;
                 case 'multi':
                     multi(p[1]);
@@ -51,11 +51,17 @@ function statusEffect(target, chance, eff) {
     var prob = Math.floor(Math.random() * 100) + 1;
     if (prob <= chance) {
         if (target == 'self') {
-            if (atkMonStatus != eff) {
+            var status = $(atkMonStatus).html();
+            if (checkForStatus(status, eff.toUpperCase())) {
+                alreadyHasStatus(atkMon, eff);
+            } else {
                 addStatus(atkMon, eff);
             }
         } else if (target == 'target') {
-            if (defMonStatus != eff) {
+            var status = $(defMonStatus).html();
+            if (checkForStatus(status, eff.toUpperCase())) {
+                alreadyHasStatus(defMon, eff);
+            } else {
                 addStatus(defMon, eff);
             }
         }
@@ -66,7 +72,7 @@ function addStatus(mon, eff) {
     if (eff == 'wet') {
         addBattleText(mon['name'] + " is " + eff + "!");
     } else if(eff == 'sleep') {
-        addBattleText(mon['name'] + " fell a " + eff + "!");
+        addBattleText(mon['name'] + " fell a" + eff + "!");
     } else if(eff == 'stun') {
         addBattleText(mon['name'] + " is " + eff + "ned!");
     } else {
@@ -77,8 +83,16 @@ function addStatus(mon, eff) {
     } else {
         mon['status'] = mon['status'] + '-' + eff;
     }
-    
-    updateStatusDisplay();
+}
+
+function alreadyHasStatus(mon, eff) {
+    if (eff == 'wet' || eff=='sleep') {
+        addBattleText(mon['name'] + " is already a" + eff + "!");
+    } else if(eff == 'stun') {
+        addBattleText(mon['name'] + " is already " + eff + "ned!");
+    } else {
+        addBattleText(mon['name'] + " is already " + eff + "ed!");
+    }
 }
 
 function checkStatus() {
@@ -95,6 +109,14 @@ function checkStatus() {
         default:
             break;
     }
+}
+
+function checkForStatus(container, eff) {
+    var pos = container.indexOf(eff);
+    if(pos >= 0) {
+        return true;
+    }
+    return false;
 }
 
 function decreaseStat(stat, target, amount) {
@@ -189,7 +211,7 @@ function increaseStat(stat, target, amount) {
                 atkMonMods[stat]['count'] += amount;
                 addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
             } else {
-                var adjAmount = maxMod - atkMonMods[stat]['count'];
+                var adjAmount = maxMod - count;
                 atkMonMods[stat]['count'] = maxMod;
                 if (stat == 'evasion' || stat == 'crit' || stat == 'acc') {
                     atkMonMods[stat]['mod'] += (crtiEvaAccMod * adjAmount);
@@ -217,7 +239,7 @@ function increaseStat(stat, target, amount) {
                 defMonMods[stat]['count'] += amount;
                 addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor);
             } else {
-                var adjAmount = maxMod - defMonMods[stat]['count'];
+                var adjAmount = maxMod - count;
                 defMonMods[stat]['count'] = maxMod;
                 if (stat == 'evasion' || stat == 'crit' || stat == 'acc') {
                     defMonMods[stat]['mod'] += (crtiEvaAccMod * adjAmount);
@@ -235,6 +257,7 @@ function increaseStat(stat, target, amount) {
             addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + " can't go any higher!");
         }
     }
+    console.log(atkMonMods);
 }
 
 function multi(amount) {
@@ -269,7 +292,7 @@ function removeStatus(mon, status) {
             nStr = nStr + s + '-'
         }
     });
-    nStr.slice(0, -1);
+    nStr = nStr.slice(0, -1);
     mon['status'] = nStr;
     updateStatusDisplay();
 }

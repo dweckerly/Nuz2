@@ -1,7 +1,7 @@
 <?php
 include_once('../../includes/db.php');
 $id = $_POST['id'];
-$sql = "SELECT * FROM locations WHERE id = '$id'";
+$sql = "SELECT * FROM locations WHERE id = '$id' LIMIT 1";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
 //$json = json_encode($row);
@@ -29,7 +29,7 @@ if($row['store'] != null) {
 }
 if($row['talk'] != null) {
     $talkId = $row['talk'];
-    $sql = "SELECT * FROM talk WHERE id = '$talkId'";
+    $sql = "SELECT * FROM talk WHERE id = '$talkId' LIMIT 1";
     $res = mysqli_query($conn, $sql);
     $assoc = mysqli_fetch_assoc($res);
 ?>
