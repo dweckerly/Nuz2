@@ -4,7 +4,7 @@
 session_start();
 $uid = $_SESSION['uid'];
 include_once('../../includes/db.php');
-$sql = "SELECT * FROM ownedMons WHERE uid = '$uid' ORDER BY inParty";
+$sql = "SELECT * FROM ownedMons WHERE uid = '$uid' AND inParty <> 0 ORDER BY inParty";
 $q = mysqli_query($conn, $sql);
 while($row = mysqli_fetch_assoc($q)) {
 ?>

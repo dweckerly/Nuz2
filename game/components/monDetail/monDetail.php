@@ -6,20 +6,22 @@ include_once("../../includes/db.php");
 $sql = "SELECT * FROM ownedMons WHERE id = '$id'";
 $q = mysqli_query($conn, $sql);
 $mon = mysqli_fetch_assoc($q);
+
+$mid = $mon['mid'];
+$sql = "SELECT description, anim FROM mons WHERE id = '$mid' LIMIT 1";
+$query = mysqli_query($conn, $sql);
+$deets = mysqli_fetch_assoc($query);
 ?>
     <div class="row">
         <div class="col-6">
-            <img class="img-fluid" src="img/mons/<?php echo $mon['img']; ?>">
+            <img class="img-fluid mon-img-anim-<?php echo $deets['anim']; ?>" src="img/mons/<?php echo $mon['img']; ?>">
         </div>
         <div class="col-6">
             <div class="card text-center">
                 <div class="card-title"><?php echo $mon['name']; ?></div>      
             </div>
 <?php
-$mid = $mon['mid'];
-$sql = "SELECT description FROM mons WHERE id = '$mid' LIMIT 1";
-$query = mysqli_query($conn, $sql);
-$deets = mysqli_fetch_assoc($query);
+
 ?>
             <div class="card text-center">
                 <div class="card-text"><?php echo $deets['description']; ?></div>      
