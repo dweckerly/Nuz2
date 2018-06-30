@@ -6,7 +6,7 @@
 include_once("../../includes/db.php");
 session_start();
 $uid = $_SESSION['uid'];
-$sql = "SELECT * FROM ownedMons WHERE uid = '$uid'";
+$sql = "SELECT * FROM ownedMons WHERE uid = '$uid' AND inParty <> 0 ORDER BY inParty";
 $q = mysqli_query($conn, $sql);
 while($row = mysqli_fetch_assoc($q)) {
 ?>
