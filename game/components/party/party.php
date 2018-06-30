@@ -27,8 +27,23 @@ while($row = mysqli_fetch_assoc($q)) {
 ?>
                 <div class="col-3">
                     <p><?php echo $row['name']; ?></p>
+<?php
+    if($row['type2'] == null) {
+?>
+                    <p><?php echo $row['type1']; ?></p>
+<?php
+    } else {
+?>
+                    <p><?php echo $row['type1'];?>/<?php echo $row['type2']; ?></p>
+<?php
+    }
+    $width = round(($row['currentHp']/$row['maxHp']) * 100);
+?>
                 </div>
                 <div class="col-3">
+                    <div class="progress">
+                        <div style="width: <?php echo $width; ?>%" class="progress-bar bg-secondary" role="progressbar" aria-valuenow="<?php echo $row['currentHp']; ?>" aria-valuemin="0" aria-valuemax="<?php echo $row['maxHp']; ?>"></div>
+                    </div>
                     <p><?php echo $row['currentHp']; ?>/<?php echo $row['maxHp']; ?></p>
                 </div>
                 <div class="col-3">
