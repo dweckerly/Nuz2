@@ -27,7 +27,21 @@ $row = mysqli_fetch_assoc($result);
         <img id="mon-img" class="card-img-top mon-img-anim-<?php echo $row['anim']; ?>" src="img/mons/<?php echo $row['img']; ?>">
         <div class="card-body">
             <h5 class="card-title">You found a wild <?php echo $row['name']; ?>!</h5>
+<?php
+session_start();
+$uid = $_SESSION['uid'];
+$sql = "SELECT alive FROM ownedMons WHERE uid = '$uid' AND alive = 1";
+$q = mysqli_query($conn, $sql);
+if(mysqli_num_rows($q) > 0) {
+?>
             <button class="btn btn-outline-secondary wild-btn" id="fight-btn" data="<?php echo $monId; ?>">Fight</button>
+<?php
+} else {
+?>
+            <button class="btn btn-outline-secondary wild-btn" id="coerce-btn" data="<?php echo $monId; ?>">Coerce</button>
+<?php
+}
+?>
             <button class="btn btn-outline-secondary wild-btn" id="again-btn" data="<?php echo $id; ?>">Look Again</button>
             <button class="btn btn-outline-secondary wild-btn" id="back-btn" data="<?php echo $locId; ?>">Back</button>
         </div>
