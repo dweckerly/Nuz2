@@ -43,7 +43,7 @@ if($row['search'] != null) {
 }
 if($row['gym'] != null) {
     ?>
-            <button id="gym-btn" data="<?php echo $row['gym']; ?>" class="btn btn-outline-secondary btn-lg btn-block loc-btn">Challenge the Gym</button>
+            <button id="arena-btn" data="<?php echo $row['arena']; ?>" class="btn btn-outline-secondary btn-lg btn-block loc-btn">Challenge the Arena</button>
 <?php
 }
 ?>
