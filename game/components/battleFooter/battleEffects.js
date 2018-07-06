@@ -257,7 +257,6 @@ function increaseStat(stat, target, amount) {
             addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + " can't go any higher!");
         }
     }
-    console.log(atkMonMods);
 }
 
 function multi(amount) {

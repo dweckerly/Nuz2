@@ -8,13 +8,13 @@ $(document).ready(function() {
     populateMoves(currentPlayerMon);
 });
 
-function addBattleText(str) {
-    roundSegs[segIndex] = { 'text': str };
+function addBattleText(str, target) {
+    roundSegs[target][segIndex] = { 'text': str };
     segIndex++;
 }
 
-function addBattleAction(action) {
-    roundSegs[segIndex] = action;
+function addBattleAction(action, target) {
+    roundSegs[target][segIndex] = action;
     segIndex++;
 }
 
@@ -33,7 +33,7 @@ function backtoMap() {
 }   
 
 function backToLocation() {
-    $.post(updateMonsTrans, {pMons: pMons, count: totalPlayerMons}, function(data) {
+    $.post(updateMonsTrans, {pMons: pMons, count: totalPlayerMons}, function() {
         removeSection('#header');
         removeSection('#game-nav');
         removeSection('#game-foci');
@@ -47,12 +47,41 @@ function backToLocation() {
     });
 }
 
+function calculateDamage(target) {
+    var base = atkMon['moves'][atkMonMove]['dmg'];
+    if (atkMon['moves'][atkMonMove]['special'] == 1) {
+        var a = parseInt(atkMon['sAtk']) + parseInt(atkMonMods['sAtk']['mod']);
+        var d = parseInt(defMon['sDef']) + parseInt(defMonMods['sDef']['mod']);
+    } else {
+        var a = parseInt(atkMon['atk']) + parseInt(atkMonMods['atk']['mod']);
+        var d = parseInt(defMon['def']) + parseInt(defMonMods['def']['mod']);
+    }
+
+    roundDmg = Math.round(base * (a / d));
+    if (roundDmg < 1) {
+        roundDmg = 1;
+    }
+    roundDmg *= checkType();
+    if (roundDmg < 1) {
+        roundDmg = 1;
+    }
+    if (checkStab()) {
+        roundDmg *= 1.5;
+        roundDmg = Math.round(roundDmg);
+    }
+    if (checkCrit()) {
+        roundDmg *= 2;
+        addBattleText("Critical hit!", target);
+    }
+    addBattleAction({ 'animation-enemy': 'battle-anim-hit-enemy' }, target);
+    addBattleAction({ 'damage-enemy': roundDmg }, target);
+}
+
 function checkCrit() {
     var crit = atkMon['moves'][atkMonMove]['crit']
     crit += atkMonMods['crit']['mod'];
     var chance = Math.floor(Math.random() * 100) + 1;
     if (chance <= crit) {
-        addBattleText("Critical hit!");
         return true;
     }
     return false;
@@ -99,6 +128,30 @@ function clearSegment() {
     roundSegs = {};
     segIndex = 0;
     clearInterval(segInterval);
+}
+
+function declareAttacker(target) {
+    if(target == 'player') {
+        atkMon = pMons[currentPlayerMon];
+        atkMonMove = playerMove;
+        atkMonMods = playerMods;
+        if(wildMon) {
+            defMon = wildMon;
+        } else {
+            defMon = npcMons[currentNpcMon];
+        }
+        defMonMods = enemyMods;
+    } else if (target == 'enemy') {
+        if(wildMon) {
+            atkMon = wildMon;
+        } else {
+            atkMon = npcMons[currentNpcMon];
+        }
+        atkMonMove = enemyMove;
+        atkMonMods = enemyMods;
+        defMon = pMons[currentPlayerMon];
+        defMonMods = playerMods;
+    }
 }
 
 function itemView() {
@@ -169,6 +222,28 @@ function resetMods(mod) {
     mod['crit']['count'] = 0;
     mod['evasion']['mod'] = 0;
     mod['evasion']['count'] = 0;
+}
+
+function switchMon(id, target) {
+    if(target == 'player') {
+        playerAction = 'switch';
+        if (pMons[currentPlayerMon]['alive'] == 1) {
+            addBattleText(pMons[currentPlayerMon]['name'] + " come back!", target);
+            addBattleAction({ 'switch-mon': 'out' }, target);
+        }
+        currentPlayerMon = id;
+        addBattleText(pMons[currentPlayerMon]['name'] + ", go!", target);
+        addBattleAction({ 'switch-mon': 'in' }, target);
+    } else if(target == 'enemy') {
+        enemyAction = 'switch';
+        if (npcMons[currentNpcMon]['alive'] == 1) {
+            addBattleText(npcMons[currentNpcMon]['name'] + " come back!", target);
+            addBattleAction({ 'switch-mon': 'out' }, target);
+        }
+        currentNpcMon = id;
+        addBattleText(npcMons[currentNpcMon]['name'] + ", go!", target);
+        addBattleAction({ 'switch-mon': 'in' }, target);
+    }
 }
 
 function switchPlayerMons(callback) {

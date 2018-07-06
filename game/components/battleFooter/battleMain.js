@@ -1,166 +1,157 @@
 $('.move-btn').click(function() {
     var id = $(this).attr('data');
     playerMove = id;
-    $('#move-btns').fadeOut("fast", function() {
-        $('#battle-text').html("");
-        $('#battle-text').fadeIn("fast");
-        startRound();
-    });
+    parseMove('player');
+    startRound();
 });
 
 $('.switch-mon-btn').click(function() {
     $('#back-util').prop('disabled', false);
-    switching = true;
-    if (pMons[currentPlayerMon]['alive'] == 1) {
-        addBattleText(pMons[currentPlayerMon]['name'] + " come back!");
-        addBattleAction({ 'switch-mon-player': 'out' });
-    }
     var id = $(this).attr('data');
-    currentPlayerMon = id;
-    addBattleText(pMons[currentPlayerMon]['name'] + ", go!");
-    addBattleAction({ 'switch-mon-player': 'in' });
-    $('#battle-btns').hide();
-    $('#game-nav').fadeOut('fast', function() {
-        $('#battle-main').fadeIn('fast');
-        $('#battle-footer').fadeIn('fast', function() {
-            $('#battle-text').html("");
-            $('#battle-text').fadeIn("fast");
-            playSegments();
-        });
-    });
+    switchMon(id, 'player');
+    startRound();
 });
 
 $('.item-btn').click(function() {
-    clearSegment();
     var id = $(this).attr('data');
     var effect = $(this).attr('data-effect');
     var iName = $(this).attr('data-name');
+    useItem(id, effect, iName, 'player');
+    startRound();
+});
+
+function parseMove(target) {
+    declareAttacker(target);
+    addBattleText(atkMon['name'] + " used " + atkMon['moves'][atkMonMove]['name'] + "!", target);
+    if (checkMiss()) {
+        if (atkMon['moves'][atkMonMove]['dmg'] > 0) {
+            calculateDamage(target);
+        }
+        parseEffect();
+    } else {
+        if (atkMon['moves'][atkMonMove]['dmg'] > 0) {
+            addBattleText("It missed...", target);
+        } else {
+            addBattleText("It failed...", target);
+        }
+    }
+}
+
+function useItem(id, effect, iName, target) {
+    if(target == 'player') {
+        playerAction = 'item';
+    } else if (target == 'enemy') {
+        enemyAction = 'item';
+    }
     $.post(useItemTrans, { id: id }, function(data) {
         updateItemView(data);
     });
-    addBattleText('You use the ' + iName + '!');
+    addBattleText('You use the ' + iName + '!', target);
     var ef = effect.split('-');
     if (ef[0] == 'catch') {
-        var rate = ((((wildMon['currentHp'] / wildMon['maxHp']) * 100) - 100) * (-1));
-        rate += parseInt(ef[1]);
-        var rand = Math.floor(Math.random() * 100) + 1;
-        if (rand <= rate) {
-            addBattleText('You caught ' + wildMon['name'] + '!');
-
-            //will retrun whether or not it went into the party
-            $.post(catchMonTrans, { wildMon: wildMon }, function(data) {
-                addBattleText(data);
-            });
-            endFight = true;
-        } else {
-            addBattleAction({ 'escape': wildMon['name'] + ' escaped!' });
-        }
+        catchMon(ef[1]);
     }
+}
 
-    $('#battle-btns').hide();
-    $('#game-nav').fadeOut('fast', function() {
-        $('#battle-main').fadeIn('fast');
-        $('#battle-footer').fadeIn('fast', function() {
-            $('#battle-text').html("");
-            $('#battle-text').fadeIn("fast");
-            playSegments();
+function catchMon(r) {
+    var rate = ((((wildMon['currentHp'] / wildMon['maxHp']) * 100) - 100) * (-1));
+    rate += parseInt(r);
+    var rand = Math.floor(Math.random() * 100) + 1;
+    if (rand <= rate) {
+        addBattleText('You caught ' + wildMon['name'] + '!', 'player');
+        $.post(catchMonTrans, { wildMon: wildMon }, function(data) {
+            addBattleText(data, 'player');
         });
-    });
-});
+        endFight = true;
+    } else {
+        addBattleAction({ 'escape': wildMon['name'] + ' escaped!' }, 'player');
+    }
+}
+
+function setTurn(t) {
+    turn = t;
+}
 
 function startRound() {
-    whoseTurn();
-    round();
+    $('#battle-btns').hide();
+    $('#move-btns').fadeOut("fast", function () {
+        $('#game-nav').fadeOut('fast', function() {
+            $('#battle-main').fadeIn('fast');
+            $('#battle-footer').fadeIn('fast', function() {
+                $('#battle-text').html("");
+                $('#battle-text').fadeIn("fast");
+                whoGoesFirst();
+                round();
+            });
+        });
+    });
 }
 
-function declareAttacker() {
-    if (turn == 'player') {
-        atkMon = pMons[currentPlayerMon];
-        atkMonMove = playerMove;
-        atkMonMods = playerMods;
-        atkMonStatus = $('#player-status');
-        atkMonHealth = $('#player-health');
-        if (wildMon) {
-            defMon = wildMon;
-        } else {
-            defMon = npcMons[currentNpcMon];
+function whoGoesFirst() {
+    determineEnemyAction();
+    if(playerAction == 'attack') {
+        if(enemyAction == 'attack') {
+            speedCheck();
+            movePriorityCheck();
+        } else if (enemyAction == 'switch' || enemyAction == 'item') {
+            setTurn('enemy');
         }
-        defMonMove = enemyMove;
-        defMonMods = enemyMods;
-        defMonStatus = $('#opponent-status');
-        defMonHealth = $('#opponent-health');
     }
-    if (turn == 'enemy') {
-        if (wildMon) {
-            atkMon = wildMon
-        } else {
-            atkMon = npcMons[currentNpcMon];
+    if(playerAction == 'switch' || playerAction == 'item') {
+        if(enemyAction == 'attack') {
+            setTurn('player');
+        } else if(enemyAction == 'switch' || enemyAction == 'item') {
+            speedCheck();
         }
-        atkMonMove = enemyMove;
-        atkMonMods = enemyMods
-        atkMonStatus = $('#opponent-status');
-        atkMonHealth = $('#opponent-health');
-        defMon = pMons[currentPlayerMon];
-        defMonMove = playerMove;
-        defMonMods = playerMods;
-        defMonStatus = $('#player-status');
-        defMonHealth = $('#player-health');
     }
 }
 
-function whoseTurn() {
-    if (wildMon) {
-        randomMoveSelect(wildMon['moves']);
-        var enemySpeed = parseInt(wildMon['speed']) + parseInt(enemyMods['speed']['mod']);
-        var enemyPriority = priorityCheck(wildMon['moves'], enemyMove);
-    } else {
-        randomMoveSelect(npcMons[currentNpcMon]['moves']);
-        var enemySpeed = parseInt(npcMons[currentNpcMon]['speed']) + parseInt(enemyMods['speed']['mod']);
-        var enemyPriority = priorityCheck(npcMons[currentNpcMon]['moves'], enemyMove);
-    }
-
+function speedCheck() {
     var playerSpeed = parseInt(pMons[currentPlayerMon]['speed']) + parseInt(playerMods['speed']['mod']);
-    var playerPriority = priorityCheck(pMons[currentPlayerMon]['moves'], playerMove);
-
-    if (playerPriority == enemyPriority) {
-        if (playerSpeed > enemySpeed) {
+    var enemySpeed = parseInt(wildMon['speed']) + parseInt(enemyMods['speed']['mod']);
+    if (playerSpeed > enemySpeed) {
+        turn = 'player';
+    } else if (enemySpeed > playerSpeed) {
+        turn = 'enemy';
+    } else if (playerSpeed == enemySpeed) {
+        var rand = Math.floor(Math.random() * 2);
+        if (rand == 0) {
             turn = 'player';
-        } else if (enemySpeed > playerSpeed) {
+        } else if (rand == 1) {
             turn = 'enemy';
-        } else if (playerSpeed == enemySpeed) {
-            var rand = Math.floor(Math.random() * 2);
-            if (rand == 0) {
-                turn = 'player';
-            } else if (rand == 1) {
-                turn = 'enemy';
-            }
         }
-    } else if (playerPriority > enemyPriority) {
+    }
+}
+
+function movePriorityCheck() {
+    var enemyPriority = priorityCheck(wildMon['moves'], enemyMove);
+    var playerPriority = priorityCheck(pMons[currentPlayerMon]['moves'], playerMove);
+    if (playerPriority > enemyPriority) {
         turn = 'player'
     } else if (enemyPriority > playerPriority) {
         turn = 'enemy';
     }
 }
 
+function determineEnemyAction() {
+    if(eAi == 'random') {
+        if(wildMon) {
+            randomMoveSelect(wildMon['moves']);
+        } else {
+            randomMoveSelect(npcMons[currentNpcMon]['moves']);
+        }
+    }
+}
+
 function round() {
-    clearSegment();
-    canAttack = true;
     rounds++;
     if (rounds > 2) {
         endRound();
     } else if (rounds == 2) {
         switchTurn();
-        declareAttacker();
-        checkStatus();
-        if (canAttack) {
-            parseMove();
-        }
+        playSegments();
     } else if (rounds == 1) {
-        declareAttacker();
-        checkStatus();
-        if (canAttack) {
-            parseMove();
-        }
+        playSegments();
     }
 }
 
@@ -175,7 +166,9 @@ function endRound() {
 
 
 function randomMoveSelect(monMoves) {
+    enemyAction = 'attack';
     enemyMove = (Math.floor(Math.random() * Object.keys(monMoves).length) + 1);
+    parseMove('enemy');
 }
 
 function priorityCheck(monMoves, id) {
@@ -204,14 +197,14 @@ function playSegments() {
     var i = 0;
     console.log(roundSegs);
     segments = setInterval(function() {
-        if (roundSegs[i]) {
+        if (roundSegs[turn][i]) {
             if ('text' in roundSegs[i]) {
-                typeWriter(roundSegs[i]['text'], "battle-text");
-            } else if ('damage-self' in roundSegs[i]) {
-                applyDamage(roundSegs[i]['damage-self'], atkMon, atkMonHealth);
-            } else if ('damage-enemy' in roundSegs[i]) {
-                applyDamage(roundSegs[i]['damage-enemy'], defMon, defMonHealth);
-            } else if ('animation-enemy' in roundSegs[i]) {
+                typeWriter(roundSegs[turn][i]['text'], "battle-text");
+            } else if ('damage-self' in roundSegs[turn][i]) {
+                applyDamage(roundSegs[turn][i]['damage-self'], atkMon, atkMonHealth);
+            } else if ('damage-enemy' in roundSegs[turn][i]) {
+                applyDamage(roundSegs[turn][i]['damage-enemy'], defMon, defMonHealth);
+            } else if ('animation-enemy' in roundSegs[turn][i]) {
                 if (turn == 'player') {
                     var el = $('#opponent-img');
                 } else if (turn == 'enemy') {
@@ -220,11 +213,11 @@ function playSegments() {
                 }
                 el = resetAnimation(el);
                 if (player) {
-                    el.addClass("flip-img battle-img " + roundSegs[i]['animation-enemy']);
+                    el.addClass("flip-img battle-img " + roundSegs[turn][i]['animation-enemy']);
                 } else {
-                    el.addClass("battle-img " + roundSegs[i]['animation-enemy']);
+                    el.addClass("battle-img " + roundSegs[turn][i]['animation-enemy']);
                 }
-            } else if ('animation-self' in roundSegs[i]) {
+            } else if ('animation-self' in roundSegs[turn][i]) {
                 if (turn == 'player') {
                     var el = $('#player-img');
                     var player = true;
@@ -233,15 +226,15 @@ function playSegments() {
                 }
                 el = resetAnimation(el);
                 if (player) {
-                    el.addClass("flip-img battle-img " + roundSegs[i]['animation-self']);
+                    el.addClass("flip-img battle-img " + roundSegs[turn][i]['animation-self']);
                 } else {
-                    el.addClass("battle-img " + roundSegs[i]['animation-self']);
+                    el.addClass("battle-img " + roundSegs[turn][i]['animation-self']);
                 }
-            } else if ('heal-self' in roundSegs[i]) {
-                applyHeal(roundSegs[i]['heal-self'], atkMon, atkMonHealth);
-            } else if ('heal-enemy' in roundSegs[i]) {
-                applyHeal(roundSegs[i]['heal-enemy'], defMon, defMonHealth);
-            } else if ('die-enemy' in roundSegs[i]) {
+            } else if ('heal-self' in roundSegs[turn][i]) {
+                applyHeal(roundSegs[turn][i]['heal-self'], atkMon, atkMonHealth);
+            } else if ('heal-enemy' in roundSegs[turn][i]) {
+                applyHeal(roundSegs[turn][i]['heal-enemy'], defMon, defMonHealth);
+            } else if ('die-enemy' in roundSegs[turn][i]) {
                 if (turn == 'player') {
                     $('#opponent-img-div').animate({ opacity: 0 });;
                     $('#opponent-info-div').animate({ opacity: 0 });
@@ -249,7 +242,7 @@ function playSegments() {
                     $('#player-img-div').animate({ opacity: 0 });
                     $('#player-info-div').animate({ opacity: 0 });
                 }
-            } else if ('die-self' in roundSegs[i]) {
+            } else if ('die-self' in roundSegs[turn][i]) {
                 if (turn == 'player') {
                     $('#player-img-div').animate({ opacity: 0 });
                     $('#player-info-div').animate({ opacity: 0 });
@@ -257,25 +250,25 @@ function playSegments() {
                     ('#opponent-img-div').animate({ opacity: 0 });
                     $('#opponent-info-div').animate({ opacity: 0 });
                 }
-            } else if ('switch-mon-player' in roundSegs[i]) {
-                if (roundSegs[i]['switch-mon-player'] == 'in') {
+            } else if ('switch-mon' in roundSegs[turn][i]) {
+                if (roundSegs[turn][i]['switch-mon'] == 'in') {
                     switching = true;
                     switchPlayerMons(function() {
                         $('#player-info-div').animate({ opacity: 1 });
                         $('#player-img-div').animate({ opacity: 1 });
                     });
-                } else if (roundSegs[i]['switch-mon-player'] == 'out') {
+                } else if (roundSegs[turn][i]['switch-mon'] == 'out') {
                     $('#player-info-div').animate({ opacity: 0 });
                     $('#player-img-div').animate({ opacity: 0 });
                     resetMods(playerMods);
                 }
-            } else if ('select-mon' in roundSegs[i]) {
-                if (roundSegs[i]['select-mon'] == 'player') {
+            } else if ('select-mon' in roundSegs[turn][i]) {
+                if (roundSegs[turn][i]['select-mon'] == 'player') {
                     nuzMonView();
                 }
-            } else if ('escape' in roundSegs[i]) {
+            } else if ('escape' in roundSegs[turn][i]) {
                 randomMoveSelect(wildMon['moves']);
-                typeWriter(roundSegs[i]['escape'], "battle-text");
+                typeWriter(roundSegs[turn][i]['escape'], "battle-text");
                 turn = 'player';
                 rounds = 1;
             }
@@ -374,52 +367,4 @@ function applyHeal(amount, mon, health) {
     if (turn == 'player') {
         updateMonView();
     }
-}
-
-
-function parseMove() {
-    addBattleText(atkMon['name'] + " used " + atkMon['moves'][atkMonMove]['name'] + "!");
-    if (checkMiss()) {
-        if (atkMon['moves'][atkMonMove]['dmg'] > 0) {
-            calculateDamage();
-        }
-        parseEffect();
-    } else {
-        if (atkMon['moves'][atkMonMove]['dmg'] > 0) {
-            addBattleText("It missed...");
-        } else {
-            addBattleText("It failed...");
-        }
-    }
-    playSegments();
-}
-
-
-function calculateDamage() {
-    var base = atkMon['moves'][atkMonMove]['dmg'];
-    if (atkMon['moves'][atkMonMove]['special'] == 1) {
-        var a = parseInt(atkMon['sAtk']) + parseInt(atkMonMods['sAtk']['mod']);
-        var d = parseInt(defMon['sDef']) + parseInt(defMonMods['sDef']['mod']);
-    } else {
-        var a = parseInt(atkMon['atk']) + parseInt(atkMonMods['atk']['mod']);
-        var d = parseInt(defMon['def']) + parseInt(defMonMods['def']['mod']);
-    }
-
-    roundDmg = Math.round(base * (a / d));
-    if (roundDmg < 1) {
-        roundDmg = 1;
-    }
-    roundDmg *= checkType();
-    if (roundDmg < 1) {
-        roundDmg = 1;
-    }
-    if (checkStab()) {
-        roundDmg *= 1.5;
-        roundDmg = Math.round(roundDmg);
-    }
-    if (checkCrit()) {
-        roundDmg *= 2;
-    }
-    addBattleAction({ 'animation-enemy': 'battle-anim-hit-enemy' });
-    addBattleAction({ 'damage-enemy': roundDmg });
 }

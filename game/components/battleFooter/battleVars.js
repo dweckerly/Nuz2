@@ -3,8 +3,10 @@ var currentNpcMon = 1;
 
 var turn = 'player';
 
-var endFight = false;
-var switching = false;
+var playerAction;
+var enemyAction;
+
+var eAi = 'random';
 
 var roundSegs = {};
 var segIndex = 0;
@@ -93,16 +95,12 @@ var enemyMods = {
 }
 
 var atkMon;
-var defMon;
 var atkMonMove;
-var defMonMove;
 var atkMonMods;
+var defMon;
+var defMonMove;
 var defMonMods;
-var atkMonStatus;
-var defMonStatus;
-var atkMonHealth;
-var defMonHealth;
 
 var roundDmg = 0;
-var win = true;
-var canAttack = true;
+var endFight = false;
+var win = false;
