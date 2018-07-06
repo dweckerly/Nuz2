@@ -27,7 +27,7 @@ function parseMove(target) {
         if (atkMon['moves'][atkMonMove]['dmg'] > 0) {
             calculateDamage(target);
         }
-        parseEffect();
+        parseEffect(target);
     } else {
         if (atkMon['moves'][atkMonMove]['dmg'] > 0) {
             addBattleText("It missed...", target);
@@ -63,6 +63,7 @@ function catchMon(r) {
             addBattleText(data, 'player');
         });
         endFight = true;
+        win = true;
     } else {
         addBattleAction({ 'escape': wildMon['name'] + ' escaped!' }, 'player');
     }
@@ -134,6 +135,7 @@ function movePriorityCheck() {
 }
 
 function determineEnemyAction() {
+    segIndex = 0;
     if(eAi == 'random') {
         if(wildMon) {
             randomMoveSelect(wildMon['moves']);
@@ -157,8 +159,7 @@ function round() {
 
 function endRound() {
     rounds = 0;
-    roundSegs = {};
-    segIndex = 0;
+    clearSegment();
     $('#battle-text').fadeOut('fast', function() {
         $('#battle-btns').fadeIn("fast");
     });
@@ -196,10 +197,14 @@ function priorityCheck(monMoves, id) {
 function playSegments() {
     var i = 0;
     console.log(roundSegs);
+    declareAttacker(turn);
     segments = setInterval(function() {
         if (roundSegs[turn][i]) {
-            if ('text' in roundSegs[i]) {
+            if ('text' in roundSegs[turn][i]) {
                 typeWriter(roundSegs[turn][i]['text'], "battle-text");
+            } else if ('apply-effect' in roundSegs[turn][i]) {
+                typeWriter(roundSegs[turn][i]['apply-effect']['text'], "battle-text");
+                updateStatusDisplay(roundSegs[turn][i]['apply-effect']['mon']);
             } else if ('damage-self' in roundSegs[turn][i]) {
                 applyDamage(roundSegs[turn][i]['damage-self'], atkMon, atkMonHealth);
             } else if ('damage-enemy' in roundSegs[turn][i]) {
@@ -252,7 +257,6 @@ function playSegments() {
                 }
             } else if ('switch-mon' in roundSegs[turn][i]) {
                 if (roundSegs[turn][i]['switch-mon'] == 'in') {
-                    switching = true;
                     switchPlayerMons(function() {
                         $('#player-info-div').animate({ opacity: 1 });
                         $('#player-img-div').animate({ opacity: 1 });
@@ -267,20 +271,13 @@ function playSegments() {
                     nuzMonView();
                 }
             } else if ('escape' in roundSegs[turn][i]) {
-                randomMoveSelect(wildMon['moves']);
                 typeWriter(roundSegs[turn][i]['escape'], "battle-text");
-                turn = 'player';
-                rounds = 1;
             }
             i++;
-            updateStatusDisplay();
         } else {
             clearInterval(segments);
             if (endFight) {
                 endBattle();
-            } else if (switching) {
-                switching = false;
-                endRound();
             } else {
                 round();
             }
@@ -289,16 +286,12 @@ function playSegments() {
 }
 
 function die(mon) {
-    clearInterval(segments);
-    segIndex = 0;
-    roundSegs = {};
-    console.log("kilt 'em...");
     if (mon == atkMon) {
-        addBattleAction({ 'die-self': 'die' });
-        addBattleText(atkMon['name'] + " was defeated!");
+        addBattleAction({ 'die-self': 'die' }, turn);
+        addBattleText(atkMon['name'] + " was defeated!", turn);
     } else if (mon == defMon) {
-        addBattleAction({ 'die-enemy': 'die' });
-        addBattleText(defMon['name'] + " was defeated!");
+        addBattleAction({ 'die-enemy': 'die' }, turn);
+        addBattleText(defMon['name'] + " was defeated!", turn);
     }
 
     if (mon == pMons[currentPlayerMon]) {
@@ -309,21 +302,21 @@ function die(mon) {
             }
         });
         if (checkMonsAvailable()) {
-            switching = true;
             $('#back-util').prop('disabled', true);
-            addBattleAction({ "select-mon": "player" });
+            addBattleAction({ "select-mon": "player" }, turn);
         } else {
-            addBattleText("You're out of NuzMon!");
+            addBattleText("You're out of NuzMon!", turn);
             endFight = true;
             win = false;
         }
     } else if (mon == wildMon) {
         endFight = true;
+        win = true;
     }
-    playSegments();
 }
 
 function endBattle() {
+    clearSegment();
     if (win) {
         backToLocation();
     } else {
@@ -349,7 +342,7 @@ function applyDamage(amount, mon, health) {
     }
 
     if (mon['status'].includes("sleep")) {
-        wakeUp(mon);
+        wakeUp(mon, turn);
     }
 }
 

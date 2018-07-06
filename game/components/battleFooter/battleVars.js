@@ -8,7 +8,11 @@ var enemyAction;
 
 var eAi = 'random';
 
-var roundSegs = {};
+var roundSegs = {
+    'player' : {},
+    'enemy' : {}
+};
+
 var segIndex = 0;
 var segInterval = 2000;
 var segments;
@@ -97,9 +101,13 @@ var enemyMods = {
 var atkMon;
 var atkMonMove;
 var atkMonMods;
+var atkMonHealth;
+var atkMonStatus;
 var defMon;
 var defMonMove;
 var defMonMods;
+var defMonHealth;
+var defMonStatus;
 
 var roundDmg = 0;
 var endFight = false;

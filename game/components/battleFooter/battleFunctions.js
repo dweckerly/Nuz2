@@ -125,7 +125,10 @@ function checkType() {
 }
 
 function clearSegment() {
-    roundSegs = {};
+    roundSegs = {
+        'player' : {},
+        'enemy' : {}
+    };
     segIndex = 0;
     clearInterval(segInterval);
 }
@@ -135,12 +138,16 @@ function declareAttacker(target) {
         atkMon = pMons[currentPlayerMon];
         atkMonMove = playerMove;
         atkMonMods = playerMods;
+        atkMonHealth = $('#player-health');
+        atkMonStatus = $('#player-status');
         if(wildMon) {
             defMon = wildMon;
         } else {
             defMon = npcMons[currentNpcMon];
         }
         defMonMods = enemyMods;
+        defMonHealth = $('#opponent-health');
+        defMonStatus = $('#opponent-status');
     } else if (target == 'enemy') {
         if(wildMon) {
             atkMon = wildMon;
@@ -149,8 +156,12 @@ function declareAttacker(target) {
         }
         atkMonMove = enemyMove;
         atkMonMods = enemyMods;
+        atkMonHealth = $('#opponent-health');
+        atkMonStatus = $('#opponent-status');
         defMon = pMons[currentPlayerMon];
         defMonMods = playerMods;
+        defMonHealth = $('#player-health');
+        defMonStatus = $('#player-status');
     }
 }
 
@@ -180,18 +191,21 @@ function populateMoves(id) {
     $('#move1-btn').html(pMons[id]['moves']['1']['name']);
     if (pMons[id]['moves']['2']) {
         $('#move2-btn').html(pMons[id]['moves']['2']['name']);
+        $('#move2-btn').prop("disabled", false);
     } else {
         $('#move2-btn').html('~');
         $('#move2-btn').prop("disabled", true);
     }
     if (pMons[id]['moves']['3']) {
         $('#move3-btn').html(pMons[id]['moves']['3']['name']);
+        $('#move3-btn').prop("disabled", false);
     } else {
         $('#move3-btn').html('~');
         $('#move3-btn').prop("disabled", true);
     }
     if (pMons[id]['moves']['4']) {
         $('#move4-btn').html(pMons[id]['moves']['4']['name']);
+        $('#move4-btn').prop("disabled", false);
     } else {
         $('#move4-btn').html('~');
         $('#move4-btn').prop("disabled", true);

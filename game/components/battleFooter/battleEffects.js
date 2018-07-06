@@ -1,6 +1,6 @@
 var sleepRounds = 0;
 
-function parseEffect() {
+function parseEffect(subject) {
     var e1 = atkMon['moves'][atkMonMove]['e1'];
     var e2 = atkMon['moves'][atkMonMove]['e2'];
     var e3 = atkMon['moves'][atkMonMove]['e3'];
@@ -10,34 +10,34 @@ function parseEffect() {
             var p = e.split('-');
             switch (p[0]) {
                 case 'burn':
-                    statusEffect(p[1], p[2], 'burn');
+                    statusEffect(p[1], p[2], 'burn', subject);
                     break;
                 case 'decrease':
-                    decreaseStat(p[1], p[2], parseInt(p[3]));
+                    decreaseStat(p[1], p[2], parseInt(p[3]), subject);
                     break;
                 case 'increase':
-                    increaseStat(p[1], p[2], parseInt(p[3]));
+                    increaseStat(p[1], p[2], parseInt(p[3]), subject);
                     break;
                 case 'multi':
-                    multi(p[1]);
+                    multi(p[1], subject);
                     break;
                 case 'recoil':
-                    recoil(p[1]);
+                    recoil(p[1], subject);
                     break;
                 case 'recover':
-                    recover(p[1], p[2]);
+                    recover(p[1], p[2], subject);
                     break;
                 case 'sleep':
-                    statusEffect(p[1], p[2], 'sleep');
+                    statusEffect(p[1], p[2], 'sleep', subject);
                     break;
                 case 'stun':
-                    statusEffect(p[1], p[2], 'stun');
+                    statusEffect(p[1], p[2], 'stun', subject);
                     break;
                 case 'wet':
-                    statusEffect(p[1], p[2], 'wet');
+                    statusEffect(p[1], p[2], 'wet', subject);
                     break;
                 case 'wound':
-                    statusEffect(p[1], p[2], 'wound');
+                    statusEffect(p[1], p[2], 'wound', subject);
                     break;
                 default:
                     break;
@@ -47,36 +47,36 @@ function parseEffect() {
 
 }
 
-function statusEffect(target, chance, eff) {
+function statusEffect(target, chance, eff, subject) {
     var prob = Math.floor(Math.random() * 100) + 1;
     if (prob <= chance) {
         if (target == 'self') {
             var status = $(atkMonStatus).html();
             if (checkForStatus(status, eff.toUpperCase())) {
-                alreadyHasStatus(atkMon, eff);
+                alreadyHasStatus(atkMon, eff, subject);
             } else {
-                addStatus(atkMon, eff);
+                addStatus(atkMon, eff, subject);
             }
         } else if (target == 'target') {
             var status = $(defMonStatus).html();
             if (checkForStatus(status, eff.toUpperCase())) {
-                alreadyHasStatus(defMon, eff);
+                alreadyHasStatus(defMon, eff, subject);
             } else {
-                addStatus(defMon, eff);
+                addStatus(defMon, eff, subject);
             }
         }
     }
 }
 
-function addStatus(mon, eff) {
+function addStatus(mon, eff, subject) {
     if (eff == 'wet') {
-        addBattleText(mon['name'] + " is " + eff + "!");
+        addBattlAction({'apply-effect':{'text':mon['name'] + " is " + eff + "!", 'mon':mon}}, subject);
     } else if(eff == 'sleep') {
-        addBattleText(mon['name'] + " fell a" + eff + "!");
+        addBattleAction({'apply-effect':{'text':mon['name'] + " fell a" + eff + "!", 'mon':mon}}, subject);
     } else if(eff == 'stun') {
-        addBattleText(mon['name'] + " is " + eff + "ned!");
+        addBattleAction({'apply-effect':{'text':mon['name'] + " is " + eff + "!", 'mon':mon}}, subject);
     } else {
-        addBattleText(mon['name'] + " is " + eff + "ed!");
+        addBattleAction({'apply-effect':{'text':mon['name'] + " is " + eff + "!", 'mon':mon}}, subject);
     }
     if(mon['status'] == '') {
         mon['status'] = eff;
@@ -85,13 +85,13 @@ function addStatus(mon, eff) {
     }
 }
 
-function alreadyHasStatus(mon, eff) {
+function alreadyHasStatus(mon, eff, subject) {
     if (eff == 'wet' || eff=='sleep') {
-        addBattleText(mon['name'] + " is already a" + eff + "!");
+        addBattleText(mon['name'] + " is already a" + eff + "!", subject);
     } else if(eff == 'stun') {
-        addBattleText(mon['name'] + " is already " + eff + "ned!");
+        addBattleText(mon['name'] + " is already " + eff + "ned!", subject);
     } else {
-        addBattleText(mon['name'] + " is already " + eff + "ed!");
+        addBattleText(mon['name'] + " is already " + eff + "ed!", subject);
     }
 }
 
@@ -119,7 +119,7 @@ function checkForStatus(container, eff) {
     return false;
 }
 
-function decreaseStat(stat, target, amount) {
+function decreaseStat(stat, target, amount, subject) {
     if (amount == 1) {
         var flavor = " decreased!";
     } else if (amount == 2) {
@@ -137,7 +137,7 @@ function decreaseStat(stat, target, amount) {
                     atkMonMods[stat]['mod'] -= (Math.round(atkMon[stat] * mod)) * amount;
                 }
                 atkMonMods[stat]['count'] -= amount;
-                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor, subject);
             } else {
                 var adjAmount = atkMonMods[stat]['count'] - minMod;
                 atkMonMods[stat]['count'] = minMod;
@@ -146,7 +146,7 @@ function decreaseStat(stat, target, amount) {
                 } else {
                     atkMonMods[stat]['mod'] -= (Math.round(atkMon[stat] * mod)) * adjAmount;
                 }
-                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor, subject);
             }
 
             if (turn == 'player') {
@@ -155,7 +155,7 @@ function decreaseStat(stat, target, amount) {
                 enemyMods = atkMonMods
             }
         } else {
-            addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + " can't go any lower!");
+            addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + " can't go any lower!", subject);
         }
 
     } else if (target == 'target') {
@@ -167,7 +167,7 @@ function decreaseStat(stat, target, amount) {
                     defMonMods[stat]['mod'] -= (Math.round(defMon[stat] * mod)) * amount;
                 }
                 defMonMods[stat]['count'] -= amount;
-                addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor);
+                addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor, subject);
             } else {
                 var adjAmount = defMonMods[stat]['count'] - minMod;
                 defMonMods[stat]['count'] = minMod;
@@ -177,7 +177,7 @@ function decreaseStat(stat, target, amount) {
                     defMonMods[stat]['mod'] -= (Math.round(defMon[stat] * mod)) * adjAmount;
                 }
 
-                addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor);
+                addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor, subject);
             }
 
             if (turn == 'player') {
@@ -186,12 +186,12 @@ function decreaseStat(stat, target, amount) {
                 playerMods = defMonMods
             }
         } else {
-            addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + " can't go any lower!");
+            addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + " can't go any lower!", subject);
         }
     }
 }
 
-function increaseStat(stat, target, amount) {
+function increaseStat(stat, target, amount, subject) {
     if (amount == 1) {
         var flavor = " increased!";
     } else if (amount == 2) {
@@ -209,7 +209,7 @@ function increaseStat(stat, target, amount) {
                     atkMonMods[stat]['mod'] += (Math.round(atkMon[stat] * mod)) * amount;
                 }
                 atkMonMods[stat]['count'] += amount;
-                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor, subject);
             } else {
                 var adjAmount = maxMod - count;
                 atkMonMods[stat]['count'] = maxMod;
@@ -218,7 +218,7 @@ function increaseStat(stat, target, amount) {
                 } else {
                     atkMonMods[stat]['mod'] += (Math.round(atkMon[stat] * mod)) * adjAmount;
                 }
-                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor);
+                addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + flavor, subject);
             }
             if (turn == 'player') {
                 playerMods = atkMonMods;
@@ -226,7 +226,7 @@ function increaseStat(stat, target, amount) {
                 enemyMods = atkMonMods
             }
         } else {
-            addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + " can't go any higher!");
+            addBattleText(atkMon['name'] + "'s " + stat.toUpperCase() + " can't go any higher!", subject);
         }
     } else if (target == 'target') {
         if (defMonMods[stat]['count'] < maxMod) {
@@ -237,7 +237,7 @@ function increaseStat(stat, target, amount) {
                     defMonMods[stat]['mod'] += (Math.round(defMon[stat] * mod)) * amount;
                 }
                 defMonMods[stat]['count'] += amount;
-                addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor);
+                addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor, subject);
             } else {
                 var adjAmount = maxMod - count;
                 defMonMods[stat]['count'] = maxMod;
@@ -246,7 +246,7 @@ function increaseStat(stat, target, amount) {
                 } else {
                     defMonMods[stat]['mod'] += (Math.round(defMon[stat] * mod)) * adjAmount;
                 }
-                addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor);
+                addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + flavor, subject);
             }
             if (turn == 'player') {
                 enemyMods = defMonMods;
@@ -254,32 +254,32 @@ function increaseStat(stat, target, amount) {
                 playerMods = defMonMods
             }
         } else {
-            addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + " can't go any higher!");
+            addBattleText(defMon['name'] + "'s " + stat.toUpperCase() + " can't go any higher!", subject);
         }
     }
 }
 
-function multi(amount) {
+function multi(amount, subject) {
     var hits = Math.floor(Math.random() * amount) + 1;
     for (i = 1; i < hits; i++) {
         calculateDamage();
     }
-    addBattleText("Hit " + hits + " times!");
+    addBattleText("Hit " + hits + " times!", subject);
 }
 
-function recoil(amount) {
-    addBattleText(atkMon['name'] + " took recoil damage.");
+function recoil(amount, subject) {
+    addBattleText(atkMon['name'] + " took recoil damage.", subject);
     var recoilDmg = Math.round(atkMon['maxHp'] * (amount / 100));
-    addBattleAction({ 'damage-self': recoilDmg });
+    addBattleAction({ 'damage-self': recoilDmg }, subject);
 }
 
-function recover(target, amount) {
+function recover(target, amount, subject) {
     if(target == 'self') {
-        addBattleText(atkMon['name'] + " recovered health!");
-        addBattleAction({'heal-self': amount});
+        addBattleText(atkMon['name'] + " recovered health!", subject);
+        addBattleAction({'heal-self': amount}, subject);
     } else {
-        addBattleText(defMon['name'] + " recovered health!");
-        addBattleAction({'heal-enemy': amount});
+        addBattleText(defMon['name'] + " recovered health!", subject);
+        addBattleAction({'heal-enemy': amount}, subject);
     }
 }
 
@@ -293,22 +293,23 @@ function removeStatus(mon, status) {
     });
     nStr = nStr.slice(0, -1);
     mon['status'] = nStr;
-    updateStatusDisplay();
+    updateStatusDisplay(mon);
 }
 
-function updateStatusDisplay() {
-    var pMonStatus = pMons[currentPlayerMon]['status'];
-    $('#player-status').html(pMonStatus.toUpperCase());
-    if(wildMon) {
-        var eMonStatus = wildMon['status'];
-        $('#opponent-status').html(eMonStatus.toUpperCase());
-    } else {
-        var eMonStatus = npcMons[currentNpcMon]['status']
-        $('#opponent-status').html(eMonStatus.toUpperCase());
+function updateStatusDisplay(mon) {
+    if(mon == pMons[currentPlayerMon]) {
+        var monStatus = pMons[currentPlayerMon]['status'];
+        $('#player-status').html(monStatus.toUpperCase());
+    } else if(mon == wildMon) {
+        var monStatus = wildMon['status'];
+        $('#opponent-status').html(monStatus.toUpperCase());
+    } else if (mon == npcMons[currentNpcMon]) {
+        var monStatus = npcMons[currentNpcMon]['status']
+        $('#opponent-status').html(monStatus.toUpperCase());
     }
 }
 
-function wakeUp(mon) {
-    addBattleText(mon['name'] + ' woke up!');
+function wakeUp(mon, subject) {
+    addBattleText(mon['name'] + ' woke up!', subject);
     removeStatus(mon, 'sleep');
 }
