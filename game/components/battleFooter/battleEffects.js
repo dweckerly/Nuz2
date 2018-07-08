@@ -1,16 +1,19 @@
 var sleepRounds = 0;
 
-function parseEffect(subject) {
-    var e1 = atkMon['moves'][atkMonMove]['e1'];
-    var e2 = atkMon['moves'][atkMonMove]['e2'];
-    var e3 = atkMon['moves'][atkMonMove]['e3'];
+function parseEffect(mon, monMove, monMods) {
+    var e1 = mon['moves'][monMove]['e1'];
+    var e2 = mon['moves'][monMove]['e2'];
+    var e3 = mon['moves'][monMove]['e3'];
     var effects = [e1, e2, e3];
     effects.forEach(e => {
         if (e) {
             var p = e.split('-');
             switch (p[0]) {
                 case 'burn':
-                    statusEffect(p[1], p[2], 'burn', subject);
+                    if (p[1] == 'self') {
+
+                    } else if (p[1] == 'target')
+                        statusEffect(p[1], p[2], 'burn');
                     break;
                 case 'decrease':
                     decreaseStat(p[1], p[2], parseInt(p[3]), subject);
@@ -44,7 +47,6 @@ function parseEffect(subject) {
             }
         }
     });
-
 }
 
 function statusEffect(target, chance, eff, subject) {
@@ -70,15 +72,15 @@ function statusEffect(target, chance, eff, subject) {
 
 function addStatus(mon, eff, subject) {
     if (eff == 'wet') {
-        addBattlAction({'apply-effect':{'text':mon['name'] + " is " + eff + "!", 'mon':mon}}, subject);
-    } else if(eff == 'sleep') {
-        addBattleAction({'apply-effect':{'text':mon['name'] + " fell a" + eff + "!", 'mon':mon}}, subject);
-    } else if(eff == 'stun') {
-        addBattleAction({'apply-effect':{'text':mon['name'] + " is " + eff + "!", 'mon':mon}}, subject);
+        addBattlAction({ 'apply-effect': { 'text': mon['name'] + " is " + eff + "!", 'mon': mon } }, subject);
+    } else if (eff == 'sleep') {
+        addBattleAction({ 'apply-effect': { 'text': mon['name'] + " fell a" + eff + "!", 'mon': mon } }, subject);
+    } else if (eff == 'stun') {
+        addBattleAction({ 'apply-effect': { 'text': mon['name'] + " is " + eff + "!", 'mon': mon } }, subject);
     } else {
-        addBattleAction({'apply-effect':{'text':mon['name'] + " is " + eff + "!", 'mon':mon}}, subject);
+        addBattleAction({ 'apply-effect': { 'text': mon['name'] + " is " + eff + "!", 'mon': mon } }, subject);
     }
-    if(mon['status'] == '') {
+    if (mon['status'] == '') {
         mon['status'] = eff;
     } else {
         mon['status'] = mon['status'] + '-' + eff;
@@ -86,9 +88,9 @@ function addStatus(mon, eff, subject) {
 }
 
 function alreadyHasStatus(mon, eff, subject) {
-    if (eff == 'wet' || eff=='sleep') {
+    if (eff == 'wet' || eff == 'sleep') {
         addBattleText(mon['name'] + " is already a" + eff + "!", subject);
-    } else if(eff == 'stun') {
+    } else if (eff == 'stun') {
         addBattleText(mon['name'] + " is already " + eff + "ned!", subject);
     } else {
         addBattleText(mon['name'] + " is already " + eff + "ed!", subject);
@@ -113,7 +115,7 @@ function checkStatus() {
 
 function checkForStatus(container, eff) {
     var pos = container.indexOf(eff);
-    if(pos >= 0) {
+    if (pos >= 0) {
         return true;
     }
     return false;
@@ -274,20 +276,20 @@ function recoil(amount, subject) {
 }
 
 function recover(target, amount, subject) {
-    if(target == 'self') {
+    if (target == 'self') {
         addBattleText(atkMon['name'] + " recovered health!", subject);
-        addBattleAction({'heal-self': amount}, subject);
+        addBattleAction({ 'heal-self': amount }, subject);
     } else {
         addBattleText(defMon['name'] + " recovered health!", subject);
-        addBattleAction({'heal-enemy': amount}, subject);
+        addBattleAction({ 'heal-enemy': amount }, subject);
     }
 }
 
 function removeStatus(mon, status) {
     var str = mon['status'].split('-');
     var nStr = "";
-    str.forEach(function (s) {
-        if(s != status) {
+    str.forEach(function(s) {
+        if (s != status) {
             nStr = nStr + s + '-'
         }
     });
@@ -297,10 +299,10 @@ function removeStatus(mon, status) {
 }
 
 function updateStatusDisplay(mon) {
-    if(mon == pMons[currentPlayerMon]) {
+    if (mon == pMons[currentPlayerMon]) {
         var monStatus = pMons[currentPlayerMon]['status'];
         $('#player-status').html(monStatus.toUpperCase());
-    } else if(mon == wildMon) {
+    } else if (mon == wildMon) {
         var monStatus = wildMon['status'];
         $('#opponent-status').html(monStatus.toUpperCase());
     } else if (mon == npcMons[currentNpcMon]) {

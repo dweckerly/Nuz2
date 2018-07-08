@@ -1,24 +1,233 @@
 $('.move-btn').click(function() {
     var id = $(this).attr('data');
     playerMove = id;
-    parseMove('player');
-    startRound();
+    playerAction = 'attack';
+    preBattlePhase();
 });
 
 $('.switch-mon-btn').click(function() {
     $('#back-util').prop('disabled', false);
     var id = $(this).attr('data');
-    switchMon(id, 'player');
-    startRound();
+    playerSwicthMonId = id;
+    playerAction = 'switch';
+    preBattlePhase();
 });
 
 $('.item-btn').click(function() {
     var id = $(this).attr('data');
-    var effect = $(this).attr('data-effect');
-    var iName = $(this).attr('data-name');
-    useItem(id, effect, iName, 'player');
-    startRound();
+    playerUseItemId = id;
+    playerAction = 'item';
+    preBattlePhase();
 });
+
+function preBattlePhase() {
+    showBattleText();
+    if (type == 'wild' || type == 'npc') {
+        determineOpponentAction();
+        startRound();
+    }
+    /// else { POST action and listen/check for opponent action }
+}
+
+function startRound() {
+    whoGoesFirst();
+    if (turn == 'player') {
+        playerTurn();
+    } else if (turn == 'opponent') {
+        opponentTurn();
+    }
+}
+
+function playerTurn() {
+    turnCount++;
+    switch (playerAction) {
+        case 'attack':
+            playerCheckAttack();
+            break;
+        case 'item':
+            playerBroadcastItem();
+            break;
+        case 'switch':
+            playerBroadcastSwitchOut();
+            break;
+        default:
+            break;
+    }
+}
+
+function playerCheckAttack() {
+    if (playerMons[playerCurrentMon]['status'] == 'sleep' ||
+        playerMons[playerCurrentMon]['status'] == 'stun'
+    ) {
+
+    } else {
+        playerBroadcastAttack();
+    }
+}
+
+function playerBroadcastAttack() {
+    var str = playerMons[playerCurrentMon]['name'] + " used " + playerMons[playerCurrentMon]['moves'][playerMoveId]['name'] + "!";
+    broadcastText(str);
+    var time = getItervalFromString(str);
+    var nextPhase = setInterval(function() {
+        playerUseAttack();
+        clearInterval(nextPhase);
+    }, time);
+}
+
+function playerUseAttack() {
+    if (checkHit(playerMons, playerMoveId, playerMods, opponentMods)) {
+        if (playerMons[playerCurrentMon]['moves'][playerMoveId]['dmg'] == 0) {
+            playerApplyDamage();
+        } else {
+            playerApplyEffects();
+        }
+    } else {
+        if (playerMons[playerCurrentMon]['moves'][playerMoveId]['dmg'] == 0) {
+            var str = "it failed...";
+        } else {
+            var str = "it missed...";
+        }
+        broadcastText(str);
+        var time = getItervalFromString(str);
+        var nextPhase = setInterval(function() {
+            switchTurn();
+            clearInterval(nextPhase);
+        }, time);
+    }
+}
+
+function playerApplyDamage() {
+    var dmg = calculateDamage(playerMons[playerCurrentMon], playerMoveId, playerMods, opponentMons[opponentCurrentMon], opponentMods);
+    if (checkCrit(atkMon, atkMonMove, atkMonMods)) {
+        dmg *= 2;
+    } else {
+        applyDamage(dmg, opponentMons[opponentCurrentMon], $('#opponent-health'));
+        var nextPhase = setInterval(function() {
+            playerParseEffects();
+            clearInterval(nextPhase);
+        }, baseInterval);
+    }
+}
+
+function playerParseEffects() {
+    if (playerMons[currentPlayerMon]['moves'][playerMoveId]['e1'] == '') {
+        switchTurn();
+    } else {
+        var effects = [
+            playerMons[playerCurrentMon]['moves'][playerMoveId]['e1'],
+            playerMons[playerCurrentMon]['moves'][playerMoveId]['e2'],
+            playerMons[playerCurrentMon]['moves'][playerMoveId]['e3']
+        ];
+        effects.forEach(function(eff) {
+            if (eff) {
+                var p = eff.split('-');
+                switch (p[0]) {
+                    case 'burn':
+                        if (p[1] == 'self') {
+                            playerBurnSelf();
+                        } else if (p[1] == 'target') {
+                            playerBurnTarget();
+                        }
+                        break;
+                    case 'decrease':
+                        if (p[2] == 'self') {
+                            playerDecreaseStatSelf();
+                        } else if (p[2] == 'target') {
+                            playerDecreaseStatTarget();
+                        }
+                        break;
+                    case 'increase':
+                        if (p[2] == 'self') {
+                            playerIncreaseStatSelf();
+                        } else if (p[2] == 'target') {
+                            playerIncreaseStatTarget();
+                        }
+                        break;
+                    case 'multi':
+                        playerMultiAttack();
+                        break;
+                    case 'recoil':
+                        playerRecoil();
+                        break;
+                    case 'recover':
+                        if (p[1] == 'self') {
+                            playerRecoverSelf();
+                        } else if (p[1] == 'target') {
+                            playerRecoverTarget();
+                        }
+                        break;
+                    case 'sleep':
+                        if (p[1] == 'self') {
+                            playerSleepSelf();
+                        } else if (p[1] == 'target') {
+                            playerSleepTarget();
+                        }
+                        break;
+                    case 'stun':
+                        if (p[1] == 'self') {
+                            playerStunSelf();
+                        } else if (p[1] == 'target') {
+                            playerStunTarget();
+                        }
+                        break;
+                    case 'wet':
+                        if (p[1] == 'self') {
+                            playerWetSelf();
+                        } else if (p[1] == 'target') {
+                            playerWetTarget();
+                        }
+                        break;
+                    case 'wound':
+                        if (p[1] == 'self') {
+                            playerWoundSelf();
+                        } else if (p[1] == 'target') {
+                            playerWoundTarget();
+                        }
+                        break;
+                }
+            }
+        });
+    }
+}
+
+function playerBroadcastItem() {
+    var itemName = $('#item-' + playerUseItemId).attr('data-name');
+    var effect = $('#item-' + playerUseItemId).attr('data-effect');
+    var str = "You use the " + itemName + "!";
+    broadcastText(str);
+    var time = getIntervalFromString(str);
+    var nextPhase = setInterval(function() {
+        playerUseItem(effect);
+        clearInterval(nextPhase);
+    }, time);
+}
+
+function playerBroadcastSwitchOut() {
+    if (playerMons[playerCurrentMon]['currentHp'] > 0) {
+        str = playerMons[playerCurrentMon]['name'] + " come back!";
+        broadcastText(str);
+        var time = getIntervalFromString(str);
+        var nextPhase = segInterval(function() {
+            playerAnimateMonOut();
+            clearInterval(nextPhase);
+        }, time);
+    } else {
+        nuzMonView();
+    }
+}
+
+function round() {
+
+    if (rounds > 2) {
+        endRound();
+    } else if (rounds == 2) {
+        switchTurn();
+        playSegments();
+    } else if (rounds == 1) {
+        playSegments();
+    }
+}
 
 function parseMove(target) {
     declareAttacker(target);
@@ -38,7 +247,7 @@ function parseMove(target) {
 }
 
 function useItem(id, effect, iName, target) {
-    if(target == 'player') {
+    if (target == 'player') {
         playerAction = 'item';
     } else if (target == 'enemy') {
         enemyAction = 'item';
@@ -69,129 +278,12 @@ function catchMon(r) {
     }
 }
 
-function setTurn(t) {
-    turn = t;
-}
-
-function startRound() {
-    $('#battle-btns').hide();
-    $('#move-btns').fadeOut("fast", function () {
-        $('#game-nav').fadeOut('fast', function() {
-            $('#battle-main').fadeIn('fast');
-            $('#battle-footer').fadeIn('fast', function() {
-                $('#battle-text').html("");
-                $('#battle-text').fadeIn("fast");
-                whoGoesFirst();
-                round();
-            });
-        });
-    });
-}
-
-function whoGoesFirst() {
-    determineEnemyAction();
-    if(playerAction == 'attack') {
-        if(enemyAction == 'attack') {
-            speedCheck();
-            movePriorityCheck();
-        } else if (enemyAction == 'switch' || enemyAction == 'item') {
-            setTurn('enemy');
-        }
-    }
-    if(playerAction == 'switch' || playerAction == 'item') {
-        if(enemyAction == 'attack') {
-            setTurn('player');
-        } else if(enemyAction == 'switch' || enemyAction == 'item') {
-            speedCheck();
-        }
-    }
-}
-
-function speedCheck() {
-    var playerSpeed = parseInt(pMons[currentPlayerMon]['speed']) + parseInt(playerMods['speed']['mod']);
-    var enemySpeed = parseInt(wildMon['speed']) + parseInt(enemyMods['speed']['mod']);
-    if (playerSpeed > enemySpeed) {
-        turn = 'player';
-    } else if (enemySpeed > playerSpeed) {
-        turn = 'enemy';
-    } else if (playerSpeed == enemySpeed) {
-        var rand = Math.floor(Math.random() * 2);
-        if (rand == 0) {
-            turn = 'player';
-        } else if (rand == 1) {
-            turn = 'enemy';
-        }
-    }
-}
-
-function movePriorityCheck() {
-    var enemyPriority = priorityCheck(wildMon['moves'], enemyMove);
-    var playerPriority = priorityCheck(pMons[currentPlayerMon]['moves'], playerMove);
-    if (playerPriority > enemyPriority) {
-        turn = 'player'
-    } else if (enemyPriority > playerPriority) {
-        turn = 'enemy';
-    }
-}
-
-function determineEnemyAction() {
-    segIndex = 0;
-    if(eAi == 'random') {
-        if(wildMon) {
-            randomMoveSelect(wildMon['moves']);
-        } else {
-            randomMoveSelect(npcMons[currentNpcMon]['moves']);
-        }
-    }
-}
-
-function round() {
-    rounds++;
-    if (rounds > 2) {
-        endRound();
-    } else if (rounds == 2) {
-        switchTurn();
-        playSegments();
-    } else if (rounds == 1) {
-        playSegments();
-    }
-}
-
 function endRound() {
     rounds = 0;
     clearSegment();
     $('#battle-text').fadeOut('fast', function() {
         $('#battle-btns').fadeIn("fast");
     });
-}
-
-
-function randomMoveSelect(monMoves) {
-    enemyAction = 'attack';
-    enemyMove = (Math.floor(Math.random() * Object.keys(monMoves).length) + 1);
-    parseMove('enemy');
-}
-
-function priorityCheck(monMoves, id) {
-    if (monMoves[id]['e1']) {
-        var e = monMoves[id]['e1'].split('-');
-        if (e[0] == 'priority') {
-            return e[1];
-        }
-    }
-    if (monMoves[id]['e2']) {
-        var e = monMoves[id]['e2'].split('-');
-        if (e[0] == 'priority') {
-            return e[1];
-        }
-    }
-    if (monMoves[id]['e3']) {
-        var e = monMoves[id]['e3'].split('-');
-        if (e[0] == 'priority') {
-            return e[1];
-        }
-    }
-    return 0;
 }
 
 function playSegments() {
@@ -337,7 +429,7 @@ function applyDamage(amount, mon, health) {
     }
     health.attr('aria-valuenow', mon['currentHp']);
     health.css('width', hPercent + '%');
-    if (turn == 'enemy') {
+    if (turn == 'opponent') {
         updateMonView();
     }
 

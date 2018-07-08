@@ -30,7 +30,7 @@ function appendHTML(id, path, callback) {
 // gets the first child of a section, removes it, and appends new data
 function changeSection(id, path, callback) {
     var child = $(id).find(':first-child');
-    if(child == null) {
+    if (child == null) {
         appendHTML(id, path);
     }
     var cid = child.attr('id');
@@ -45,9 +45,9 @@ function changeSection(id, path, callback) {
 
 function removeSection(id) {
     var child = $(id).find(':first-child');
-    if(child != null) {
+    if (child != null) {
         var cid = child.attr('id');
-        $("#" + cid).fadeOut('fast', function () {
+        $("#" + cid).fadeOut('fast', function() {
             $("#" + cid).remove();
         });
     }
@@ -68,5 +68,5 @@ function typeWriter(text, id) {
         } else {
             clearTimeout(typeEffect);
         }
-    }, 60);
+    }, 50);
 }

@@ -67,7 +67,7 @@ while($row = mysqli_fetch_assoc($q)) {
                         <p><?php echo $row['quantity']; ?></p>
                     </div>
                     <div class="col-3">
-                        <button class="btn btn-secondary item-btn" data="<?php echo $row['id']; ?>" data-effect="<?php echo $item['effect']; ?>" data-name="<?php echo $item['name']; ?>">Use</button>
+                        <button class="btn btn-secondary item-btn" id="item-<?php echo $row['id']; ?>" data="<?php echo $row['id']; ?>" data-effect="<?php echo $item['effect']; ?>" data-name="<?php echo $item['name']; ?>">Use</button>
                     </div>
                 </div>
             </li>
