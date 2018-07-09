@@ -11,8 +11,9 @@ if(is_null($oAi)) {
 ?>
 <script>
     var locId = <?php echo $locId; ?>;
-    var type = <?php echo $type; ?>;
-    var opponentAI = <?php echo $oAi; ?>
+    var type = "<?php echo $type; ?>";
+    var opponentAI = "<?php echo $oAi; ?>";
+
     var playerMons = {
 <?php
 session_start();
@@ -75,7 +76,7 @@ while($rows = mysqli_fetch_assoc($query)) {
 <?php
 }
 ?>
-    }
+    };
     var opponentMons = {
 <?php
 if($type == 'wild') {
@@ -188,6 +189,7 @@ if($type == 'wild') {
     // would use this to query npc mons
 }
 ?>
+    </script>
     <div id="top-bar">
         <p id="battle-marque"></p>
     </div>

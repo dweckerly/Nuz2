@@ -2,18 +2,18 @@ var playerCurrentMon;
 var opponentCurrentMon;
 
 $(document).ready(function() {
-    playerMons.foreach(function(key) {
+    for(var key in playerMons) {
         if (playerMons[key]['alive'] == 1) {
             playerCurrentMon = key;
             break;
         }
-    });
-    opponentMons.foreach(function(key) {
+    }
+    for(var key in opponentMons) {
         if (opponentMons[key]['alive'] == 1) {
             opponentCurrentMon = key;
             break;
         }
-    });
+    }
 
     $('#opponent-health').attr('aria-valuenow', opponentMons[opponentCurrentMon]['currentHp']);
     $('#opponent-health').attr('aria-valuemax', opponentMons[opponentCurrentMon]['maxHp']);

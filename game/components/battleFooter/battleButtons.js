@@ -1,4 +1,3 @@
-
 $('#fight-btn').click(function() {
     $('#battle-btns').fadeOut("fast", function() {
         $('#move-btns').fadeIn("fast");

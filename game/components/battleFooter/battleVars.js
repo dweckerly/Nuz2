@@ -5,7 +5,8 @@ const crtEvaAccMod = 10;
 const baseInterval = 1500;
 
 var turn;
-var turnCount = 0;
+var rounds = 0;
+var endFight = false;
 
 var playerAction;
 var playerMoveId;
@@ -38,3 +39,19 @@ var opponentMods = {
     'crit': { 'mod': 1, 'count': 0 },
     'evasion': { 'mod': 1, 'count': 0 }
 }
+
+var atkMon;
+var atkMonMove;
+var atkMonMods;
+var atkMonHealth;
+var atkMonStatus;
+var defMon;
+var defMonMove;
+var defMonMods;
+var defMonHealth;
+var defMonStatus;
+
+var segments
+var roundSegs = {};
+var segIndex = 0;
+var segInterval = 2000;
