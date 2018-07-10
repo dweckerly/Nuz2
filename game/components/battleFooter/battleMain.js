@@ -10,7 +10,11 @@ $('.switch-mon-btn').click(function() {
     var id = $(this).attr('data');
     playerSwicthMonId = id;
     playerAction = 'switch';
-    preBattlePhase();
+    if(rounds >= 2) {
+        switchMon();
+    } else {
+        preBattlePhase();
+    }
 });
 
 $('.item-btn').click(function() {
@@ -68,7 +72,7 @@ function parseMove() {
     declareAttacker();
     addBattleText(atkMon['name'] + " used " + atkMon['moves'][atkMonMove]['name'] + "!");
     if (checkHit()) {
-        if (atkMon['moves'][atkMonMove]['dmg'] > 0) {
+        if (atkMon['moves'][atkMonMove]['dmg'] > 0 && atkMon['moves'][atkMonMove]['e1'].indexOf('multi') == -1) {
             var dmg = calculateDamage();
             addBattleAction({'damage-enemy': dmg});
         }
@@ -96,6 +100,7 @@ function playSegments() {
     console.log(roundSegs);
     segments = setInterval(function() {
         if (roundSegs[i]) {
+            console.log(rounds);
             if ('text' in roundSegs[i]) {
                 typeWriter(roundSegs[i]['text'], "battle-text");
             } else if ('apply-effect' in roundSegs[i]) {
@@ -175,6 +180,7 @@ function playSegments() {
             if (endFight) {
                 endBattle();
             } else if(rounds >= 2) {
+                console.log("ending round");
                 endRound();
             } else {
                 clearSegment();

@@ -243,11 +243,27 @@ function increaseStat(stat, target, amount) {
 }
 
 function multi(amount) {
-    var hits = Math.floor(Math.random() * amount) + 1;
-    for (i = 1; i < hits; i++) {
-        calculateDamage();
+    var hits = Math.round(Math.random() * amount) + 1;
+    var dmg = calculateDamage();
+    var i = 1;
+    var count = 0;
+    for (i; i <= hits; i++) {
+        if (checkHit()) {
+            count++;
+            var dmg = calculateDamage();
+            addBattleAction({'damage-enemy': dmg});
+            if(count == 1) {
+                addBattleText(atkMon['name'] + " hit 1 time!");
+            } else {
+                addBattleText(atkMon['name'] + " hit " + count + " times!");
+            }
+            if((defMon['currentHp'] - (dmg * count)) <= 0){
+                break;
+            } 
+        } else {
+            addBattleText('It missed...');
+        }
     }
-    addBattleText("Hit " + hits + " times!");
 }
 
 function recoil(amount) {
