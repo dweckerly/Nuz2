@@ -1,5 +1,5 @@
 <div id="party-div">
-    <ul class="list-group list-group-flush">
+    <ul id="nuz-list-container" class="list-group list-group-flush">
 <?php
 session_start();
 $uid = $_SESSION['uid'];
@@ -8,7 +8,7 @@ $sql = "SELECT * FROM ownedMons WHERE uid = '$uid' AND inParty <> 0 ORDER BY inP
 $q = mysqli_query($conn, $sql);
 while($row = mysqli_fetch_assoc($q)) {
 ?>
-        <li data="<?php echo $row['id']?>" class="list-group-item nuz-list-item">
+        <li id="nuz-<?php echo $row['inParty'];?>" data="<?php echo $row['id']?>" class="list-group-item nuz-list-item">
             <div class="row">
 <?php
     if($row['alive'] == 1) {
@@ -46,13 +46,18 @@ while($row = mysqli_fetch_assoc($q)) {
                     </div>
                     <p><?php echo $row['currentHp']; ?>/<?php echo $row['maxHp']; ?></p>
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                     <p><?php echo strtoupper($row['status']); ?></p>
+                </div>
+                <div class="col-1">
+                    <button class="up-arrow" data-order="<?php echo $row['inParty']?>">&uarr;</button>
+                    <button class="down-arrow" data-order="<?php echo $row['inParty']?>">&darr;</button>
                 </div>
             </div>
         </li>
 <?php
 }
 ?>
+    </ul>
     <script type="text/javascript" src="components/party/party.js"></script>
 </div>

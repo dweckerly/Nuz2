@@ -10,3 +10,39 @@ $('.nuz-list-item').click(function () {
         });
     });
 });
+
+$('.up-arrow').click(function () {
+    event.stopPropagation();
+    var id = parseInt($(this).attr('data-order'));
+    var total = $('.nuz-list-item').length;
+    if(id == 1) {
+        $('#nuz-' + id).insertAfter($('#nuz-' + total));
+    } else {
+        $('#nuz-' + (id - 1)).insertAfter($('#nuz-' + id));
+    } 
+    resetListIds();
+});
+
+$('.down-arrow').click(function () {
+    event.stopPropagation();
+    var id = parseInt($(this).attr('data-order'));
+    var total = $('.nuz-list-item').length;
+    if(id == total) {
+        $('#nuz-' + total).insertBefore($('#nuz-1'));
+    } else {
+        $('#nuz-' + id).insertAfter($('#nuz-' + (id + 1)));
+    } 
+    resetListIds();
+});
+
+function resetListIds() {
+    $('.nuz-list-item').each(function (index, li) {
+        $(li).attr('id', "nuz-" + (index + 1));
+        $(li).find('.up-arrow').attr('data-order', (index + 1));
+        $(li).find('.down-arrow').attr('data-order', (index + 1));
+    });
+}
+
+function updateListOrderInDB() {
+
+}
