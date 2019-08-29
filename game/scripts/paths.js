@@ -15,4 +15,5 @@ const createPlayerComp = "components/createPlayer/createPlayer.html";
 
 const catchMonTrans = "transactions/catchMon/catchMon.php";
 const updateMonsTrans = "transactions/updateMons/updateMons.php";
+const updatePartyOrderTrans = "transactions/updateMons/updateMonPartyOrder.php";
 const useItemTrans = "transactions/useItem/useItem.php";

@@ -41,8 +41,19 @@ function resetListIds() {
         $(li).find('.up-arrow').attr('data-order', (index + 1));
         $(li).find('.down-arrow').attr('data-order', (index + 1));
     });
+    updateListOrderInDB();
 }
 
 function updateListOrderInDB() {
-
+    var playerMons = [];
+    $('.nuz-list-item').each(function () {
+        let obj = {
+            id: $(this).attr('data'),
+            order: $(this).attr('id').split('-')[1]
+        }
+        playerMons.push(obj);
+    });
+    var total = $('.nuz-list-item').length;
+    console.log(playerMons);
+    $.post(updatePartyOrderTrans, { pMons: playerMons, count: total });
 }
