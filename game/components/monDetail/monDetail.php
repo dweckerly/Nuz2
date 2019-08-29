@@ -42,7 +42,47 @@ $deets = mysqli_fetch_assoc($query);
             </div>
         </div>
         <div class="col-4">
+            <div class="card">
+<?php
+$move1 = $mon['move1'];
+$sql = "SELECT * FROM moves WHERE id = '$move1'";
+$query = mysqli_query($conn, $sql);
+$move1deets = mysqli_fetch_assoc($query);
 
+?>
+                <ul class="list-group">
+                    <li class="list-group-item"><?php echo $move1deets['name'];?></li>
+<?php
+if($mon['move2'] !=  NULL) {
+    $move2 = $mon['move2'];
+    $sql = "SELECT * FROM moves WHERE id = '$move2'";
+    $query = mysqli_query($conn, $sql);
+    $move2deets = mysqli_fetch_assoc($query);
+?>
+                    <li class="list-group-item"><?php echo $move2deets['name'];?></li>
+<?php
+    if($mon['move3'] !=  NULL) {
+        $move3 = $mon['move3'];
+        $sql = "SELECT * FROM moves WHERE id = '$move3'";
+        $query = mysqli_query($conn, $sql);
+        $move3deets = mysqli_fetch_assoc($query);
+?>
+                    <li class="list-group-item"><?php echo $move3deets['name'];?></li>
+<?php    
+        if($mon['move4'] !=  NULL) {
+            $move4 = $mon['move4'];
+            $sql = "SELECT * FROM moves WHERE id = '$move4'";
+            $query = mysqli_query($conn, $sql);
+            $move4deets = mysqli_fetch_assoc($query);
+?>
+                    <li class="list-group-item"><?php echo $move4deets['name'];?></li>
+<?php
+        }
+    }
+}
+?>
+                </ul>
+            </div>
         </div> 
         <div class="col-4">
         </div> 
