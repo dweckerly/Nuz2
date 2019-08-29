@@ -2,6 +2,7 @@
 <?php
 include_once("../../includes/db.php");
 $id = $_POST['id'];
+$lvl = $_POST['lvl'];
 $type = $_POST['type'];
 $locId = $_POST['locId'];
 $oAi = $_POST['oAi'];

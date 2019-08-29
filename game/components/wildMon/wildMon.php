@@ -8,15 +8,23 @@ $row = mysqli_fetch_assoc($result);
 $chance = rand(1, 100);
 if($chance <= $row['mon1Chance']) {
     $monId = $row['mon1'];
+    $lvlrange = $row['mon1lvl'];
 } else if($chance <= $row['mon2Chance']) {
     $monId = $row['mon2'];
+    $lvlrange = $row['mon2lvl'];
 } else if ($chance <= $row['mon3Chance']) {
     $monId = $row['mon3'];
+    $lvlrange = $row['mon3lvl'];
 } else if ($chance <= $row['mon4Chance']) {
     $monId = $row['mon4'];
+    $lvlrange = $row['mon4lvl'];
 } else if ($chance <= $row['mon5Chance']) {
     $monId = $row['mon5'];
+    $lvlrange = $row['mon5lvl'];
 }
+
+$lvls = explode("-", $lvlrange);
+$monlvl = rand(intval($lvls[0]), intval($lvls[1]));
 
 $sql = "SELECT * FROM mons WHERE id = '$monId'";
 $result = mysqli_query($conn, $sql);
@@ -34,11 +42,11 @@ $sql = "SELECT alive FROM ownedMons WHERE uid = '$uid' AND alive = 1";
 $q = mysqli_query($conn, $sql);
 if(mysqli_num_rows($q) > 0) {
 ?>
-            <button class="btn btn-outline-secondary wild-btn" id="fight-btn" data="<?php echo $monId; ?>">Fight</button>
+            <button class="btn btn-outline-secondary wild-btn" id="fight-btn" data="<?php echo $monId; ?>-<?php echo $monlvl; ?>">Fight</button>
 <?php
 } else {
 ?>
-            <button class="btn btn-outline-secondary wild-btn" id="coerce-btn" data="<?php echo $monId; ?>">Coerce</button>
+            <button class="btn btn-outline-secondary wild-btn" id="coerce-btn" data="<?php echo $monId; ?>-<?php echo $monlvl; ?>">Coerce</button>
 <?php
 }
 ?>

@@ -35,14 +35,16 @@ $('#again-btn').click(function () {
 
 $('#fight-btn').click(function () {
     $('.wild-btn').prop('disabled', true);
-    var id = $(this).attr('data');
+    let data = $(this).attr('data');
+    var id = data.split('-')[0];
+    var lvl = data.split('-')[1];
     var type = 'wild';
     var locId = $('#back-btn').attr('data');
     removeSection('#header');
     removeSection('#game-nav');
     removeSection('#game-foci');
     removeSection('#footer');
-    $.post(bHeaderComp, {id: id, type: type, locId: locId}, function(data) {
+    $.post(bHeaderComp, {id: id, lvl: lvl, type: type, locId: locId}, function(data) {
         $('#header').append(data).hide().fadeIn('fast', function () {
             $.get(bUtilComp, function(data) {
                 $('#game-nav').append(data).hide();
