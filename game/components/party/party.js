@@ -40,9 +40,8 @@ function resetListIds() {
         $(li).attr('id', "nuz-" + (index + 1));
         $(li).find('.up-arrow').attr('data-order', (index + 1));
         $(li).find('.down-arrow').attr('data-order', (index + 1));
-    }).promise().done(function () {
-        updateListOrderInDB();
     });
+    updateListOrderInDB();
 }
 
 function updateListOrderInDB() {
