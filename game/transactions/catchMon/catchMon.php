@@ -3,7 +3,7 @@ session_start();
 $uid = $_SESSION['uid'];
 include_once("../../includes/db.php");
 $wm = $_POST['wildMon'];
-$sql = "SELECT * FROM ownedMons WHERE uid = '$uid'";
+$sql = "SELECT * FROM ownedMons WHERE uid = '$uid' AND inParty != 0";
 $query = mysqli_query($conn, $sql);
 $party = 1;
 while($row = mysqli_fetch_assoc($query)) {
