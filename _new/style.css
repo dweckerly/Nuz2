@@ -1,0 +1,45 @@
+@import url(https://fonts.googleapis.com/css?family=Shadows+Into+Light);
+body {
+    font-family: 'Shadows Into Light', cursive !important;
+}
+
+#main-div {
+    margin-top: 60px;
+}
+
+.wiggle {
+    margin: 20px;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-name: wiggle;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-duration: 2s;
+    -moz-animation-name: wiggle;
+    -moz-animation-iteration-count: infinite;
+    animation-duration: 2s;
+    animation-name: wiggle;
+    animation-iteration-count: infinite;
+}
+
+@keyframes wiggle {
+    0% {
+        transform: translate(0, 0);
+    }
+    70% {
+        transform: translate(0, 0);
+    }
+    75% {
+        transform: translateX(-12px);
+    }
+    80% {
+        transform: translateX(10px);
+    }
+    85% {
+        transform: translateX(-8px);
+    }
+    92% {
+        transform: translateX(4px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
