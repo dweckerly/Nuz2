@@ -1,17 +1,5 @@
 <?php
 
-function uniqidReal($lenght = 13) {
-    // uniqid gives 13 chars, but you could adjust it to your needs.
-    if (function_exists("random_bytes")) {
-        $bytes = random_bytes(ceil($lenght / 2));
-    } elseif (function_exists("openssl_random_pseudo_bytes")) {
-        $bytes = openssl_random_pseudo_bytes(ceil($lenght / 2));
-    } else {
-        throw new Exception("no cryptographically secure random function available");
-    }
-    return substr(bin2hex($bytes), 0, $lenght);
-}
-
 if(isset($_POST['submit'])) {
     include_once('../includes/db.inc.php');
     $name = mysqli_real_escape_string($conn, $_POST['name']);
@@ -56,10 +44,11 @@ if(isset($_POST['submit'])) {
             }
             // all systems go!
             $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
+            include("rand.util.php");
             $uid = uniqidReal();
             $sql = "INSERT INTO accounts (user_id, account_name, password, email) VALUES ('$uid', '$name', '$hashedPwd', '$email')";
             mysqli_query($conn, $sql);
-            // powershecreate game
+            // create game
             $sql = "INSERT INTO games (user_id) VALUES ('$uid')";
             mysqli_query($conn, $sql);
             mysqli_close($conn);

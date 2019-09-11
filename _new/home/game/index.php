@@ -17,6 +17,7 @@ if(isset($_SESSION['login']) && $_SESSION['login'] && isset($_SESSION['uid'])) {
         if($gameArr['flag0'] == 0) {
             // initiate first mon pick
             echo "pick first mon";
+            include("components/firstMon/firstMon.php");
         } else {
             echo "Area:" . $gameArr['area'] . " Location:" . $gameArr['location'];
         }
