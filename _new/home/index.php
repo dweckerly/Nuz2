@@ -21,7 +21,7 @@
                     <input type="text" name="email" placeholder="get emailed updates">
                     <label for="password">Password</label>
                     <input type='password' name="password" placeholder="keep it secret, keep it safe">
-                    <button class="" type="submit" name='submit'>Sign Up</button>
+                    <button type="submit" name='submit'>Sign Up</button>
                 </form>
 <?php
 if(!empty($_GET['signup'])) {
@@ -47,8 +47,22 @@ if(!empty($_GET['signup'])) {
                     <input type="text" name="name" maxlength="12">
                     <label for="password">Password</label>
                     <input type='password' name="password">
-                    <button class="" type="submit" name='submit'>Log In</button>
+                    <button type="submit" name='submit'>Log In</button>
                 </form>
+<?php
+if(!empty($_GET['login'])) {
+    $suErr = $_GET['login'];
+    if($suErr == 'empty') {
+        echo "<div class='error-message'>fill out both name and password</div>";
+    } elseif($suErr == 'na') {
+        echo "<div class='error-message'>no account found by that name</div>";
+    } elseif($suErr == 'pwd') { 
+        echo "<div class='error-message'>password does not match account name</div>";
+    } elseif($suErr == 'nact') { 
+        echo "<div class='error-message'>this account is no longer active</div>";
+    }
+}
+?>
             </div>
             <div>
                <h2>News</h2>
