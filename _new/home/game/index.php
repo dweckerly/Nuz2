@@ -1,5 +1,6 @@
 <?php
 session_start();
+include('includes/header.php');
 if(isset($_SESSION['login']) && $_SESSION['login'] && isset($_SESSION['uid'])) {
     include_once('includes/db.inc.php');
     $uid = $_SESSION['uid'];
@@ -25,3 +26,4 @@ if(isset($_SESSION['login']) && $_SESSION['login'] && isset($_SESSION['uid'])) {
     header("Location: ../../index.php");
     exit();
 }
+include('includes/footer.php');

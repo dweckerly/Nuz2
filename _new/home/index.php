@@ -3,7 +3,7 @@
     <head>
         <link rel="shortcut icon" type="image/png" href="../favicon.png"/>
         <link rel="stylesheet" type="text/css" href="style/main.css">
-        <script src="scripts/jquery.js"></script>
+        <script src="game/scripts/jquery.js"></script>
         <title>NuzMon</title>
     </head>
     <body>
