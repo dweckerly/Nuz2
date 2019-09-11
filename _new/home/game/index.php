@@ -17,7 +17,26 @@ if(isset($_SESSION['login']) && $_SESSION['login'] && isset($_SESSION['uid'])) {
         if($gameArr['flag0'] == 0) {
             // initiate first mon pick
             echo "pick first mon";
-            include("components/firstMon/firstMon.php");
+            include("includes/vars.inc.php");
+
+            $monId0 = FIRSTMONS[0];
+            $monId1 = FIRSTMONS[1];
+            $monId2 = FIRSTMONS[2];
+
+            $q = "SELECT * FROM mons WHERE mon_id = '$monId0'";
+            $r = mysqli_query($conn, $q);
+            $mon0 = mysqli_fetch_assoc($r);
+
+            $q = "SELECT * FROM mons WHERE mon_id = '$monId1'";
+            $r = mysqli_query($conn, $q);
+            $mon1 = mysqli_fetch_assoc($r);
+
+            $q = "SELECT * FROM mons WHERE mon_id = '$monId2'";
+            $r = mysqli_query($conn, $q);
+            $mon2 = mysqli_fetch_assoc($r);
+
+            $mons = array($mon0, $mon1, $mon2);
+            echo $mons[0]['mon_name'] . " " . $mons[1]['mon_name'] . " " . $mons[2]['mon_name'];
         } else {
             echo "Area:" . $gameArr['area'] . " Location:" . $gameArr['location'];
         }
