@@ -16,8 +16,9 @@ if(isset($_SESSION['login']) && $_SESSION['login'] && isset($_SESSION['uid'])) {
         $gameArr = mysqli_fetch_assoc($result);
         if($gameArr['flag0'] == 0) {
             // initiate first mon pick
+            echo "pick first mon";
         } else {
-
+            echo "Area:" . $gameArr['area'] . " Location:" . $gameArr['location'];
         }
     }
 } else {

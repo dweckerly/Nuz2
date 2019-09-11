@@ -30,7 +30,7 @@ if(isset($_POST['submit'])) {
                     $_SESSION['login'] = TRUE;
                     $_SESSION['uid'] = $uid;
                     $time = date("Y-m-d H:i:s");
-                    $sql = "UPDATE accounts set (last_login = '$time') where user_id = '$uid'";
+                    $sql = "UPDATE accounts set last_login = '$time' where user_id = '$uid'";
                     $q = mysqli_query($conn, $sql);
                     mysqli_close($conn);
                     header("Location: ../");
