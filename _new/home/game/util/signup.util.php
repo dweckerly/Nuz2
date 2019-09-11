@@ -59,7 +59,11 @@ if(isset($_POST['submit'])) {
             $uid = uniqidReal();
             $sql = "INSERT INTO accounts (user_id, account_name, password, email) VALUES ('$uid', '$name', '$hashedPwd', '$email')";
             mysqli_query($conn, $sql);
+            // powershecreate game
+            $sql = "INSERT INTO games (user_id) VALUES ('$uid')";
+            mysqli_query($conn, $sql);
             mysqli_close($conn);
+            // add session info
             session_start();
             $_SESSION['login'] = TRUE;
             $_SESSION['uid'] = $uid;
