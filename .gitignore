@@ -1,3 +1,4 @@
 game/includes/db.php
 game/img
-home/game/img
+_new/home/game/img
+_new/home/game/includes/db.inc.php
