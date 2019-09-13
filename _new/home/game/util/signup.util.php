@@ -49,7 +49,7 @@ if(isset($_POST['submit'])) {
             $sql = "INSERT INTO accounts (user_id, account_name, password, email) VALUES ('$uid', '$name', '$hashedPwd', '$email')";
             mysqli_query($conn, $sql);
             // create game
-            $sql = "INSERT INTO games (user_id) VALUES ('$uid')";
+            $sql = "INSERT INTO games (account_id) VALUES ('$uid')";
             mysqli_query($conn, $sql);
             mysqli_close($conn);
             // add session info
