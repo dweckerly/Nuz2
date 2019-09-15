@@ -29,8 +29,5 @@ button {
     cursor: pointer;
 }
 
-/** IDs **/
 
-#login-form {
-    display: none;
-}
+/** IDs **/
