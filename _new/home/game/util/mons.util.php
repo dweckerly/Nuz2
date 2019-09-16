@@ -9,7 +9,7 @@ function statCalc($stat, $lvl) {
 }
 
 function xpCalc($lvl) {
-    return 4 * ($lvl ** 3) / 5;
+    return floor(4 * ($lvl ** 3) / 5);
 }
 
 function setMoves($movePool) {
@@ -19,13 +19,9 @@ function setMoves($movePool) {
     // TODO: need to fill database 
 }
 
-function generateMon($id, $level) {
-    include_once("../includes/db.inc.php");
-    $q = "SELECT * FROM mons where mon_id = '$id'";
-    $res = mysqli_query($conn, $res);
-    $monArr = mysqli_fetch_assoc($res);
-    $newMon = array(
-        "mon_id" => $monArr['mon_id'],
+function generateMon($monArr, $id, $level) {
+    return array(
+        "mon_id" => $id,
         "mon_name" => $monArr['mon_name'],
         "nick_name" => $monArr['mon_name'],
         "img" => $monArr['mon_name'] . ".png",
@@ -43,5 +39,4 @@ function generateMon($id, $level) {
         "lvl" => $level,
         "xp" => xpCalc($level)
     );
-    return $newMon;
 }
