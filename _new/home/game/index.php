@@ -25,7 +25,7 @@ if(isset($_SESSION['login']) && $_SESSION['login'] && isset($_SESSION['uid'])) {
 } else {
     // not logged in
     mysqli_close($conn);
-    header("Location: ../../index.php");
+    header("Location: ../index.php");
     exit();
 }
 include('includes/footer.php');

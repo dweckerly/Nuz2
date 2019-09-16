@@ -1,7 +1,7 @@
 /** ELEMENTS **/
 
 body {
-    font-family: 'Shadows Into Light', cursive !important;
+    font-family: 'ShadowsIntoLight', cursive !important;
 }
 
 button {
@@ -28,8 +28,16 @@ img {
     height: auto;
 }
 
+p {
+    font-size: 2em;
+}
+
 
 /** CLASSES **/
+
+.center-text {
+    text-align: center;
+}
 
 .first-mon-img {
     transition: transform .2s;
@@ -62,6 +70,8 @@ img {
 
 .prop-name {
     text-transform: capitalize;
+    font-size: 4.5em;
+    font-family: 'Amatic', cursive;
 }
 
 

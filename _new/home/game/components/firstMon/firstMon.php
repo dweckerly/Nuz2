@@ -19,15 +19,15 @@ $mon2 = mysqli_fetch_assoc($r);
 $mons = array($mon0, $mon1, $mon2);
 
 ?>
-<div>
+<div class="center-text">
     <p>Welcome! Choose a NuzMon to be the first ever member of your team.</p>
 </div>
-<div class="grid-3">
+<div class="grid-3 center-text">
 <?php
 foreach($mons as $mon) {
 ?>
-    <div class="grid-item-first" id="img-<?php echo $mon['mon_id'];?>">
-        <img src="img/mons/<?php echo $mon['mon_name'];?>.png" class="mon-img-anim-<?php echo $mon['animation'];?> first-mon-img">
+    <div class="grid-item-first">
+        <img src="img/mons/<?php echo $mon['mon_name'];?>.png" class="mon-img-anim-<?php echo $mon['animation'];?> first-mon-img" id="img-<?php echo $mon['mon_id'];?>">
     </div>
     <div class="grid-item-full hidden" id="desc-<?php echo $mon['mon_id'];?>">
         <h2 class="prop-name"><?php echo $mon['mon_name'];?></h2>

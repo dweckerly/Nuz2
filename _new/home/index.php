@@ -6,7 +6,6 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="shortcut icon" type="image/png" href="../favicon.png"/>
         <link rel="stylesheet" type="text/css" href="style/main.css">
-        <script src="game/scripts/jquery.js"></script>
         <title>NuzMon</title>
     </head>
     <body>
@@ -74,5 +73,6 @@ if(!empty($_GET['login'])) {
             </div>
         </main>
     </body>
-    <script src="scripts/index.js"></script>
+    <script type="text/javascript" src="game/scripts/jquery.js"></script>
+    <script type="text/javascript" src="game/scripts/main.js"></script>
 </html>
