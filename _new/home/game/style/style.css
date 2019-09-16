@@ -28,10 +28,6 @@ img {
     height: auto;
 }
 
-p {
-    font-size: 2em;
-}
-
 
 /** CLASSES **/
 
@@ -70,7 +66,6 @@ p {
 
 .prop-name {
     text-transform: capitalize;
-    font-size: 4.5em;
     font-family: 'Amatic', cursive;
 }
 
