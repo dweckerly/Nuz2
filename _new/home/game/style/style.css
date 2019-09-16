@@ -2,12 +2,9 @@
 
 body {
     font-family: 'Shadows Into Light', cursive !important;
-    max-width: 960px;
-    margin: auto;
 }
 
 button {
-    font-family: 'Amatic', cursive !important;
     margin-top: 20px;
     height: 38px;
     padding: 0 30px;
@@ -25,3 +22,47 @@ button {
     border: 1px solid #bbb;
     cursor: pointer;
 }
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+
+/** CLASSES **/
+
+.first-mon-img {
+    transition: transform .2s;
+}
+
+.first-mon-img:hover {
+    transform: sclae(1.5);
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-item-first {
+    grid-row-start: 1;
+}
+
+.grid-item-second {
+    grid-row-start: 2;
+}
+
+.grid-item-full {
+    grid-column: 1 / -1;
+}
+
+.hidden {
+    display: none;
+}
+
+.prop-name {
+    text-transform: capitalize;
+}
+
+
+/** IDs **/
