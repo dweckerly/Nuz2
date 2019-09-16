@@ -32,7 +32,7 @@ foreach($mons as $mon) {
     <div class="grid-item-full hidden" id="desc-<?php echo $mon['mon_id'];?>">
         <h2 class="prop-name"><?php echo $mon['mon_name'];?></h2>
         <p><?php echo $mon['description'];?></p>
-        <button>Choose <?php echo $mon['mon_name'];?></button>
+        <button id="btn-<?php echo $mon['mon_id'];?>">Choose <?php echo $mon['mon_name'];?></button>
     </div>
 <?php
 }

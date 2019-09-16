@@ -7,4 +7,10 @@ $(document).ready(() => {
             $("#desc-" + selected).show();
         }
     });
+
+    $("[id^=btn-]").each(function() {
+        this.onclick = function() {
+            $.post("components/firstMon/firstMon.trans.php", { mon: selected })
+        }
+    })
 });
