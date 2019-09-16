@@ -15,23 +15,21 @@ $areaInfo = mysqli_fetch_assoc($r);
 // get all locations in area
 $q = "SELECT * FROM locations WHERE area_id = '$areaId'";
 $r = mysqli_query($conn, $q);
-$locations = mysqli_fetch_assoc($r);
 ?>
-
 <div>
     <h2><?php echo $areaInfo['name'];?></h2>
 </div>
 <div>
     <ul>
 <?php
-foreach($locations as $loc){
-    if($currentLocation['location_id'] == $loc['location_id']) {
+while($row = mysqli_fetch_assoc($r)) {
+    if($currentLocation['location_id'] == $row['location_id']) {
     ?>
-        <li>Current: <?php echo $loc['name'];?></li>
+        <li>Current: <?php echo $row['name'];?></li>
     <?php
     } else {
     ?>
-        <li><?php echo $loc['name'];?></li>
+        <li><?php echo $row['name'];?></li>
     <?php
     }
 }
