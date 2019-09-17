@@ -15,9 +15,12 @@ $areaInfo = mysqli_fetch_assoc($r);
 // get all locations in area
 $q = "SELECT * FROM locations WHERE area_id = '$areaId'";
 $r = mysqli_query($conn, $q);
+$areaNameTrim = strtolower(str_replace(' ', '', $areaInfo['name']));
 ?>
 <div>
     <h2><?php echo $areaInfo['name'];?></h2>
+    <p><?php echo $areaInfo['description'];?></p>
+    <canvas id="main-canvas"></canvas>
 </div>
 <div>
     <ul>
@@ -36,4 +39,7 @@ while($row = mysqli_fetch_assoc($r)) {
 ?> 
     </ul>
 </div>
+<p style="position:absolute; top: 100px; left: 100px;">Test</p>
+<img id="area-map" class="hidden" src="img/areas/<?php echo $areaNameTrim;?>.png">
+<script src="components/map/map.js"></script>
 
