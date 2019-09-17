@@ -1,7 +1,6 @@
 var c = document.getElementById("main-canvas");
 var ctx = c.getContext("2d");
 var img = document.getElementById("area-map");
-ctx.drawImage(img, 0, 0, c.width, c.height);
 
 const winOffset = 30;
 
@@ -26,7 +25,13 @@ function setCanvasSize() {
     if ($(window).height() > cMaxHeight) {
         c.height = cMaxHeight;
     }
-    c.height = (c.width * 0.75);
+    c.height = c.width;
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.drawImage(img, 0, 0, c.width, c.height);
+    drawAreaLabels();
+}
+
+function drawAreaLabels() {
+    ctx.font = "20px Amatic";
+    ctx.fillText("Hello World", 10, 50);
 }
