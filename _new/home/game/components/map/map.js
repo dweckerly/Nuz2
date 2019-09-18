@@ -128,7 +128,7 @@ sinAnim = setInterval(function() {
     if (i >= 6.2) {
         i = 0;
     }
-    pointsAnimY = (Math.sin(i)) * 20;
+    pointAnimY = (Math.sin(i)) * 20;
     i += 0.1;
 }, 30);
 
