@@ -17,27 +17,41 @@ $q = "SELECT * FROM locations WHERE area_id = '$areaId'";
 $r = mysqli_query($conn, $q);
 $areaNameTrim = strtolower(str_replace(' ', '', $areaInfo['name']));
 ?>
-<div>
-    <h2><?php echo $areaInfo['name'];?></h2>
-    <p><?php echo $areaInfo['description'];?></p>
-    <canvas id="main-canvas"></canvas>
-</div>
-<div>
-    <ul>
+<script>
+    var locations = [
 <?php
 while($row = mysqli_fetch_assoc($r)) {
     if($currentLocation['location_id'] == $row['location_id']) {
     ?>
-        <li>Current: <?php echo $row['name'];?></li>
+        {
+            "id" : <?php echo $row['location_id'];?>,
+            "name" : "<?php echo $row['name'];?>",
+            "desc" : "<?php echo $row['description'];?>",
+            "x" : <?php echo $row['x'];?>,
+            "y" : <?php echo $row['y'];?>,
+            "current" : true
+        },
     <?php
     } else {
     ?>
-        <li><?php echo $row['name'];?></li>
+        {
+            "id" : <?php echo $row['location_id'];?>,
+            "name" : "<?php echo $row['name'];?>",
+            "desc" : "<?php echo $row['description'];?>",
+            "x" : <?php echo $row['x'];?>,
+            "y" : <?php echo $row['y'];?>,
+            "current" : false
+        },
     <?php
     }
 }
 ?> 
-    </ul>
+    ]
+</script>
+<div>
+    <h2><?php echo $areaInfo['name'];?></h2>
+    <p><?php echo $areaInfo['description'];?></p>
+    <canvas id="main-canvas"></canvas>
 </div>
 <img id="area-map" class="hidden" src="img/areas/<?php echo $areaNameTrim;?>.png">
 <script src="components/map/map.js"></script>

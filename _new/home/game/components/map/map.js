@@ -36,12 +36,25 @@ function setCanvasSize() {
 }
 
 function drawAreaLabels() {
-    ctx.font = fontSize + "px Amatic";
-    var txt = "Follicle Forest";
-    ctx.fillStyle = "#FFF";
-    roundRect(ctx, 10 - labelPadding, 50 - (labelPadding * 0.5) - fontSize, ctx.measureText(txt).width + (labelPadding * 2), fontSize + labelPadding * 2, 4, true);
-    ctx.fillStyle = "#000";
-    ctx.fillText(txt, 10, 50);
+    locations.forEach(function (e) {
+        var txt = e.name;
+        ctx.fillStyle = "#FFF";
+        roundRect(ctx, (e.x - labelPadding) * (c.width / cMaxWidth), (e.y - (labelPadding * 0.5) - (fontSize * (cMaxHeight / c.height))) * (c.height / cMaxHeight), ctx.measureText(txt).width + (labelPadding * 2), fontSize + labelPadding * 2, 4, true);
+        ctx.fillStyle = "#000";
+        ctx.fillText(txt, e.x * (c.width / cMaxWidth), e.y * (c.height / cMaxHeight));
+    });
+}
+
+c.onmousemove = function (evt) {
+    console.log(getMousePos(c, evt));
+}
+
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
 }
 
 
