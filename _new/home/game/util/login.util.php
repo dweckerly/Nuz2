@@ -8,6 +8,7 @@ if(isset($_POST['submit'])) {
         header("Location: ../../index.php?login=empty");
         exit();
     } else {
+        $name = strtoupper($name);
         $sql = "SELECT * from accounts where account_name = '$name'";
         $res = mysqli_query($conn, $sql);
         if(mysqli_num_rows($res) < 1) {

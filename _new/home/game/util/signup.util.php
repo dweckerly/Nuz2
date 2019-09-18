@@ -46,6 +46,7 @@ if(isset($_POST['submit'])) {
             $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
             include("rand.util.php");
             $uid = uniqidReal();
+            $name = strtoupper($name);
             $sql = "INSERT INTO accounts (user_id, account_name, password, email) VALUES ('$uid', '$name', '$hashedPwd', '$email')";
             mysqli_query($conn, $sql);
             // create game
