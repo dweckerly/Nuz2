@@ -54,7 +54,11 @@ while($row = mysqli_fetch_assoc($r)) {
     <p><?php echo $areaInfo['description'];?></p>
     <canvas id="main-canvas"></canvas>
 </div>
-<div>
+<div id="location-container">
+<?php
+$_POST['id'] = $currentLocation['location_id'];
+include("components/location/location.php");
+?>
 </div>
 <div class="hidden">
     <img id="area-map" src="img/areas/<?php echo $areaNameTrim;?>.png">

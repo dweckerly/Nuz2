@@ -73,7 +73,13 @@ c.onmousedown = function (evt) {
         if(mousePos.x >= e.x1 && mousePos.x <= e.x2 && mousePos.y >= e.y1 && mousePos.y <= e.y2) {
             locations.forEach(function (element) {
                 if(element.id == e.id) {
-                    console.log(element.name);
+                    $('#location-container').fadeOut(function () {
+                        $('#location-container').empty();
+                        $.post("components/location/location.php", {id: e.id}, function (data) {
+                            $('#location-container').append(data);
+                        });
+                        $('#location-container').fadeIn();
+                    });
                 }
             });
         }
