@@ -1,6 +1,13 @@
 var c = document.getElementById("main-canvas");
 var ctx = c.getContext("2d");
 var img = document.getElementById("area-map");
+var pointImg = document.getElementById("player-pointer");
+var clickable = [];
+var pointArr = {
+    'x' : 0,
+    'y' : 0
+}
+var pointAnimY = 0;
 
 const winOffset = 30;
 
@@ -36,17 +43,41 @@ function setCanvasSize() {
 }
 
 function drawAreaLabels() {
+    ctx.font = fontSize + "px Amatic";
+    clickable = [];
     locations.forEach(function (e) {
         var txt = e.name;
         ctx.fillStyle = "#FFF";
-        roundRect(ctx, (e.x - labelPadding) * (c.width / cMaxWidth), (e.y - (labelPadding * 0.5) - (fontSize * (cMaxHeight / c.height))) * (c.height / cMaxHeight), ctx.measureText(txt).width + (labelPadding * 2), fontSize + labelPadding * 2, 4, true);
+        var loc = {
+            id : e.id,
+            x1 : (e.x - labelPadding) * (c.width / cMaxWidth),
+            x2 : (e.x - labelPadding) * (c.width / cMaxWidth) + ctx.measureText(txt).width + (labelPadding * 2),
+            y1 : (e.y - (labelPadding * 0.5) - (fontSize * (cMaxHeight / c.height))) * (c.height / cMaxHeight),
+            y2 : (e.y - (labelPadding * 0.5) - (fontSize * (cMaxHeight / c.height))) * (c.height / cMaxHeight) + fontSize + labelPadding * 2
+        };
+        roundRect(ctx, loc.x1, loc.y1, ctx.measureText(txt).width + (labelPadding * 2), fontSize + labelPadding * 2, 4, true);
         ctx.fillStyle = "#000";
         ctx.fillText(txt, e.x * (c.width / cMaxWidth), e.y * (c.height / cMaxHeight));
+        if(e.current) {
+            pointArr.x = ((loc.x2 - loc.x1) / 2) + loc.x1 - (pointImg.width / 2)
+            pointArr.y = (((loc.y2 - loc.y1) / 2) + loc.y1 - (pointImg.height / 2)) + pointAnimY; 
+            ctx.drawImage(pointImg, pointArr.x, pointArr.y);
+        }
+        clickable.push(loc);
     });
 }
 
-c.onmousemove = function (evt) {
-    console.log(getMousePos(c, evt));
+c.onmousedown = function (evt) {
+    var mousePos = getMousePos(c, evt);
+    clickable.forEach(function (e) {
+        if(mousePos.x >= e.x1 && mousePos.x <= e.x2 && mousePos.y >= e.y1 && mousePos.y <= e.y2) {
+            locations.forEach(function (element) {
+                if(element.id == e.id) {
+                    console.log(element.name);
+                }
+            });
+        }
+    });
 }
 
 function getMousePos(canvas, evt) {
@@ -91,3 +122,18 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
         ctx.stroke();
     }
 }
+
+var i = 0;
+sinAnim = setInterval(function() {
+    if (i >= 6.2) {
+        i = 0;
+    }
+    pointsAnimY = (Math.sin(i)) * 20;
+    i += 0.1;
+}, 30);
+
+main = setInterval(function() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    ctx.drawImage(img, 0, 0, c.width, c.height);
+    drawAreaLabels();
+}, 20);

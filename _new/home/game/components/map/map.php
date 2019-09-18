@@ -22,6 +22,7 @@ $areaNameTrim = strtolower(str_replace(' ', '', $areaInfo['name']));
 <?php
 while($row = mysqli_fetch_assoc($r)) {
     if($currentLocation['location_id'] == $row['location_id']) {
+
     ?>
         {
             "id" : <?php echo $row['location_id'];?>,
@@ -53,6 +54,11 @@ while($row = mysqli_fetch_assoc($r)) {
     <p><?php echo $areaInfo['description'];?></p>
     <canvas id="main-canvas"></canvas>
 </div>
-<img id="area-map" class="hidden" src="img/areas/<?php echo $areaNameTrim;?>.png">
+<div>
+</div>
+<div class="hidden">
+    <img id="area-map" src="img/areas/<?php echo $areaNameTrim;?>.png">
+    <img id="player-pointer" src="img/point.png">
+</div>
 <script src="components/map/map.js"></script>
 
