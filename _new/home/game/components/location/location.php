@@ -35,5 +35,5 @@ if($location['location_id'] == $game['location']) {
     <button>Travel Here</button>
 <?php
 }
-mysqli_close();
+mysqli_close($conn);
 ?>
