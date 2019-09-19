@@ -13,26 +13,27 @@ $game = mysqli_fetch_assoc($r);
 ?>
     <h2><?php echo $location['name']?></h2>
     <p><?php echo $location['description']?></p>
+    <div class="grid-2 center">
 <?php
 if($location['location_id'] == $game['location']) {
     if($location['search_id']){ 
 ?>
-    <button>Search</button>
+        <button onclick="locationActionSelect(<?php echo $location['search_id'];?>, 'search')">Search</button>
 <?php
     }
     if($location['shop_id'] != null) {
 ?>
-    <button>Shop</button>
+        <button onclick="locationActionSelect(<?php echo $location['shop_id'];?>, 'shop')">Shop</button>
 <?php
     }
     if($location['rest_id'] != null) {
 ?>
-    <button>Rest</button>
+        <button onclick="locationActionSelect(<?php echo $location['rest_id'];?>, 'rest')">Rest</button>
 <?php
     }
 } else {
 ?>
-    <button>Travel Here</button>
+        <button class="grid-item-full" onclick="locationActionSelect(<?php echo $location['location_id'];?>, 'travel')">Travel Here</button>
 <?php
 }
 mysqli_close($conn);
