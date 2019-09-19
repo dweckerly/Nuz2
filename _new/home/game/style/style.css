@@ -49,6 +49,11 @@ img {
     transform: sclae(1.5);
 }
 
+.grid-1 {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+}
+
 .grid-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -57,6 +62,11 @@ img {
 .grid-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .grid-item-first {
@@ -75,6 +85,12 @@ img {
     display: none;
 }
 
+.menu-img { 
+    margin: auto;
+    height: 64px;
+    width: 64px;
+}
+
 .prop-name {
     text-transform: capitalize;
     font-family: 'Amatic', cursive;
@@ -82,3 +98,27 @@ img {
 
 
 /** IDs **/
+
+#menu-close {
+    font-size: 30px;
+}
+
+#menu-main {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    overflow-x: hidden;
+    background: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    grid-auto-rows: auto;
+}
+
+#menu-toggle {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}

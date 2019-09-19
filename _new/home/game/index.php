@@ -19,6 +19,7 @@ if(isset($_SESSION['login']) && $_SESSION['login'] && isset($_SESSION['uid'])) {
             include("includes/vars.inc.php");
             include("components/firstMon/firstMon.php");
         } else {
+            include("components/menu/menu.php");
             include("components/map/map.php");
         }
     }
