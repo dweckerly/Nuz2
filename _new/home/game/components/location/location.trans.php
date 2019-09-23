@@ -8,8 +8,8 @@ if(isset($_POST['id']) && isset($_POST['action'])) {
         $q = "SELECT location FROM games WHERE account_id = '$uid'";
         $r = mysqli_query($conn, $q);
         $savedLoc = mysqli_fetch_assoc($r);
-        $action = $_POST['action'];
-        $newId = $_POST['id'];
+        $action = mysqli_real_escape_string(strtolower($_POST['action']));
+        $newId = mysqli_real_escape_string($_POST['id']);
         if($action == 'travel') {
             $q = "SELECT * FROM locations WHERE location_id = '$savedLoc'";
             $r = mysqli_query($conn, $q);
@@ -44,14 +44,16 @@ if(isset($_POST['id']) && isset($_POST['action'])) {
             }
         } else {
             $param = $action . '_id';
-            $q = "SELECT * FROM locations WHERE '$param' = '$id'";
+            $q = "SELECT * FROM locations WHERE " . $param . " = '$newId'";
             $r = mysqli_query($conn, $q);
             if(mysqli_num_rows($r) > 0) {
                 $table = $action . '_table';
-                $q = "SELECT * FROM '$table' WHERE '$param' = '$id'";
+                $q = "SELECT * FROM " . $table. " WHERE " . $param . " = '$newId'";
                 $r = mysqli_query($conn, $q);
                 $actionInfo = mysqli_fetch_assoc($r);
                 include("../../components/" . $action . "/" . $action . ".php");
+            } else {
+                echo "no data found!";
             }
         }
     }

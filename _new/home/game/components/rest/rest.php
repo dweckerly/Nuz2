@@ -1,0 +1,1 @@
+<div>Rest component retrieved!</div>

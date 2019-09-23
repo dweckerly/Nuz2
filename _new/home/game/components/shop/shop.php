@@ -1,0 +1,1 @@
+<div>Shop component retrieved!</div>
