@@ -8,8 +8,8 @@ if(isset($_POST['id']) && isset($_POST['action'])) {
         $q = "SELECT location FROM games WHERE account_id = '$uid'";
         $r = mysqli_query($conn, $q);
         $savedLoc = mysqli_fetch_assoc($r);
-        $action = mysqli_real_escape_string(strtolower($_POST['action']));
-        $newId = mysqli_real_escape_string($_POST['id']);
+        $action = strtolower($_POST['action']);
+        $newId = $_POST['id'];
         if($action == 'travel') {
             $q = "SELECT * FROM locations WHERE location_id = '$savedLoc'";
             $r = mysqli_query($conn, $q);
@@ -53,7 +53,7 @@ if(isset($_POST['id']) && isset($_POST['action'])) {
                 $actionInfo = mysqli_fetch_assoc($r);
                 include("../../components/" . $action . "/" . $action . ".php");
             } else {
-                echo "no data found!";
+                echo "no data found! " . $newId;
             }
         }
     }
