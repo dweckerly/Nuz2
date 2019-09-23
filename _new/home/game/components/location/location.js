@@ -1,11 +1,5 @@
 function locationActionSelect(id, action) {
-    if(action == 'search') {
+    $.post('components/location/location.trans.php', { id: id, action: action }, function(data) {
 
-    } else if (action == 'shop') {
-
-    } else if (action == 'rest') {
-
-    } else if(action == 'travel') {
-        
-    }
+    });
 }
