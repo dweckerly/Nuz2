@@ -1,7 +1,7 @@
 <?php
 
 // get location information
-$locId = $gameArr['location'];
+$locId = $_POST['loc_id'];
 $q = "SELECT * FROM locations WHERE location_id = '$locId'";
 $r = mysqli_query($conn, $q);
 $currentLocation = mysqli_fetch_assoc($r);
@@ -17,11 +17,12 @@ $q = "SELECT * FROM locations WHERE area_id = '$areaId'";
 $r = mysqli_query($conn, $q);
 $areaNameTrim = strtolower(str_replace(' ', '', $areaInfo['name']));
 ?>
+<div id="map-container">
 <script>
     var locations = [
 <?php
 while($row = mysqli_fetch_assoc($r)) {
-    if($currentLocation['location_id'] == $row['location_id']) {
+    if($locId == $row['location_id']) {
 
     ?>
         {
@@ -49,20 +50,14 @@ while($row = mysqli_fetch_assoc($r)) {
 ?> 
     ]
 </script>
-<div>
     <h2><?php echo $areaInfo['name'];?></h2>
     <p><?php echo $areaInfo['description'];?></p>
     <canvas id="main-canvas"></canvas>
+    <div class="hidden">
+        <img id="area-map" src="img/areas/<?php echo $areaNameTrim;?>.png">
+        <img id="player-pointer" src="img/point.png">
+    </div>
+    <script src="components/map/map.js"></script>
 </div>
-<div id="location-container">
-<?php
-$_POST['id'] = $currentLocation['location_id'];
-include("components/location/location.php");
-?>
-</div>
-<div class="hidden">
-    <img id="area-map" src="img/areas/<?php echo $areaNameTrim;?>.png">
-    <img id="player-pointer" src="img/point.png">
-</div>
-<script src="components/map/map.js"></script>
+
 

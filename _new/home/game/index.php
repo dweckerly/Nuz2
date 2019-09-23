@@ -19,8 +19,16 @@ if(isset($_SESSION['login']) && $_SESSION['login'] && isset($_SESSION['uid'])) {
             include("includes/vars.inc.php");
             include("components/firstMon/firstMon.php");
         } else {
+?>
+<div id="game-container">
+<?php
             include("components/menu/menu.php");
+            $_POST['loc_id'] = $gameArr['location'];
             include("components/map/map.php");
+            include("components/location/location.php");
+?>
+</div>
+<?php
         }
     }
 } else {

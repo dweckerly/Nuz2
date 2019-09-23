@@ -12,6 +12,7 @@ session_start();
         <link rel="stylesheet" type="text/css" href="style/style.css">
         <link rel="stylesheet" type="text/css" href="style/animations.css">
         <script src="scripts/jquery.js"></script>
+        <script src="scripts/util.js"></script>
         <title>NuzMon</title>
     </head>
     <body>

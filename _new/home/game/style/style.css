@@ -85,7 +85,7 @@ img {
     display: none;
 }
 
-.menu-img { 
+.menu-img {
     margin: auto;
     height: 64px;
     width: 64px;
@@ -121,4 +121,15 @@ img {
     top: 10px;
     right: 10px;
     z-index: 1;
+}
+
+#transition {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    z-index: 100;
+    overflow: hidden;
 }

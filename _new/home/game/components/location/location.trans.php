@@ -19,6 +19,12 @@ if(isset($_POST['id']) && isset($_POST['action'])) {
             $newLoc = mysqli_fetch_assoc($r);
             if($currentLoc['area_id'] == $newLoc['area_id']) {
                 // update game table and send player to new location
+                $q = "UPDATE games SET location = '$newId' WHERE account_id = '$uid'";
+                $r = mysqli_query($conn, $q);
+                include("../../components/menu/menu.php");
+                $_POST['loc_id'] = $newId;
+                include("../../components/map/map.php");
+                include("../../components/location/location.php");
             }
         } else if ($action == 'connection') {
             $q = "SELECT area_id FROM locations WHERE location_id = '$savedLoc'";
