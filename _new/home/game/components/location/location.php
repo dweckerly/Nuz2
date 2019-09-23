@@ -12,7 +12,7 @@ $q = "SELECT * FROM games WHERE account_id = '$accId'";
 $r = mysqli_query($conn, $q);
 $game = mysqli_fetch_assoc($r);
 ?>
-<div id="location-container">
+<div id="location-container" class="hidden">
     <h2><?php echo $location['name']?></h2>
     <p><?php echo $location['description']?></p>
     <div class="grid-2 center">
