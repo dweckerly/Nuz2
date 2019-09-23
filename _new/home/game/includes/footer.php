@@ -1,3 +1,3 @@
-    </body>
-    <script src=""></script>
+</div>
+</body>
 </html>

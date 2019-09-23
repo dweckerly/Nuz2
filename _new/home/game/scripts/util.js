@@ -8,3 +8,9 @@ function transition(data) {
         });
     });
 }
+
+function backToMain() {
+    $.get("index.php", function(data) {
+        transition(data);
+    });
+}

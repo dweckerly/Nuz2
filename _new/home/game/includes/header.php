@@ -15,4 +15,5 @@ session_start();
         <script src="scripts/util.js"></script>
         <title>NuzMon</title>
     </head>
-    <body>
+<body>
+<div id="game-container">
