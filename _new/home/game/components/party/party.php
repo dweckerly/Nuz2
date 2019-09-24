@@ -12,21 +12,21 @@ $r = mysqli_query($conn, $q);
 <?php
 while($inPartyMon = mysqli_fetch_assoc($r)) {
 ?>
-    <div>
-        <img src="img/mons/<?php echo $inPartyMon['img'];?>">
-    </div>
-    <div>
-        <p><?php echo $inPartyMon['nick_name'];?></p>
-    </div>
-    <div>
-        <p><?php echo $inPartyMon['current_hp'];?>/<?php echo $inPartyMon['hp'];?></p>
-    </div>
-    <div>
-        <p><?php echo $inPartyMon['status'];?></p>
-    </div>
-    <div>
-        <p><?php echo $inPartyMon['lvl'];?></p>
-    </div>
+        <div>
+            <img src="img/mons/<?php echo $inPartyMon['img'];?>">
+        </div>
+        <div>
+            <p><?php echo $inPartyMon['nick_name'];?></p>
+        </div>
+        <div>
+            <p><?php echo $inPartyMon['current_hp'];?>/<?php echo $inPartyMon['hp'];?></p>
+        </div>
+        <div>
+            <p><?php echo $inPartyMon['status'];?></p>
+        </div>
+        <div>
+            <p><?php echo $inPartyMon['lvl'];?></p>
+        </div>
 <?php
 }
 ?>
