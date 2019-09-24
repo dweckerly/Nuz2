@@ -69,6 +69,11 @@ img {
     grid-template-columns: repeat(4, 1fr);
 }
 
+.grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
 .grid-item-first {
     grid-row-start: 1;
 }
@@ -89,6 +94,7 @@ img {
     margin: auto;
     height: 64px;
     width: 64px;
+    cursor: pointer;
 }
 
 .prop-name {
