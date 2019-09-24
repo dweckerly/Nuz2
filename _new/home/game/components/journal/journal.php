@@ -1,3 +1,6 @@
 <?php
 include("../../components/menu/menu.php");
-echo "Journal component retrieved!";
+?>
+<div id="journal-container">
+    <h2 class="prop-name border-bottom">Journal</h2>
+</div>

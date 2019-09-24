@@ -17,14 +17,29 @@ if(isset($_POST['id']) && isset($_POST['action'])) {
             $q = "SELECT * FROM locations WHERE location_id = '$newId'";
             $r = mysqli_query($conn, $q);
             $newLoc = mysqli_fetch_assoc($r);
+            // check for if location is in same area
+            // if so this is a valid travel
             if($currentLoc['area_id'] == $newLoc['area_id']) {
-                // update game table and send player to new location
-                $q = "UPDATE games SET location = '$newId' WHERE account_id = '$uid'";
+                // check for random encounter
+                $aId = $newLoc['area_id'];
+                $q = "SELECT encounter_rate FROM areas WHERE area_id = '$aId'";
                 $r = mysqli_query($conn, $q);
-                include("../../components/menu/menu.php");
-                $_POST['loc_id'] = $newId;
-                include("../../components/map/map.php");
-                include("../../components/location/location.php");
+                $eRate = mysqli_fetch_assoc($r);
+                $rand = mt_rand(1, 100);
+                if($rand < $eRate) {
+                    // do random encounter
+                    // store travel destination
+                    $_SESSION['destination'] = $newId;
+                    
+                } else {
+                    // update game table and send player to new location
+                    $q = "UPDATE games SET location = '$newId' WHERE account_id = '$uid'";
+                    $r = mysqli_query($conn, $q);
+                    include("../../components/menu/menu.php");
+                    $_POST['loc_id'] = $newId;
+                    include("../../components/map/map.php");
+                    include("../../components/location/location.php");
+                }
             }
         } else if ($action == 'connection') {
             $q = "SELECT area_id FROM locations WHERE location_id = '$savedLoc'";

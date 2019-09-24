@@ -13,7 +13,7 @@ $createdDate = date("F j, Y", strtotime($accountInfo['created_on']));
 $loginDate = date("F j, Y", strtotime($accountInfo['last_login']));
 ?>
 <div id="player-container">
-    <h1 class="prop-name"><?php echo $accountInfo['account_name'];?></h1>
+    <h1 class="prop-name border-bottom"><?php echo $accountInfo['account_name'];?></h1>
     <div class="grid-2">
         <div class="border-bottom">
             <label class="border-bottom">Created On:</label><p><?php echo $createdDate;?></p>

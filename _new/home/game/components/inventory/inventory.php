@@ -1,3 +1,6 @@
 <?php
 include("../../components/menu/menu.php");
-echo "Inventory component retrieved!";
+?>
+<div id="inventory-container">
+    <h2 class="prop-name border-bottom">Inventory</h2>
+</div>
