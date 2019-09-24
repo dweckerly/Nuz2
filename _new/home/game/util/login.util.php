@@ -26,12 +26,12 @@ if(isset($_POST['submit'])) {
                 if(password_verify($password, $hash)) {
                     // all systems go!
                     echo "Hold yer bologna...";
-                    $uid = $accArr['user_id'];
+                    $uid = $accArr['account_id'];
                     session_start();
                     $_SESSION['login'] = TRUE;
                     $_SESSION['uid'] = $uid;
                     $time = date("Y-m-d H:i:s");
-                    $sql = "UPDATE accounts set last_login = '$time' where user_id = '$uid'";
+                    $sql = "UPDATE accounts set last_login = '$time' where account_id = '$uid'";
                     $q = mysqli_query($conn, $sql);
                     mysqli_close($conn);
                     header("Location: ../");

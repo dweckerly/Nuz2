@@ -47,7 +47,7 @@ if(isset($_POST['submit'])) {
             include("rand.util.php");
             $uid = uniqidReal();
             $name = strtoupper($name);
-            $sql = "INSERT INTO accounts (user_id, account_name, password, email) VALUES ('$uid', '$name', '$hashedPwd', '$email')";
+            $sql = "INSERT INTO accounts (account_id, account_name, password, email) VALUES ('$uid', '$name', '$hashedPwd', '$email')";
             mysqli_query($conn, $sql);
             // create game
             $sql = "INSERT INTO games (account_id) VALUES ('$uid')";
