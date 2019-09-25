@@ -52,11 +52,11 @@ function solveMonRate($monRates) {
     $mod = 1;
     foreach($monRates as $mr){
         for($j = 0; $j < $mr; $j++) {
-            if ($i = 1) {
+            if ($i == 1) {
                 $mod = 0.5;
-            } elseif ($i = 2) {
+            } elseif ($i == 2) {
                 $mod = 0.25;
-            } elseif ($i = 3) {
+            } elseif ($i == 3) {
                 $mod = 0.125;
             }
             if(count($chance) == 0) {
