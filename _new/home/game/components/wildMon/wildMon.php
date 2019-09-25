@@ -14,7 +14,7 @@ if(isset($_POST['enc_mon'])) {
     <div>
         <h3 class="center-text">A wild <span class="prop-name"><?php echo $monInfo['mon_name'];?></span> appeared!</h3>
     </div>
-    <div class="center">
+    <div class="center-text">
         <button>Fight!</button>
         <!-- Here run button will need to update DB with stored session destination
         information before returning player to the map -->
