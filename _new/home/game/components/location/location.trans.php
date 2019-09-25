@@ -76,10 +76,6 @@ if(isset($_POST['id']) && isset($_POST['action'])) {
             $q = "SELECT * FROM locations WHERE " . $param . " = '$newId'";
             $r = mysqli_query($conn, $q);
             if(mysqli_num_rows($r) > 0) {
-                $table = $action . '_table';
-                $q = "SELECT * FROM " . $table. " WHERE " . $param . " = '$newId'";
-                $r = mysqli_query($conn, $q);
-                $actionInfo = mysqli_fetch_assoc($r);
                 include("../../components/" . $action . "/" . $action . ".php");
             } else {
                 echo "no data found! " . $newId;

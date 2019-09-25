@@ -1,14 +1,21 @@
 <?php
-include("includes/db.inc.php");
 session_start();
 $uid = $_SESSION['uid'];
 $q = "SELECT * FROM games WHERE account_id = '$uid'";
 $r = mysqli_query($conn, $q);
 $game = mysqli_fetch_assoc($r);
 $locId = $game['location'];
-$q = "SELECT * FROM search_table WHERE search_id = (SELECT search_id FROM locations WHERE location_id = '$locId')";
+
+$q = "SELECT * FROM encounter_pools WHERE encounter_pool_id = (SELECT search_id FROM locations WHERE location_id = '$locId')";
 $r = mysqli_query($conn, $q);
-$searchInfo = mysqli_fetch_assoc($r) 
-?>
-<div>Search component retrieved!</div>
-<button onclick="backToMain()">Back</button>
+$encounterInfo = mysqli_fetch_assoc($r);
+include("../../util/rand.util.php");
+$encType = parseEncounterType($encounterInfo['encounter_rates']);
+if($encType == 'mon') {
+    $_POST['enc_mon'] = parseMonEncounter($encounterInfo['mon_encounters']);
+    include('../../components/wildMon/wildMon.php');
+} elseif($encType == 'event') {
+    include('../../components/event/event.php');
+} elseif ($encType == 'item') {
+    include('../../components/itemFind/itemFind.php');
+}
