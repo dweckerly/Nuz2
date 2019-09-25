@@ -22,15 +22,29 @@ if(isset($_POST['id']) && isset($_POST['action'])) {
             if($currentLoc['area_id'] == $newLoc['area_id']) {
                 // check for random encounter
                 $aId = $newLoc['area_id'];
-                $q = "SELECT encounter_rate FROM areas WHERE area_id = '$aId'";
+                $q = "SELECT * FROM areas WHERE area_id = '$aId'";
                 $r = mysqli_query($conn, $q);
-                $eRate = mysqli_fetch_assoc($r);
+                $areaInfo = mysqli_fetch_assoc($r);
                 $rand = mt_rand(1, 100);
-                if($rand < $eRate) {
+                if($rand <= $areaInfo['encounter_rate']) {
                     // do random encounter
                     // store travel destination
                     $_SESSION['destination'] = $newId;
-                    
+                    // decide encounter
+                    $encId = $areaInfo['encounter_pool'];
+                    $q = "SELECT * FROM encounter_pools WHERE encounter_pool_id = '$encId'";
+                    $r = mysqli_query($conn, $q);
+                    $encounterInfo = mysqli_fetch_assoc($r);
+                    include("../../util/rand.util.php");
+                    $encType = parseEncounterType($encounterInfo['encounter_rates']);
+                    if($encType == 'mon') {
+                        $_POST['enc_mon'] = parseMonEncounter($encounterInfo['mon_encounters']);
+                        include('../../components/wildMon/wildMon.php');
+                    } elseif($encType == 'event') {
+                        include('../../components/event/event.php');
+                    } elseif ($encType == 'item') {
+                        include('../../components/itemFind/itemFind.php');
+                    }
                 } else {
                     // update game table and send player to new location
                     $q = "UPDATE games SET location = '$newId' WHERE account_id = '$uid'";

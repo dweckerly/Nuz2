@@ -12,31 +12,37 @@ function uniqidReal($lenght = 13) {
 
 function parseEncounterType($eRate) {
     $rates = explode("/", $eRate);
-    $rates[1] = $rates[1] + $rates[0];
-    $rates[2] = $rates[2] + $rates[1];
-    $rand = mt_rand(1, 100);
-    if($rand <= $rates[0]) {
+    if(count($rates) > 1) {
+        $rand = mt_rand(1, 100);
+        $rates[1] = $rates[1] + $rates[0];
+        if(count($rates) > 2) {
+            $rates[2] = $rates[2] + $rates[1];
+            if($rand <= $rates[0]) {
+                return 'mon';
+            } elseif ($rand <= $rates[1]) {
+                return 'event';
+            } elseif ($rand <= $rates[2]) {
+                return 'item';
+            }
+        } else {
+            if($rand <= $rates[0]) {
+                return 'mon';
+            } elseif ($rand <= $rates[1]) {
+                return 'event';
+            }
+        }
+    } else {
         return 'mon';
-    } elseif ($rand <= $rates[1]) {
-        return 'event';
-    } elseif ($rand <= $rates[2]) {
-        return 'item';
     }
 }
 
-function parseMonEncounter($monEnc) {
-    $mons = explode('_', $monEnc);
-    $rateCountArr = array(
-        'c' => 0,
-        'u' => 0,
-        'r' => 0,
-        'm' => 0
-    );
-    foreach($mons as $mon) {
-        $temp = explode('/', $mon);
-        $rateCountArr[$temp[2]]++;
+function parseRange($range) {
+    $rangeArr = explode('-', $range);
+    if(count($rangeArr) > 1) {
+        return mt_rand($rangeArr[0], $rangeArr[1]);
+    } else {
+        return $range;
     }
-
 }
 
 function solveMonRate($monRates) {
@@ -67,4 +73,26 @@ function solveMonRate($monRates) {
             return $i;
         }
     }
+}
+
+function parseMonEncounter($monEnc) {
+    $mons = explode('_', $monEnc);
+    $rateCountArr = array(
+        'c' => 0,
+        'u' => 0,
+        'r' => 0,
+        'm' => 0
+    );
+    foreach($mons as $mon) {
+        $temp = explode('/', $mon);
+        $rateCountArr[$temp[2]]++;
+    }
+    $selectedMon = $mons[solveMonRate($rateCountArr)];
+    $sMonExpl = explode('/', $selectedMon);
+    $lvl = parseRange($sMonExpl[1]);
+    return array(
+        'id' => $sMonExpl[0],
+        'lvl' => $lvl,
+        'rarity' => $sMonExpl[2]
+    );
 }
