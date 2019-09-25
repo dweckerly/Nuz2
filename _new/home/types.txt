@@ -1,0 +1,16 @@
+buff
+bug
+electric
+emo
+fire
+metal (mech?)
+neutral
+plant
+psychic
+shady
+spooky
+stone
+toxic
+water
+weird
+wind
