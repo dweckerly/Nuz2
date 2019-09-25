@@ -12,7 +12,7 @@ if(isset($_POST['enc_mon'])) {
         <img class="mon-img-anim-<?php echo $monInfo['animation']?>" src="img/mons/<?php echo $monInfo['mon_name'];?>.png">
     </div>
     <div>
-        <h3 class="center-text">A wild <span class="prop-name"><?php echo $monInfo['mon_name'];?></span> appeared!</h3>
+        <h3 class="center-text">You found a wild <span class="prop-name"><?php echo $monInfo['mon_name'];?></span>!</h3>
     </div>
     <div class="center-text">
         <button>Fight!</button>
