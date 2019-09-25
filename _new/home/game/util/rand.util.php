@@ -46,7 +46,7 @@ function parseRange($range) {
 }
 
 function solveMonRate($monRates) {
-    $x = floor(100 / ($monRates[0] + (0.5 * $monRates[1]) + (0.25 * $monRates[2]) + (0.125 * $monRates[3])));
+    $x = floor(100 / ($monRates['c'] + (0.5 * $monRates['u']) + (0.25 * $monRates['r']) + (0.125 * $monRates['m'])));
     $chance = array();
     $i = 0;
     $mod = 1;
