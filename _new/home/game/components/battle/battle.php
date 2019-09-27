@@ -24,12 +24,12 @@ if(isset($_POST['enc_mon'])) {
     </div>
     <div id="battle-options-container" class="grid-3 hidden">
         <div>
-            <button id="atk-1" class="hidden">-</button>
-            <button id="atk-3" class="hidden">-</button>
+            <button id="atk-1" class="hidden"></button>
+            <button id="atk-3" class="hidden"></button>
         </div>
         <div>
-            <button id="atk-2" class="hidden">-</button>
-            <button id="atk-4" class="hidden">-</button>
+            <button id="atk-2" class="hidden"></button>
+            <button id="atk-4" class="hidden"></button>
         </div>
         <div>
             <button>Switch</button>
