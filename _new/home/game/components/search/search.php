@@ -12,7 +12,7 @@ $encounterInfo = mysqli_fetch_assoc($r);
 include("../../util/rand.util.php");
 $encType = parseEncounterType($encounterInfo['encounter_rates']);
 if($encType == 'mon') {
-    $_POST['enc_mon'] = parseMonEncounter($encounterInfo['mon_encounters']);
+    $_GET['enc_mon'] = parseMonEncounter($encounterInfo['mon_encounters']);
     include('../../components/wildMon/wildMon.php');
 } elseif($encType == 'event') {
     include('../../components/event/event.php');
