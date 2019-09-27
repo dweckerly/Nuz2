@@ -8,8 +8,8 @@ if(isset($_POST['id']) && isset($_POST['action'])) {
         $q = "SELECT location FROM games WHERE account_id = '$uid'";
         $r = mysqli_query($conn, $q);
         $savedLoc = mysqli_fetch_assoc($r);
-        $action = strtolower($_POST['action']);
-        $newId = $_POST['id'];
+        $action = mysqli_real_escape_string($conn, strtolower($_POST['action']));
+        $newId = mysqli_real_escape_string($conn, $_POST['id']);
         if($action == 'travel') {
             $q = "SELECT * FROM locations WHERE location_id = '$savedLoc'";
             $r = mysqli_query($conn, $q);
@@ -38,7 +38,7 @@ if(isset($_POST['id']) && isset($_POST['action'])) {
                     include("../../util/rand.util.php");
                     $encType = parseEncounterType($encounterInfo['encounter_rates']);
                     if($encType == 'mon') {
-                        $_POST['enc_mon'] = parseMonEncounter($encounterInfo['mon_encounters']);
+                        $_GET['enc_mon'] = parseMonEncounter($encounterInfo['mon_encounters']);
                         include('../../components/wildMon/wildMon.php');
                     } elseif($encType == 'event') {
                         include('../../components/event/event.php');
@@ -50,7 +50,7 @@ if(isset($_POST['id']) && isset($_POST['action'])) {
                     $q = "UPDATE games SET location = '$newId' WHERE account_id = '$uid'";
                     $r = mysqli_query($conn, $q);
                     include("../../components/menu/menu.php");
-                    $_POST['loc_id'] = $newId;
+                    $_GET['loc_id'] = $newId;
                     include("../../components/map/map.php");
                     include("../../components/location/location.php");
                 }

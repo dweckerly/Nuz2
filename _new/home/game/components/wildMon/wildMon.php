@@ -1,8 +1,8 @@
 <?php
-if(isset($_POST['enc_mon'])) {
-    $wildMon = $_POST['enc_mon'];
-    $wId = $wildMon['id'];
+if(isset($_GET['enc_mon'])) {
     include_once('../../includes/db.inc.php');
+    $wildMon = mysqli_real_escape_string($conn, $_GET['enc_mon']);
+    $wId = $wildMon['id'];
     $q = "SELECT * FROM mons WHERE mon_id = '$wId'";
     $r = mysqli_query($conn, $q);
     $monInfo = mysqli_fetch_assoc($r);

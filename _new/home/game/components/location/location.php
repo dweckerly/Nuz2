@@ -1,7 +1,7 @@
 <?php
 include_once("../../includes/db.inc.php");
 include_once("../../includes/vars.inc.php");
-$locId = $_POST['loc_id'];
+$locId = mysqli_real_escape_string($conn, $_GET['loc_id']);
 $q = "SELECT * FROM locations WHERE location_id = '$locId'";
 $r = mysqli_query($conn, $q);
 $location = mysqli_fetch_assoc($r);
