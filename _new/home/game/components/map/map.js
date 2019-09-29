@@ -75,7 +75,7 @@ c.onmousedown = function(evt) {
                 if (element.id == e.id) {
                     $('#location-container').fadeOut(function() {
                         $('#location-container').remove();
-                        $.post("components/location/location.php", { loc_id: e.id }, function(data) {
+                        $.get("components/location/location.php", { loc_id: e.id }, function(data) {
                             $('#map-container').after(data);
                             $('#location-container').fadeIn();
                         });
