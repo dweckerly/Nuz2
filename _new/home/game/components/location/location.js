@@ -3,7 +3,7 @@ $(document).ready(function() {
 });
 
 function locationActionSelect(id, action) {
-    $.get('components/location/location.trans.php', { id: id, action: action }, function(data) {
+    $.post('components/location/location.trans.php', { id: id, action: action }, function(data) {
         transition(data);
     });
 }
