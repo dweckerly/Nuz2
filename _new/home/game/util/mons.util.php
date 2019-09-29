@@ -35,7 +35,7 @@ function setMoves($moveArr, $lvl) {
     return $moveStr;
 }
 
-function generateMon($monArr, $id, $level, $moveArr) {
+function generateMon($monArr, $id, $level) {
     return array(
         "mon_id" => $id,
         "mon_name" => $monArr['mon_name'],
@@ -49,7 +49,7 @@ function generateMon($monArr, $id, $level, $moveArr) {
         "e_atk" => statCalc($monArr['e_atk'], $level),
         "e_def" => statCalc($monArr['e_def'], $level),
         "speed" => statCalc($monArr['speed'], $level),
-        "moves" => setMoves($moveArr, $level),
+        "moves" => setMoves($monArr['moves'], $level),
         "ability" => 0,
         "happiness" => 50,
         "lvl" => $level,
