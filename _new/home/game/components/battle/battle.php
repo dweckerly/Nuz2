@@ -43,9 +43,8 @@ if(isset($_POST['enc_mon'])) {
 
         </div>
     </div>
-    <div class="hidden">
-        <img id="player-img" src="">
-        <img id="opponent-img" src="">
+    <div class="hidden" id="img-container">
+        <img id="opponent-img" src="img/mons/<?php echo $_SESSION['oppponent']['img'];?>">
     </div>
     <script src="components/battle/battle.js"></script>
 </div>

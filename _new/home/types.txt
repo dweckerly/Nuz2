@@ -1,7 +1,7 @@
 buff
 bug
+cold
 electric
-emo
 fire
 metal (mech?)
 neutral
