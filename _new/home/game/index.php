@@ -1,5 +1,6 @@
 <?php
 session_start();
+unset($_SESSION['encounter']); 
 include('includes/header.php');
 if(isset($_SESSION['login']) && $_SESSION['login'] && isset($_SESSION['uid'])) {
     include_once('includes/db.inc.php');

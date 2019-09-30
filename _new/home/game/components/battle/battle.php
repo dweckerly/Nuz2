@@ -1,6 +1,7 @@
 <?php
-if(isset($_POST['enc_mon'])) {
-    $mons = $_POST['enc_mon'];
+session_start();
+if(isset($_SESSION['encounter'])) {
+    $mons = $_SESSION['encounter'];
     include("includes/db.inc.php");
     if(count($mons) > 1) {
         // multiple mons, trainer or event
@@ -12,9 +13,6 @@ if(isset($_POST['enc_mon'])) {
         $monInfo = mysqli_fetch_assoc($r);
         include("util/mons.util.php");
         $mon = generateMon($monInfo, $id, $mons['lvl']);
-        session_start();
-        $_SESSION['oponent'] = $mon;
-
     }
 ?>
 <div id="battle-container">
