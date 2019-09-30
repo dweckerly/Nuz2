@@ -1,7 +1,7 @@
 <?php
 
 // get location information
-$locId = mysqli_real_escape_string($conn, $_GET['loc_id']);
+$locId = $_GET['loc_id'];
 $q = "SELECT * FROM locations WHERE location_id = '$locId'";
 $r = mysqli_query($conn, $q);
 $currentLocation = mysqli_fetch_assoc($r);

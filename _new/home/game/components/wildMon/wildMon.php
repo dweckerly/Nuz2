@@ -1,7 +1,7 @@
 <?php
 if(isset($_GET['enc_mon'])) {
     include_once('../../includes/db.inc.php');
-    $wildMon = mysqli_real_escape_string($conn, $_GET['enc_mon']);
+    $wildMon = $_GET['enc_mon'];
     $wId = $wildMon['id'];
     $q = "SELECT * FROM mons WHERE mon_id = '$wId'";
     $r = mysqli_query($conn, $q);
@@ -19,7 +19,9 @@ if(isset($_GET['enc_mon'])) {
         <!-- Here run button will need to update DB with stored session destination
         information before returning player to the map -->
         <button onclick="backToMain()">Run!</button>
+        <button onclick="callSearch()">Search Again</button>
     </div>
+    <script src="components/wildMon/wildMon.js"></script>
 </div>
 <?php
 }

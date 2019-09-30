@@ -1,6 +1,7 @@
 <?php
 session_start();
 $uid = $_SESSION['uid'];
+include_once('../../includes/db.inc.php');
 $q = "SELECT * FROM games WHERE account_id = '$uid'";
 $r = mysqli_query($conn, $q);
 $game = mysqli_fetch_assoc($r);

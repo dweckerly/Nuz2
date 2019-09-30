@@ -61,10 +61,10 @@ function drawAreaLabels() {
         if (e.current) {
             pointArr.x = ((loc.x2 - loc.x1) / 2) + loc.x1 - (pointImg.width / 2)
             pointArr.y = (((loc.y2 - loc.y1) / 2) + loc.y1 - (pointImg.height / 2)) + pointAnimY;
-            ctx.drawImage(pointImg, pointArr.x, pointArr.y);
         }
         clickable.push(loc);
     });
+    ctx.drawImage(pointImg, pointArr.x, pointArr.y);
 }
 
 c.onmousedown = function(evt) {
@@ -75,7 +75,7 @@ c.onmousedown = function(evt) {
                 if (element.id == e.id) {
                     $('#location-container').fadeOut(function() {
                         $('#location-container').remove();
-                        $.post("components/location/location.php", { loc_id: e.id }, function(data) {
+                        $.get("components/location/location.php", { loc_id: e.id }, function(data) {
                             $('#map-container').after(data);
                             $('#location-container').fadeIn();
                         });

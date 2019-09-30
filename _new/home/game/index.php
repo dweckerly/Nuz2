@@ -20,7 +20,7 @@ if(isset($_SESSION['login']) && $_SESSION['login'] && isset($_SESSION['uid'])) {
             include("components/firstMon/firstMon.php");
         } else {
             include("components/menu/menu.php");
-            $_POST['loc_id'] = $gameArr['location'];
+            $_GET['loc_id'] = $gameArr['location'];
             include("components/map/map.php");
             include("components/location/location.php");
         }
