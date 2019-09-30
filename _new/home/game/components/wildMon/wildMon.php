@@ -8,7 +8,8 @@ if(isset($_GET['enc_mon'])) {
     $monInfo = mysqli_fetch_assoc($r);
     $_SESSION['encounter'] = array(
         'type' => 'wild',
-        'mon' => $monInfo
+        'mon' => $monInfo,
+        'lvl' => $wildMon['lvl']
     );
 ?>
 <div id="wild-encounter-container">

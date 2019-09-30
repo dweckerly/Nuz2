@@ -1,11 +1,10 @@
-<div id="battle-container">
-    <canvas id="battle-canvas"></canvas>
-    <div class="hidden" id="img-container">
-        <img id="opponent-img" src="img/mons/<?php echo $_SESSION['oppponent']['img'];?>">
-    </div>
 <?php
 session_start();
 if(isset($_SESSION['encounter'])) {
+?>
+<div id="battle-container">
+    <canvas id="battle-canvas"></canvas>
+<?php
     if($_SESSION['encounter']['type'] == 'wild') {
         include_once("../../includes/db.inc.php");
         $id = $_SESSION['encounter']['mon']['mon_id'];
@@ -13,10 +12,12 @@ if(isset($_SESSION['encounter'])) {
         $r = mysqli_query($conn, $q);
         $monInfo = mysqli_fetch_assoc($r);
         include("../../util/mons.util.php");
-        $mon = generateMon($monInfo, $id, $mons['lvl']);
+        $mon = generateMon($monInfo, $id, $_SESSION['encounter']['lvl']);
     }
 ?>
-
+    <div class="hidden" id="img-container">
+        <img id="opponent-img" src="img/mons/<?php echo $mon['img'];?>">
+    </div>
     <div id="battle-text-container" class="grid-1 hidden">
         <p id="battle-text" class="center-text"></p>
     </div>
