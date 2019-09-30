@@ -1,8 +1,10 @@
 buff
 bug
 cold
+dirty
 electric
 fire
+hairy
 metal (mech?)
 neutral
 plant

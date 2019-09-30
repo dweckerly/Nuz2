@@ -39,6 +39,7 @@ if(isset($_POST['id']) && isset($_POST['action'])) {
                     $encType = parseEncounterType($encounterInfo['encounter_rates']);
                     if($encType == 'mon') {
                         $_GET['enc_mon'] = parseMonEncounter($encounterInfo['mon_encounters']);
+                        $_GET['source'] = "travel";
                         include('../../components/wildMon/wildMon.php');
                     } elseif($encType == 'event') {
                         include('../../components/event/event.php');

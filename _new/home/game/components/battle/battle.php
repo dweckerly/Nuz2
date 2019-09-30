@@ -1,22 +1,22 @@
+<div id="battle-container">
+    <canvas id="battle-canvas"></canvas>
+    <div class="hidden" id="img-container">
+        <img id="opponent-img" src="img/mons/<?php echo $_SESSION['oppponent']['img'];?>">
+    </div>
 <?php
 session_start();
 if(isset($_SESSION['encounter'])) {
-    $mons = $_SESSION['encounter'];
-    include("includes/db.inc.php");
-    if(count($mons) > 1) {
-        // multiple mons, trainer or event
-    } else {
-        // only one mon, not trainer, not event
-        $id = $mons['id'];
+    if($_SESSION['encounter']['type'] == 'wild') {
+        include_once("../../includes/db.inc.php");
+        $id = $_SESSION['encounter']['mon']['mon_id'];
         $q = "SELECT * FROM mons WHERE mon_id = '$id'";
         $r = mysqli_query($conn, $q);
         $monInfo = mysqli_fetch_assoc($r);
-        include("util/mons.util.php");
+        include("../../util/mons.util.php");
         $mon = generateMon($monInfo, $id, $mons['lvl']);
     }
 ?>
-<div id="battle-container">
-    <canvas id="battle-canvas"></canvas>
+
     <div id="battle-text-container" class="grid-1 hidden">
         <p id="battle-text" class="center-text"></p>
     </div>
@@ -40,9 +40,6 @@ if(isset($_SESSION['encounter'])) {
         <div id="switch-content">
 
         </div>
-    </div>
-    <div class="hidden" id="img-container">
-        <img id="opponent-img" src="img/mons/<?php echo $_SESSION['oppponent']['img'];?>">
     </div>
     <script src="components/battle/battle.js"></script>
 </div>
