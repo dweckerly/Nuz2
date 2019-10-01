@@ -42,7 +42,7 @@ if(isset($_SESSION['encounter'])) {
 
         </div>
     </div>
-    <script src="components/battle/battle.js"></script>
+    <script src="components/battle/battleUI.js"></script>
 </div>
 <?php
 }
