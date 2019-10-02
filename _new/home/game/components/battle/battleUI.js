@@ -55,6 +55,7 @@ function update() {
 }
 
 $(document).ready(function() {
+    setCanvasSize();
     instantiateOpponentMon(calculateImageSizeAndPosition(c, "opponent"));
     update();
 });
