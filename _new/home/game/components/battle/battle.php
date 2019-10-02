@@ -18,7 +18,7 @@ if(isset($_SESSION['encounter'])) {
         $mon = generateMon($monInfo, $id, $_SESSION['encounter']['lvl']);
         $_SESSION['opponent'] = $mon;
 ?>
-    <script src="components/battle/scripts/wildBattle.js"></script>
+    <script src="components/battle/scripts/wildBattleInitiator.js"></script>
 <?php
     } elseif($_SESSION['encounter']['type'] == 'trainer') {
 ?>
