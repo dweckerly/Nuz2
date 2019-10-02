@@ -2,8 +2,8 @@
 session_start();
 if(isset($_SESSION['encounter'])) {
 ?>
-<script src="components/battle/scripts/battleUtil.js"></script>
 <script src="components/battle/scripts/battleVars.js"></script>
+<script src="components/battle/scripts/battleUtil.js"></script>
 <div id="battle-container">
     <canvas id="battle-canvas"></canvas>
     <div class="hidden" id="img-container"></div>

@@ -1,70 +1,6 @@
 var c = document.getElementById('battle-canvas');
 var ctx = c.getContext('2d');
 
-var winOffset = 30;
-
-var cMaxHeight = 540;
-var cMaxWidth = 540;
-
-var animTracker = {
-    imagesAnim: true,
-    detailsAnim: false
-}
-
-var showingUtil = false;
-
-var endPositions = {
-    playerImg: 44,
-    opponentImg: 450,
-    playerDetail: 310,
-    opponentDetail: -1
-}
-
-function instantiatePlayerMon() {
-    playerImg = { x: -256, y: 144, w: 256, h: 256, img: document.getElementById('player-img') };
-    playerDetailsRect = { x: 400, y: 400, w: 300, h: 90, radius: { tl: 20, br: 20 } };
-    playerNameTxt = {
-        x: playerDetailsRect.x + (playerDetailsRect.w / 2) - ctx.measureText(playerMonName).width,
-        y: playerDetailsRect.y - 14,
-        txt: playerMonName
-    };
-    playerLvlTxt = {
-        x: playerDetailsRect.x + playerDetailsRect.w - ctx.measureText(pLvlTxt).width,
-        y: playerNameTxt.y,
-        txt: pLvlTxt
-    }
-    playerHealthRect = {
-        x: playerDetailsRect.x + 20,
-        y: playerDetailsRect.y + 20,
-        w: playerDetailsRect.w - 80,
-        h: 16
-    };
-    disPer = (currentPlayerMon.hp.current / currentPlayerMon.hp.max) * playerHealthRect.w;
-    playerHealthOverlay = {
-        x: playerHealthRect.x,
-        y: playerHealthRect.y,
-        w: disPer,
-        h: playerHealthRect.h
-    };
-
-    currentPlayerMon['healthDisplay'] = playerHealthOverlay;
-
-    playerHealthBg = {
-        x: playerHealthRect.x,
-        y: playerHealthRect.y,
-        w: 42,
-        h: 16
-    }
-    pHpLabel = {
-        x: 0,
-        y: 0,
-        txt: "HP"
-    }
-    playerStatus = { x: 0, y: 0, txt: playerStatusTxt };
-    playerExpRect = { x: 0, y: 0, w: 0, h: 0 };
-    playerExpOverlay = { x: 0, y: 0, w: 0, h: 0 };
-}
-
 function tag(x, y) {
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -89,7 +25,36 @@ function setCanvasSize() {
         c.height = cMaxHeight;
     }
     c.height = c.width;
-    ctx.clearRect(0, 0, c.width, c.height);
-    ctx.drawImage(img, 0, 0, c.width, c.height);
-    drawAreaLabels();
 }
+
+function monIntroLerp(uiDetails, endIndicator) {
+    ctx.drawImage(uiDetails.img, uiDetails.x, uiDetails.y, uiDetails.w, uiDetails.h);
+    uiDetails.x = lerp(uiDetails.x, endPositions[endIndicator], 0.1);
+    if (uiDetails.x > endPositions[endIndicator]) {
+        if (uiDetails.x <= endPositions[endIndicator] + 0.1) {
+            //return true;
+        }
+    } else if (uiDetails.x < endPositions[endIndicator]) {
+        if (uiDetails.x >= endPositions[endIndicator] - 0.1) {
+            //return true;
+        }
+    }
+}
+
+function animator() {
+    if (opponentMonUIDetails.img !== null) {
+        monIntroLerp(opponentMonUIDetails.img, "opponentImg");
+    }
+}
+
+function update() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    setCanvasSize();
+    animator();
+    requestAnimationFrame(update);
+}
+
+$(document).ready(function() {
+    instantiateOpponentMon(calculateImageSizeAndPosition(c, "opponent"));
+    update();
+});

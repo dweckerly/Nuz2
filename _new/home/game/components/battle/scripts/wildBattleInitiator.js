@@ -1,5 +1,5 @@
-function instantiateOpponentMonDetails() {
-    opponentMonUIDetails.img = { x: 1006, y: 0, w: 256, h: 256, img: document.getElementById('opponent-img') };
+function instantiateOpponentMonDetails(imgSizeAndPosition) {
+    opponentMonUIDetails.img = { x: imgSizeAndPosition.x, y: imgSizeAndPosition.y, w: imgSizeAndPosition.w, h: imgSizeAndPosition.h, img: document.getElementById('opponent-img') };
     opponentMonUIDetails.detailsRect = { x: 50, y: -91, w: 300, h: 90, radius: { tr: 20, bl: 20 } };
     opponentMonUIDetails.name = {
         x: opponentMonUIDetails.detailsRect.x + (opponentMonUIDetails.detailsRect.w / 2) - ctx.measureText(opponentMon.mon_name).width,
@@ -38,11 +38,11 @@ function instantiateOpponentMonDetails() {
     opponentMonUIDetails.status = { x: 0, y: 0, txt: "" };
 }
 
-$(document).ready(function() {
+function instantiateOpponentMon(opponentImgDetails) {
     $.get("components/battle/transactions/returnSessionMon.trans.php", function(data) {
         opponentMon = JSON.parse(data);
         loadImg(opponentMon.img, 'opponent-img', function() {
-            instantiateOpponentMonDetails();
+            instantiateOpponentMonDetails(opponentImgDetails);
         });
     });
-});
+}
