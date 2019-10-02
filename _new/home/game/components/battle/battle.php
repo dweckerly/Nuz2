@@ -2,8 +2,11 @@
 session_start();
 if(isset($_SESSION['encounter'])) {
 ?>
+<script src="components/battle/scripts/battleUtil.js"></script>
+<script src="components/battle/scripts/battleVars.js"></script>
 <div id="battle-container">
     <canvas id="battle-canvas"></canvas>
+    <div class="hidden" id="img-container"></div>
 <?php
     if($_SESSION['encounter']['type'] == 'wild') {
         include_once("../../includes/db.inc.php");
@@ -13,11 +16,16 @@ if(isset($_SESSION['encounter'])) {
         $monInfo = mysqli_fetch_assoc($r);
         include("../../util/mons.util.php");
         $mon = generateMon($monInfo, $id, $_SESSION['encounter']['lvl']);
+        $_SESSION['opponent'] = $mon;
+?>
+    <script src="components/battle/scripts/wildBattle.js"></script>
+<?php
+    } elseif($_SESSION['encounter']['type'] == 'trainer') {
+?>
+    <script src="components/battle/scripts/trainerBattle.js"></script>
+<?php
     }
 ?>
-    <div class="hidden" id="img-container">
-        <img id="opponent-img" src="img/mons/<?php echo $mon['img'];?>">
-    </div>
     <div id="battle-text-container" class="grid-1 hidden">
         <p id="battle-text" class="center-text"></p>
     </div>
@@ -38,9 +46,7 @@ if(isset($_SESSION['encounter'])) {
         
     </div>
     <div id="switch-conatiner" class="modal-bg hidden">
-        <div id="switch-content">
-
-        </div>
+        <div id="switch-content"></div>
     </div>
     <script src="components/battle/battleUI.js"></script>
 </div>

@@ -1,0 +1,2 @@
+var playerMon;
+var opponentMon;
