@@ -27,89 +27,133 @@ function setCanvasSize() {
     c.height = c.width;
 }
 
-function monIntroLerp(uiDetails, endIndicator) {
+function monIntroLerp(uiDetails, endIndicator, animIndicator) {
     ctx.drawImage(uiDetails.img, uiDetails.x, uiDetails.y, uiDetails.w, uiDetails.h);
     uiDetails.x = lerp(uiDetails.x, endPositions[endIndicator], 0.1);
     if (uiDetails.x > endPositions[endIndicator]) {
         if (uiDetails.x <= endPositions[endIndicator] + 0.1) {
-            //done return true;
+            // end lerp
         }
     } else if (uiDetails.x < endPositions[endIndicator]) {
         if (uiDetails.x >= endPositions[endIndicator] - 0.1) {
-            //done return true;
+            // end lerp
         }
     }
 }
 
-function drawDetailsRect() {
+function drawDetailsRect(uiDetails, endIndicator, mon) {
     ctx.strokeStyle = "#000";
     ctx.fillStyle = "#f7f7f7";
-    roundRect(ctx, opponentMonUIDetails.detailsRect.x, opponentMonUIDetails.detailsRect.y, opponentMonUIDetails.detailsRect.w, opponentMonUIDetails.detailsRect.h, opponentMonUIDetails.detailsRect.radius, true, true);
+    roundRect(ctx, uiDetails.detailsRect.x, uiDetails.detailsRect.y, uiDetails.detailsRect.w, uiDetails.detailsRect.h, uiDetails.detailsRect.radius, true, true);
 
-    opponentMonUIDetails.detailsRect.y = lerp(opponentMonUIDetails.detailsRect.y, endPositions.opponentDetail, 0.05);
+    uiDetails.detailsRect.y = lerp(uiDetails.detailsRect.y, endPositions[endIndicator], 0.05);
 
-    opponentMonUIDetails.name.x = opponentMonUIDetails.detailsRect.x + 20;
-    opponentMonUIDetails.name.y = opponentMonUIDetails.detailsRect.y + 36;
-    opponentMonUIDetails.name.txt = opponentMon.mon_name;
+    uiDetails.name.x = uiDetails.detailsRect.x + 20;
+    uiDetails.name.y = uiDetails.detailsRect.y + 36;
+    uiDetails.name.txt = mon.mon_name;
 
-    opponentMonUIDetails.healthBg.x = opponentMonUIDetails.detailsRect.x + 20;
-    opponentMonUIDetails.healthBg.y = opponentMonUIDetails.detailsRect.y + 60;
+    uiDetails.healthBg.x = uiDetails.detailsRect.x + 20;
+    uiDetails.healthBg.y = uiDetails.detailsRect.y + 60;
 
-    opponentMonUIDetails.healthLabel.x = opponentMonUIDetails.healthBg.x + 10;
-    opponentMonUIDetails.healthLabel.y = opponentMonUIDetails.healthBg.y + 13;
+    uiDetails.healthLabel.x = uiDetails.healthBg.x + 10;
+    uiDetails.healthLabel.y = uiDetails.healthBg.y + 13;
 
-    opponentMonUIDetails.healthRect.x = opponentMonUIDetails.detailsRect.x + 60;
-    opponentMonUIDetails.healthRect.y = opponentMonUIDetails.detailsRect.y + 60;
+    uiDetails.healthRect.x = uiDetails.detailsRect.x + 60;
+    uiDetails.healthRect.y = uiDetails.detailsRect.y + 60;
 
-    opponentMonUIDetails.healthOverlay.x = opponentMonUIDetails.healthRect.x;
-    opponentMonUIDetails.healthOverlay.y = opponentMonUIDetails.healthRect.y;
+    uiDetails.healthOverlay.x = uiDetails.healthRect.x;
+    uiDetails.healthOverlay.y = uiDetails.healthRect.y;
 
-    opponentMonUIDetails.status.x = opponentMonUIDetails.detailsRect.x + 124;
-    opponentMonUIDetails.status.y = opponentMonUIDetails.detailsRect.y + 36;
+    uiDetails.status.x = uiDetails.detailsRect.x + 124;
+    uiDetails.status.y = uiDetails.detailsRect.y + 36;
 }
 
-function drawText() {
+function drawText(uiDetails) {
     ctx.fillStyle = "black";
     ctx.font = "26px ShadowsIntoLight";
-    ctx.fillText(opponentMonUIDetails.name.txt, opponentMonUIDetails.name.x, opponentMonUIDetails.name.y);
+    ctx.fillText(uiDetails.name.txt, uiDetails.name.x, uiDetails.name.y);
 
     ctx.font = "20px ShadowsIntoLight";
-    ctx.fillText(opponentMonUIDetails.status.txt, opponentMonUIDetails.status.x, opponentMonUIDetails.status.y);
+    ctx.fillText(uiDetails.status.txt, uiDetails.status.x, uiDetails.status.y);
 
     ctx.font = "18px Courier New";
-    ctx.fillText(opponentMonUIDetails.lvl.txt, opponentMonUIDetails.lvl.x, opponentMonUIDetails.lvl.y);
+    ctx.fillText(uiDetails.lvl.txt, uiDetails.lvl.x, uiDetails.lvl.y);
 }
 
-function drawHealth() {
+function drawHealth(uiDetails) {
     ctx.strokeStyle = "#000";
     ctx.fillStyle = "#000";
-    roundRect(ctx, opponentMonUIDetails.healthBg.x, opponentMonUIDetails.healthBg.y, opponentMonUIDetails.healthBg.w, opponentMonUIDetails.healthBg.h, { tl: 5, bl: 5 }, true, true);
+    roundRect(ctx, uiDetails.healthBg.x, uiDetails.healthBg.y, uiDetails.healthBg.w, uiDetails.healthBg.h, { tl: 5, bl: 5 }, true, true);
     ctx.fillStyle = "#888";
-    roundRect(ctx, opponentMonUIDetails.healthOverlay.x, opponentMonUIDetails.healthOverlay.y, opponentMonUIDetails.healthOverlay.w, opponentMonUIDetails.healthOverlay.h, { tr: 5, br: 5 }, true, false);
-    roundRect(ctx, opponentMonUIDetails.healthRect.x, opponentMonUIDetails.healthRect.y, opponentMonUIDetails.healthRect.w, opponentMonUIDetails.healthRect.h, { tr: 5, br: 5 }, false, true);
+    roundRect(ctx, uiDetails.healthOverlay.x, uiDetails.healthOverlay.y, uiDetails.healthOverlay.w, uiDetails.healthOverlay.h, { tr: 5, br: 5 }, true, false);
+    roundRect(ctx, uiDetails.healthRect.x, uiDetails.healthRect.y, uiDetails.healthRect.w, uiDetails.healthRect.h, { tr: 5, br: 5 }, false, true);
 
     ctx.font = "18px Courier New";
     ctx.fillStyle = "#fff";
-    ctx.fillText(opponentMonUIDetails.healthLabel.txt, opponentMonUIDetails.healthLabel.x, opponentMonUIDetails.healthLabel.y);
+    ctx.fillText(uiDetails.healthLabel.txt, uiDetails.healthLabel.x, uiDetails.healthLabel.y);
 }
 
-function drawLevelTag() {
-    tag(opponentMonUIDetails.detailsRect.x + opponentMonUIDetails.detailsRect.w - 60, opponentMonUIDetails.detailsRect.y + 30);
-    opponentMonUIDetails.lvl = {
-        x: opponentMonUIDetails.detailsRect.x + opponentMonUIDetails.detailsRect.w - 40,
-        y: opponentMonUIDetails.detailsRect.y + 36,
-        txt: "lvl " + opponentMon.lvl
+function drawLevelTag(uiDetails, mon) {
+    tag(uiDetails.detailsRect.x + uiDetails.detailsRect.w - 60, uiDetails.detailsRect.y + 30);
+    uiDetails.lvl = {
+        x: uiDetails.detailsRect.x + uiDetails.detailsRect.w - 40,
+        y: uiDetails.detailsRect.y + 36,
+        txt: "lvl " + mon.lvl
     }
+}
+
+function drawMonDetails(uiDetails, mon) {
+    ctx.drawImage(uiDetails.img, uiDetails.x, uiDetails.y, uiDetails.w, uiDetails.h);
+    ctx.strokeStyle = "#000";
+    ctx.fillStyle = "#f7f7f7";
+    roundRect(ctx, uiDetails.detailsRect.x, uiDetails.detailsRect.y, uiDetails.detailsRect.w, uiDetails.detailsRect.h, uiDetails.detailsRect.radius, true, true);
+    drawHealth(uiDetails);
+    drawLevelTag(uiDetails, mon);
+    drawText(uiDetails);
+}
+
+function opponentMonEnter() {
+    if (opponentMonUIDetails.img !== null) {
+        monIntroLerp(opponentMonUIDetails.img, "opponentImg", "opponentIntro");
+        drawDetailsRect(opponentMonUIDetails, "opponentDetail", opponentMon);
+        drawLevelTag(opponentMonUIDetails, opponentMon);
+        drawText(opponentMonUIDetails);
+        drawHealth(opponentMonUIDetails);
+    }
+}
+
+function opponentMonStatic() {
+    drawMonDetails(opponentMonUIDetails, opponentMon);
+}
+
+function opponentMonExit() {
+
+}
+
+function playerMonEnter() {
+    if (playerMonUIDetails.img !== null) {
+        monIntroLerp(playerMonUIDetails.img, "playerImg", "playerIntro");
+        drawDetailsRect(playerMonUIDetails, "playerDetail", playerMon);
+        drawLevelTag(playerMonUIDetails, playerMon);
+        drawText(playerMonUIDetails);
+        drawHealth(playerMonUIDetails);
+    }
+}
+
+function playerMonStatic() {
+    drawMonDetails(playerMonUIDetails, playerMon);
+}
+
+function playerMonExit() {
+
+}
+
+function playerMonSelect() {
+
 }
 
 function animator() {
-    if (opponentMonUIDetails.img !== null) {
-        monIntroLerp(opponentMonUIDetails.img, "opponentImg");
-        drawDetailsRect();
-        drawLevelTag();
-        drawText();
-        drawHealth();
-    }
+
 }
 
 function update() {

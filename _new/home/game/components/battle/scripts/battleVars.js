@@ -4,7 +4,6 @@ var playerMonUIDetails = {
     detailsRect: null,
     lvl: null,
     name: null,
-    lvl: null,
     healthRect: null,
     healthOverlay: null,
     healthBg: null,
@@ -17,7 +16,6 @@ var opponentMonUIDetails = {
     detailsRect: null,
     lvl: null,
     name: null,
-    lvl: null,
     healthRect: null,
     healthOverlay: null,
     healthBg: null,
@@ -30,6 +28,13 @@ var endPositions = {
     opponentImg: 0,
     playerDetail: 310,
     opponentDetail: -1
+}
+
+var startPositions = {
+    playerImg: 0,
+    opponentImg: 0,
+    playerDetail: 0,
+    opponentDetail: 0
 }
 
 var winOffset = 30;
