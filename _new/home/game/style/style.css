@@ -23,6 +23,7 @@ button {
 
 canvas {
     border: 1px solid black;
+    margin: auto;
 }
 
 img {
@@ -116,6 +117,16 @@ img {
 .prop-name {
     text-transform: capitalize;
     font-family: 'Amatic', cursive;
+}
+
+.scroll-div {
+    height: 300px;
+    overflow: auto;
+    position: absolute;
+    bottom: 0px;
+    border: 1px solid black;
+    margin-right: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 

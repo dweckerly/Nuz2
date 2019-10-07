@@ -83,46 +83,54 @@ function instantiatePlayerMonDetails(imgSizeAndPosition) {
     animationTracker.player.enter = true;
 }
 
-function instantiateOpponentMon(opponentImgDetails) {
+function instantiateOpponentMon() {
     $.get("components/battle/transactions/returnSessionMon.trans.php", function(data) {
         opponentMon = JSON.parse(data);
         loadImg(opponentMon.img, 'opponent-img', function() {
-            instantiateOpponentMonDetails(opponentImgDetails);
+            instantiateOpponentMonDetails(calculateImageSizeAndPosition(c, "opponent"));
         });
     });
 }
 
-function instantiatePlayerMon(playerImgDetails) {
+function instantiatePlayerMon() {
     $.get("components/battle/transactions/getPartyMons.trans.php", function(data) {
         playerMons = JSON.parse(data);
         console.log(playerMons);
         if (playerMons.length > 1) {
             showMonSelect(playerMons);
         } else {
-            playerMon = playerMons[0];
-            loadImg(playerMon.img, 'player-img', function() {
-                instantiatePlayerMonDetails(playerImgDetails);
-            });
+            selectMon(0);
         }
+    });
+}
+
+function selectMon(index) {
+    if ($('#select-container').length > 0) {
+        $('#select-container').fadeOut();
+    }
+    playerMon = playerMons[index];
+    loadImg(playerMon.img, 'player-img', function() {
+        instantiatePlayerMonDetails(calculateImageSizeAndPosition(c, "player"));
+        instantiateBatteOptions();
     });
 }
 
 function showMonSelect(playerMons) {
     $('#battle-container').append(`
-        <div id="select-container" class="hidden">
-        <p>Select a NuzMon to send out!</p>
+        <div id="select-container" class="hidden center-text scroll-div">
+            <h4>Select a NuzMon to battle with!</h4>
     `);
     playerMons.forEach(function(mon, index) {
         $('#select-container').append(`
-            <div class="grid-5 border-bottom" data-id=` + index + `>
+            <div class="grid-5 border-bottom" onclick="selectMon(` + index + `)">
                 <div>
                     <img src="img/mons/` + mon.img + `">
                 </div>
                 <div>
-                    <p>` + mon.name + `</p>
+                    <p>` + mon.mon_name + `</p>
                 </div>
                 <div>
-                    <p><` + mon.current_hp + `/` + mon.hp + `</p>
+                    <p>` + mon.current_hp + `/` + mon.hp + `</p>
                 </div>
                 <div>
                     <p>` + mon.status + `</p>
@@ -137,6 +145,10 @@ function showMonSelect(playerMons) {
         </div>
     `);
     $('#select-container').fadeIn();
+}
+
+function instantiateBatteOptions() {
+
 }
 
 function tag(x, y) {
@@ -317,7 +329,7 @@ function update() {
 
 $(document).ready(function() {
     setCanvasSize();
-    instantiateOpponentMon(calculateImageSizeAndPosition(c, "opponent"));
-    instantiatePlayerMon(calculateImageSizeAndPosition(c, "player"));
+    instantiateOpponentMon();
+    instantiatePlayerMon();
     update();
 });
