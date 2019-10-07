@@ -18,10 +18,10 @@ function calculateImageSizeAndPosition(canvas, ind) {
     x = canvas.width;
     if (ind == "opponent") {
         y = 0;
-        endPositions.opponentImg = canvas.width / 2;
+        enterPositions.opponentImg = canvas.width / 2;
     } else if (ind == "player") {
         y = canvas.height / 2;
-        endPositions.playerImg = canvas.width / 2;
+        enterPositions.playerImg = canvas.width / 2;
     }
     return {
         w: w,

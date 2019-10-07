@@ -27,16 +27,18 @@ function setCanvasSize() {
     c.height = c.width;
 }
 
-function monIntroLerp(uiDetails, endIndicator, animIndicator) {
+function monIntroLerp(uiDetails, animIndicator) {
     ctx.drawImage(uiDetails.img, uiDetails.x, uiDetails.y, uiDetails.w, uiDetails.h);
-    uiDetails.x = lerp(uiDetails.x, endPositions[endIndicator], 0.1);
-    if (uiDetails.x > endPositions[endIndicator]) {
-        if (uiDetails.x <= endPositions[endIndicator] + 0.1) {
-            // end lerp
+    uiDetails.x = lerp(uiDetails.x, enterPositions[endIndicator], 0.1);
+    if (animIndicator == "opponent") {
+        if (uiDetails.x <= enterPositions["opponentImg"] + 0.1) {
+            animationTracker.opponent.enter = false;
+            animationTracker.opponent.idle = true;
         }
-    } else if (uiDetails.x < endPositions[endIndicator]) {
-        if (uiDetails.x >= endPositions[endIndicator] - 0.1) {
-            // end lerp
+    } else if (animIndicator == "player") {
+        if (uiDetails.x >= enterPositions["playerImg"] - 0.1) {
+            animationTracker.player.enter = false;
+            animationTracker.player.idle = true;
         }
     }
 }
@@ -46,7 +48,7 @@ function drawDetailsRect(uiDetails, endIndicator, mon) {
     ctx.fillStyle = "#f7f7f7";
     roundRect(ctx, uiDetails.detailsRect.x, uiDetails.detailsRect.y, uiDetails.detailsRect.w, uiDetails.detailsRect.h, uiDetails.detailsRect.radius, true, true);
 
-    uiDetails.detailsRect.y = lerp(uiDetails.detailsRect.y, endPositions[endIndicator], 0.05);
+    uiDetails.detailsRect.y = lerp(uiDetails.detailsRect.y, enterPositions[endIndicator], 0.05);
 
     uiDetails.name.x = uiDetails.detailsRect.x + 20;
     uiDetails.name.y = uiDetails.detailsRect.y + 36;
@@ -114,7 +116,7 @@ function drawMonDetails(uiDetails, mon) {
 
 function opponentMonEnter() {
     if (opponentMonUIDetails.img !== null) {
-        monIntroLerp(opponentMonUIDetails.img, "opponentImg", "opponentIntro");
+        monIntroLerp(opponentMonUIDetails.img, "opponent");
         drawDetailsRect(opponentMonUIDetails, "opponentDetail", opponentMon);
         drawLevelTag(opponentMonUIDetails, opponentMon);
         drawText(opponentMonUIDetails);
@@ -122,7 +124,7 @@ function opponentMonEnter() {
     }
 }
 
-function opponentMonStatic() {
+function opponentMonIdle() {
     drawMonDetails(opponentMonUIDetails, opponentMon);
 }
 
@@ -132,7 +134,7 @@ function opponentMonExit() {
 
 function playerMonEnter() {
     if (playerMonUIDetails.img !== null) {
-        monIntroLerp(playerMonUIDetails.img, "playerImg", "playerIntro");
+        monIntroLerp(playerMonUIDetails.img, "player");
         drawDetailsRect(playerMonUIDetails, "playerDetail", playerMon);
         drawLevelTag(playerMonUIDetails, playerMon);
         drawText(playerMonUIDetails);
@@ -140,7 +142,7 @@ function playerMonEnter() {
     }
 }
 
-function playerMonStatic() {
+function playerMonIdle() {
     drawMonDetails(playerMonUIDetails, playerMon);
 }
 
@@ -153,7 +155,18 @@ function playerMonSelect() {
 }
 
 function animator() {
-
+    if (animationTracker.opponent.enter) {
+        opponentMonEnter();
+    }
+    if (animationTracker.opponent.idle) {
+        opponentMonIdle();
+    }
+    if (animationTracker.player.enter) {
+        playerMonEnter();
+    }
+    if (animationTracker.player.idle) {
+        playerMonIdle();
+    }
 }
 
 function update() {
@@ -166,5 +179,6 @@ function update() {
 $(document).ready(function() {
     setCanvasSize();
     instantiateOpponentMon(calculateImageSizeAndPosition(c, "opponent"));
+    instantiatePlayerMon(calculateImageSizeAndPosition(c, "player"));
     update();
 });

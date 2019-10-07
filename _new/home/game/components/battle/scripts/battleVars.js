@@ -23,18 +23,29 @@ var opponentMonUIDetails = {
     status: null
 };
 
-var endPositions = {
+var enterPositions = {
     playerImg: 0,
     opponentImg: 0,
     playerDetail: 310,
     opponentDetail: -1
 }
 
-var startPositions = {
+var exitPositions = {
     playerImg: 0,
     opponentImg: 0,
     playerDetail: 0,
     opponentDetail: 0
+}
+
+var animationTracker = {
+    "opponent": {
+        "enter": false,
+        "idle": false
+    },
+    "player": {
+        "enter": false,
+        "idle": false
+    }
 }
 
 var winOffset = 30;

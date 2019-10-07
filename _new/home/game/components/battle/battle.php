@@ -45,9 +45,6 @@ if(isset($_SESSION['encounter'])) {
         </div>
         
     </div>
-    <div id="switch-conatiner" class="modal-bg hidden">
-        <div id="switch-content"></div>
-    </div>
     <script src="components/battle/battleUI.js"></script>
 </div>
 <?php

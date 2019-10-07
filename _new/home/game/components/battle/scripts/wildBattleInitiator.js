@@ -36,6 +36,7 @@ function instantiateOpponentMonDetails(imgSizeAndPosition) {
         txt: "HP"
     }
     opponentMonUIDetails.status = { x: 0, y: 0, txt: "" };
+    animationTracker.opponent.enter = true;
 }
 
 function instantiateOpponentMon(opponentImgDetails) {
@@ -45,4 +46,47 @@ function instantiateOpponentMon(opponentImgDetails) {
             instantiateOpponentMonDetails(opponentImgDetails);
         });
     });
+}
+
+function instantiatePlayerMon(playerImgDetails) {
+    $.get("components/battle/transactions/getPartyMons.trans.php", function(data) {
+        playerMons = JSON.parse(data);
+        if (playerMons.length == 1) {
+            instantiatePlayerMonDetails(playerImgDetails);
+        } else {
+            showMonSelect(playerMons);
+        }
+    });
+}
+
+function showMonSelect(playerMons) {
+    $('#battle-container').append(`
+        <div id="select-container" class="hidden">
+        <p>Select a NuzMon to send out!</p>
+    `);
+    playerMons.forEach(function(mon) {
+        $('#select-container').append(`
+            <div class="grid-5 border-bottom">
+                <div>
+                    <img src="img/mons/` + mon.img + `">
+                </div>
+                <div>
+                    <p>` + mon.name + `</p>
+                </div>
+                <div>
+                    <p><` + mon.currentHp + `/` + mon.hp + `</p>
+                </div>
+                <div>
+                    <p>` + mon.status + `</p>
+                </div>
+                <div>
+                    <p>` + mon.level + `</p>
+                </div>
+            </div>
+        `);
+    });
+    $('#battle-container').append(`
+        </div>
+    `);
+    $('#select-container').fadeIn();
 }
