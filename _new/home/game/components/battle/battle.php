@@ -9,7 +9,7 @@ if(isset($_SESSION['encounter'])) {
     <div class="hidden" id="img-container"></div>
 <?php
     if($_SESSION['encounter']['type'] == 'wild') {
-        include_once("../../includes/db.inc.php");
+        include("../../includes/db.inc.php");
         $id = $_SESSION['encounter']['mon']['mon_id'];
         $q = "SELECT * FROM mons WHERE mon_id = '$id'";
         $r = mysqli_query($conn, $q);
@@ -17,13 +17,8 @@ if(isset($_SESSION['encounter'])) {
         include("../../util/mons.util.php");
         $mon = generateMon($monInfo, $id, $_SESSION['encounter']['lvl']);
         $_SESSION['opponent'] = $mon;
-?>
-    <script src="components/battle/scripts/wildBattleInitiator.js"></script>
-<?php
     } elseif($_SESSION['encounter']['type'] == 'trainer') {
-?>
-    <script src="components/battle/scripts/trainerBattle.js"></script>
-<?php
+
     }
 ?>
     <div id="battle-text-container" class="grid-1 hidden">

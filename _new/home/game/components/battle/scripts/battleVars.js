@@ -26,7 +26,7 @@ var opponentMonUIDetails = {
 var enterPositions = {
     playerImg: 0,
     opponentImg: 0,
-    playerDetail: 310,
+    playerDetail: 90,
     opponentDetail: -1
 }
 

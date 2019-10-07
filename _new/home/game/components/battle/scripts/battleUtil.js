@@ -15,13 +15,14 @@ function calculateImageSizeAndPosition(canvas, ind) {
     let w, h, x, y;
     w = canvas.width / 2;
     h = w;
-    x = canvas.width;
     if (ind == "opponent") {
+        x = canvas.width;
         y = 0;
         enterPositions.opponentImg = canvas.width / 2;
     } else if (ind == "player") {
+        x = w * -1;
         y = canvas.height / 2;
-        enterPositions.playerImg = canvas.width / 2;
+        enterPositions.playerDetail = canvas.height - 90;
     }
     return {
         w: w,
