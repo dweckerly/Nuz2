@@ -150,6 +150,14 @@ function showMonSelect(playerMons) {
 function instantiateBatteOptions(index) {
     $.get("components/battle/transactions/getMonMoves.trans.php", {ind: index}, function (data) {
         var moves = JSON.parse(data);
+        moves.forEach(function (item) {
+            $('#moves-container').append(`
+                <div>
+                    <button>` + item.name + `</button>
+                </div>
+            `);
+        });
+        $('#battle-options-container').fadeIn();
     });
 }
 

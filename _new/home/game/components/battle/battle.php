@@ -25,20 +25,14 @@ if(isset($_SESSION['encounter'])) {
         <p id="battle-text" class="center-text"></p>
     </div>
     <div id="battle-options-container" class="grid-3 hidden">
-        <div>
-            <button id="atk-1" class="hidden"></button>
-            <button id="atk-3" class="hidden"></button>
-        </div>
-        <div>
-            <button id="atk-2" class="hidden"></button>
-            <button id="atk-4" class="hidden"></button>
-        </div>
-        <div>
-            <button>Switch</button>
-            <button>Item</button>
-            <button>Run</button>
-        </div>
-        
+        <div id="moves-container" class="grid-2"></div>
+        <div id="options-container" class=grid-1>
+            <div>
+                <button>Switch</button>
+                <button>Item</button>
+                <button>Run</button>
+            </div>
+        </div> 
     </div>
     <script src="components/battle/battleUI.js"></script>
 </div>
