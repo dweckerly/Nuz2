@@ -34,6 +34,12 @@ img {
 
 /** CLASSES **/
 
+.attack-btn {
+    height:64px; 
+    width:90%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 .bold {
     font-weight: bold;
 }
@@ -54,12 +60,20 @@ img {
     text-align: center;
 }
 
+.col-50 {
+    flex: 50%;
+}
+
 .first-mon-img {
     transition: transform .2s;
 }
 
 .first-mon-img:hover {
     transform: sclae(1.5);
+}
+
+.flex-div {
+    display: flex;
 }
 
 .grid-1 {

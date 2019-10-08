@@ -95,7 +95,6 @@ function instantiateOpponentMon() {
 function instantiatePlayerMon() {
     $.get("components/battle/transactions/getPartyMons.trans.php", function(data) {
         playerMons = JSON.parse(data);
-        console.log(playerMons);
         if (playerMons.length > 1) {
             showMonSelect(playerMons);
         } else {
@@ -147,16 +146,28 @@ function showMonSelect(playerMons) {
     $('#select-container').fadeIn();
 }
 
-function instantiateBatteOptions(index) {
-    $.get("components/battle/transactions/getMonMoves.trans.php", {ind: index}, function (data) {
+function instantiateBatteOptions(i) {
+    $.get("components/battle/transactions/getMonMoves.trans.php", {ind: i}, function (data) {
         var moves = JSON.parse(data);
-        moves.forEach(function (item) {
+        $('#moves-container').append(`
+            <div class="flex-div">
+        `);
+        moves.forEach(function (item, index) {
             $('#moves-container').append(`
-                <div>
-                    <button>` + item.name + `</button>
+                <div class="col-50">
+                    <button class="attack-btn">` + item.name + `</button>
                 </div>
             `);
+            if(index % 2 != 0) {
+                $('#moves-container').append(`
+                    </div>
+                    <div class="flex-div">
+                `);
+            }
         });
+        $('#moves-container').append(`
+            </div>
+        `);
         $('#battle-options-container').fadeIn();
     });
 }
