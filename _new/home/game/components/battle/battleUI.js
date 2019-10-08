@@ -111,7 +111,7 @@ function selectMon(index) {
     playerMon = playerMons[index];
     loadImg(playerMon.img, 'player-img', function() {
         instantiatePlayerMonDetails(calculateImageSizeAndPosition(c, "player"));
-        instantiateBatteOptions();
+        instantiateBatteOptions(index);
     });
 }
 
@@ -127,7 +127,7 @@ function showMonSelect(playerMons) {
                     <img src="img/mons/` + mon.img + `">
                 </div>
                 <div>
-                    <p>` + mon.mon_name + `</p>
+                    <p>` + mon.nick_name + `</p>
                 </div>
                 <div>
                     <p>` + mon.current_hp + `/` + mon.hp + `</p>
@@ -147,8 +147,10 @@ function showMonSelect(playerMons) {
     $('#select-container').fadeIn();
 }
 
-function instantiateBatteOptions() {
-
+function instantiateBatteOptions(index) {
+    $.get("components/battle/transactions/getMonMoves.trans.php", {ind: index}, function (data) {
+        var moves = JSON.parse(data);
+    });
 }
 
 function tag(x, y) {
