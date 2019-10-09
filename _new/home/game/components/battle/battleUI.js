@@ -149,26 +149,20 @@ function showMonSelect(playerMons) {
 function instantiateBatteOptions(i) {
     $.get("components/battle/transactions/getMonMoves.trans.php", {ind: i}, function (data) {
         var moves = JSON.parse(data);
-        $('#moves-container').append(`
-            <div class="flex-div">
-        `);
         moves.forEach(function (item, index) {
             $('#moves-container').append(`
-                <div class="col-50">
-                    <button class="attack-btn">` + item.name + `</button>
+                <div>
+                    <button class="atk-btn" onclick="atkSelect(` + item.move_id + `)">` + item.name + `</button>
                 </div>
             `);
-            if(index % 2 != 0) {
-                $('#moves-container').append(`
-                    </div>
-                    <div class="flex-div">
-                `);
-            }
         });
-        $('#moves-container').append(`
-            </div>
-        `);
         $('#battle-options-container').fadeIn();
+    });
+}
+
+function atkSelect(id) {
+    $.get("components/battle/transactions/playerAtkSelect.trans.php", {id: id}, function(data) {
+
     });
 }
 

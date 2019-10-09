@@ -3,6 +3,7 @@ session_start();
 if(isset($_GET['ind']) && isset($_SESSION['playerMons'])) {
     $ind = $_GET['ind'];
     $mon = $_SESSION['playerMons'][$ind];
+    $_SESSION['currentPlayerMon'] = $mon;
     $moves = $mon['moves'];
     $moveList = explode('_', $moves);
     include("../../../includes/db.inc.php");

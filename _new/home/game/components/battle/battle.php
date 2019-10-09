@@ -26,11 +26,15 @@ if(isset($_SESSION['encounter'])) {
     </div>
     <div id="battle-options-container" class="grid-3 hidden">
         <div id="moves-container" class="grid-2"></div>
-        <div id="options-container" class=grid-1>
+        <div id="options-container" class="grid-3">
             <div>
-                <button>Switch</button>
-                <button>Item</button>
-                <button>Run</button>
+                <button class="opt-btn">Switch</button>
+            </div>
+            <div>
+                <button class="opt-btn">Item</button>
+            </div>
+            <div>
+                <button class="opt-btn">Run</button>
             </div>
         </div> 
     </div>
