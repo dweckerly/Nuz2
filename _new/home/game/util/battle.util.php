@@ -1,4 +1,4 @@
 <?php
-function attackHandler($pMon, $pMonMove, $oMon, $oMonMove) {
+function simpleAttackHandler($pMon, $pMonMove, $oMon, $oMonMove) {
     return "";    
 }
