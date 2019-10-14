@@ -1,5 +1,5 @@
 <?php
-function simpleAttackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove) {
+function attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove) {
     $pMonEffArr = explode('_', $pMonMove['effects']);
     $oMonEffArr = explode('_', $oMonMove['effects']);
     $firstMove = turnOrder($pMonEffArr, $oMonEffArr, $playerMon['speed'], $opponentMon['speed']);
@@ -9,7 +9,7 @@ function simpleAttackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove) {
         } elseif($pMonMove['category'] == 'e') {
             $dmg = damageCalc($playerMon['e_atk'], $pMonMove['damage'], $opponentMon['e_def']);
         } elseif($pMonMove['category'] == 's') {
-        
+            
         }
     } else {
 
@@ -19,7 +19,7 @@ function simpleAttackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove) {
 
 
 function damageCalc($atkAttr, $dmg, $defAttr) {
-
+    return $dmg * ($atkAttr / $defAttr) + 2;
 }
 
 function turnOrder($pMonEffArr, $oMonEffArr, $pSpeed, $oSpeed) {
