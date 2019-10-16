@@ -1,7 +1,9 @@
 buff
 bug
+chilly
 cold
 dirty
+dusty
 electric
 fire
 hairy

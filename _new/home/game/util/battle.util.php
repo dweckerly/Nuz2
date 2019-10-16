@@ -4,24 +4,43 @@ function attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove) {
     $oMonEffArr = explode('_', $oMonMove['effects']);
     $firstMove = turnOrder($pMonEffArr, $oMonEffArr, $playerMon['speed'], $opponentMon['speed']);
     if($firstMove == 'player') {
-        if($pMonMove['category'] == 'p') {
-            $dmg = damageCalc($playerMon['atk'], $pMonMove['damage'], $opponentMon['def']);
-        } elseif($pMonMove['category'] == 'e') {
-            $dmg = damageCalc($playerMon['e_atk'], $pMonMove['damage'], $opponentMon['e_def']);
-        } elseif($pMonMove['category'] == 's') {
-            
+        if($pMonMove['distance'] != 's') {
+            if(checkForHit($pMonMove['accuracy'])) {
+                if($pMonMove['category'] == 'p') {
+                    $dmg = damageCalc($playerMon['atk'], $pMonMove['damage'], $opponentMon['def']);
+                } elseif($pMonMove['category'] == 'e') {
+                    $dmg = damageCalc($playerMon['e_atk'], $pMonMove['damage'], $opponentMon['e_def']);
+                } elseif($pMonMove['category'] == 's') {
+                    
+                }
+            } else {
+                // missed attack
+            }
+        } else {
+            // self targeted move
         }
     } else {
-
+        // opponent goes first
     }
     return "";    
 }
 
+function checkForHit($acc) {
+    $accRoll = rand(0, 100);
+    if($acc >= $accRoll) {
+        return true;
+    }
+    return false;
+}
 
 function damageCalc($atkAttr, $dmg, $defAttr) {
     $randMod = $dmg / 10;
-    $rMod = floor(rand(0, $randMod * 2) - $randMod);
-    return floor(($dmg * ($atkAttr / $defAttr)) + $rMod) + 1;
+    $rMod = round(rand(0, $randMod * 2) - $randMod);
+    $damage = round(($dmg * ($atkAttr / $defAttr)) + $rMod) + 1;
+    if($damage > 0) {
+        return $damage;
+    }
+    return 1;
 }
 
 function turnOrder($pMonEffArr, $oMonEffArr, $pSpeed, $oSpeed) {
