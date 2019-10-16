@@ -1,8 +1,7 @@
 <?php
-function attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove, $mods, $attacking = '', $turn = 0, $roundArray = null) {
-    if($turn == 2) {
-        return $roundArray;
-    } else {
+function attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove, $mods) {
+    $attacking = '';
+    for($i = 0; $i < 2; $i++) {
         if($attacking == '') {
             $pMonEffArr = explode('_', $pMonMove['effects']);
             $oMonEffArr = explode('_', $oMonMove['effects']);
@@ -59,12 +58,12 @@ function attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove, $mods, $a
                     'text' => $atkMon['nick_name'] . " missed..."
                 ));
             }
-        } 
-
+        }
         // TODO: effects parse and self-targeted moves...
-
-        return attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove, $mods, $defending, $turn++, $roundArray);
+        // TODO: check for dead state
+        $attacking = $defending;
     }
+    return $roundArray;
 }
 
 function typeCheck($atkType, $defMon) {

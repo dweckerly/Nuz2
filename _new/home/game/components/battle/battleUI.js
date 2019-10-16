@@ -162,7 +162,7 @@ function instantiateBatteOptions(i) {
 
 function atkSelect(id) {
     $.get("components/battle/transactions/playerAtkSelect.trans.php", {id: id}, function(data) {
-        console.log(data);
+        console.log(JSON.parse(data));
     });
 }
 
