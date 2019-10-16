@@ -19,7 +19,9 @@ function attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove) {
 
 
 function damageCalc($atkAttr, $dmg, $defAttr) {
-    return $dmg * ($atkAttr / $defAttr) + 2;
+    $randMod = $dmg / 10;
+    $rMod = floor(rand(0, $randMod * 2) - $randMod);
+    return floor(($dmg * ($atkAttr / $defAttr)) + $rMod) + 1;
 }
 
 function turnOrder($pMonEffArr, $oMonEffArr, $pSpeed, $oSpeed) {
