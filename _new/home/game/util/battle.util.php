@@ -1,28 +1,105 @@
 <?php
-function attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove, $mods) {
-    $pMonEffArr = explode('_', $pMonMove['effects']);
-    $oMonEffArr = explode('_', $oMonMove['effects']);
-    $firstMove = turnOrder($pMonEffArr, $oMonEffArr, $playerMon['speed'], $opponentMon['speed'], $mods['player']['speed'], $mods['opponent']['speed']);
-    if($firstMove == 'player') {
-        if($pMonMove['distance'] != 's') {
-            if(checkForHit($pMonMove['accuracy'], $mods['player']['acc'], $mods['opponent']['eva'])) {
-                if($pMonMove['category'] == 'p') {
-                    $dmg = damageCalc($playerMon['atk'], $mods['player']['atk'], $pMonMove['damage'], $opponentMon['def'], $mods['opponent']['def']);
+function attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove, $mods, $attacking = '', $turn = 0, $roundArray = null) {
+    if($turn == 2) {
+        return $roundArray;
+    } else {
+        if($attacking == '') {
+            $pMonEffArr = explode('_', $pMonMove['effects']);
+            $oMonEffArr = explode('_', $oMonMove['effects']);
+            $attacking = turnOrder($pMonEffArr, $oMonEffArr, $playerMon['speed'], $opponentMon['speed'], $mods['player']['speed'], $mods['opponent']['speed']);
+        }
+        if($attacking == 'player') {
+            $atkMon = $playerMon;
+            $atkMove = $pMonMove;
+            $defMon = $opponentMon;
+            $defending = 'opponent';  
+        } else {
+            $atkMon = $opponentMon;
+            $atkMove = $oMonMove;
+            $defMon = $playerMon;
+            $defending = 'player'; 
+        }
+        if($roundArray == null) {
+            $roundArray = array(
+                0 => array(
+                    'text' => $atkMon['nick_name'] . " used " . $atkMove['name'] . "!"
+                )
+            );
+        } else {
+            array_push($roundArray, array(
+                'text' => $atkMon['nick_name'] . " used " . $atkMove['name'] . "!"
+            ));
+        }
+        if($atkMove['distance'] != 's') {
+            if(checkForHit($atkMove['accuracy'], $mods[$attacking]['acc'], $mods[$defending]['eva'])) {
+                if($atkMove['category'] == 'p') {
+                    $dmg = damageCalc($atkMon['atk'], $mods[$attacking]['atk'], $atkMove['damage'], $defMon['def'], $mods[$defending]['def']);
                 } elseif($pMonMove['category'] == 'e') {
-                    $dmg = damageCalc($playerMon['e_atk'], $mods['player']['e_atk'], $pMonMove['damage'], $opponentMon['e_def'], $mods['opponent']['e_def']);
-                } elseif($pMonMove['category'] == 's') {
-                    
+                    $dmg = damageCalc($atkMon['e_atk'], $mods[$attacking]['e_atk'], $atkMove['damage'], $defMon['e_def'], $mods[$defendings]['e_def']);
                 }
+                $mod = typeCheck($atkMove['type'], $defMon);
+                $dmgText = '';
+                if($mod > 1) {
+                    $dmgText += 'Super effective! ';
+                } elseif($mod < 1) {
+                    $dmgText += 'Ineffective... ';
+                }
+                if(checkForCrit($atkMove['crit'], $mods[$attacking]['crit'])) {
+                    $mod *= 2;
+                    $dmgText += 'Critical hit!';
+                }
+                array_push($roundArray, array(
+                    'dmg' => round($dmg * $mod),
+                    'anim' => $atkMove['animation'],
+                    'text' => $dmgText
+                ));
             } else {
                 // missed attack
+                array_push($roundArray, array(
+                    'text' => $atkMon['nick_name'] . " missed..."
+                ));
             }
-        } else {
-            // self targeted move
-        }
-    } else {
-        // opponent goes first
+        } 
+
+        // TODO: effects parse and self-targeted moves...
+
+        return attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove, $mods, $defending, $turn++, $roundArray);
     }
-    return "";    
+}
+
+function typeCheck($atkType, $defMon) {
+    $mult = 1;
+    if($atkType == 'Fire') {
+        if($defMon['type_1'] == 'Plant' || $defMon['type_2'] == 'Plant') {
+            $mult *= 2;
+        }
+        if($defMon['type_1'] == 'Water' || $defMon['type_2'] == 'Water') {
+            $mult *= 0.5;
+        }
+    } elseif($atkType == 'Plant') {
+        if($defMon['type_1'] == 'Water' || $defMon['type_2'] == 'Water') {
+            $mult *= 2;
+        }
+        if($defMon['type_1'] == 'Fire' || $defMon['type_2'] == 'Fire') {
+            $mult *= 0.5;
+        }
+    } elseif($atkType == 'Water') {
+        if($defMon['type_1'] == 'Fire' || $defMon['type_2'] == 'Fire') {
+            $mult *= 2;
+        }
+        if($defMon['type_1'] == 'Plant' || $defMon['type_2'] == 'Plant') {
+            $mult *= 0.5;
+        }
+    }
+    return $mult;
+}
+
+function checkForCrit($atkCrit, $critMod) {
+    $critChance = rand(0, 100);
+    if(($atkCrit * $critMod) >= $critChance) {
+        return true;
+    }
+    return false;
 }
 
 function checkForHit($acc, $accMod, $evaMod) {
