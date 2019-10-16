@@ -27,6 +27,6 @@ if(isset($_GET['id'])) {
         $opponentMoveInfo = mysqli_fetch_assoc($r);
         // calculate battle stuff
         include('../../../util/battle.util.php');
-        echo attackHandler($playerMon, $playerMoveInfo, $opponentMon, $opponentMoveInfo);
+        echo attackHandler($playerMon, $playerMoveInfo, $opponentMon, $opponentMoveInfo, $_SESSION['mods']);
     }
 }

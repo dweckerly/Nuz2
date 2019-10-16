@@ -20,6 +20,28 @@ if(isset($_SESSION['encounter'])) {
     } elseif($_SESSION['encounter']['type'] == 'trainer') {
 
     }
+    $_SESSION['mods'] = array(
+        'player' => array(
+            'atk' => 1,
+            'def' => 1,
+            'e_atk' => 1,
+            'e_def' => 1,
+            'speed' => 1,
+            'eva' => 1,
+            'acc' => 1,
+            'crit' => 1,
+        ),
+        'opponent' => array(
+            'atk' => 1,
+            'def' => 1,
+            'e_atk' => 1,
+            'e_def' => 1,
+            'speed' => 1,
+            'eva' => 1,
+            'acc' => 1,
+            'crit' => 1,
+        )
+    );
 ?>
     <div id="battle-text-container" class="grid-1 hidden">
         <p id="battle-text" class="center-text"></p>
