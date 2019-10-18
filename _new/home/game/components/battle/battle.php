@@ -45,6 +45,7 @@ if(isset($_SESSION['encounter'])) {
 ?>
     <div id="battle-text-container" class="grid-1 hidden">
         <p id="battle-text" class="center-text"></p>
+        <button id="next-btn" onclick="roundHandler(roundData[roundCount])" disabled>Next</button>
     </div>
     <div id="battle-options-container" class="grid-3 hidden">
         <div id="moves-container" class="grid-2"></div>

@@ -161,9 +161,36 @@ function instantiateBatteOptions(i) {
 }
 
 function atkSelect(id) {
-    $.get("components/battle/transactions/playerAtkSelect.trans.php", {id: id}, function(data) {
-        console.log(JSON.parse(data));
+    $('#battle-options-container').fadeOut(function () {
+        $.get("components/battle/transactions/playerAtkSelect.trans.php", {id: id}, function(data) {
+            roundData  = JSON.parse(data);
+            roundMax = roundData.length;
+            $('#battle-text-container').fadeIn();
+            roundHandler(roundData[roundCount]);
+        });
     });
+}
+
+function roundHandler(arg) {
+    if((roundMax - 1) == roundCount) {
+        $('#battle-text-container').fadeOut(function () {
+            $('#battle-options-container').fadeOut();
+        });
+    } else {
+        $('#next-btn').prop('disabled', true);
+        if('text' in arg) {
+            $('#battle-text').html(arg['text']);
+        }
+        if('dmg' in arg) {
+    
+        }
+        if('anim' in arg) {
+    
+        } else {
+            $('#next-btn').prop('disabled', false);
+        }
+    }
+    roundCount++;
 }
 
 function tag(x, y) {

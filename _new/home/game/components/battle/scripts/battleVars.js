@@ -51,3 +51,7 @@ var animationTracker = {
 var winOffset = 30;
 var cMaxHeight = 540;
 var cMaxWidth = 540;
+
+var roundMax = 0;
+var roundCount = 0;
+var roundData;
