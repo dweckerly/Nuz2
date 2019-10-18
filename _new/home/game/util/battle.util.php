@@ -34,7 +34,7 @@ function attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove, $mods) {
                 if($atkMove['category'] == 'p') {
                     $dmg = damageCalc($atkMon['atk'], $mods[$attacking]['atk'], $atkMove['damage'], $defMon['def'], $mods[$defending]['def']);
                 } elseif($pMonMove['category'] == 'e') {
-                    $dmg = damageCalc($atkMon['e_atk'], $mods[$attacking]['e_atk'], $atkMove['damage'], $defMon['e_def'], $mods[$defendings]['e_def']);
+                    $dmg = damageCalc($atkMon['e_atk'], $mods[$attacking]['e_atk'], $atkMove['damage'], $defMon['e_def'], $mods[$defending]['e_def']);
                 }
                 $mod = typeCheck($atkMove['type'], $defMon);
                 $dmgText = '';
@@ -50,7 +50,8 @@ function attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove, $mods) {
                 array_push($roundArray, array(
                     'dmg' => round($dmg * $mod),
                     'anim' => $atkMove['animation'],
-                    'text' => $dmgText
+                    'text' => $dmgText,
+                    'target' => $defending
                 ));
             } else {
                 // missed attack
