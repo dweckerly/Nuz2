@@ -61,7 +61,54 @@ function attackHandler($playerMon, $pMonMove, $opponentMon, $oMonMove, $mods) {
             }
         }
         // TODO: effects parse and self-targeted moves...
-        // TODO: check for dead state
+        
+        
+        // check for dead state
+        if($defending == 'opponent') {
+            $_SESSION['opponent']['current_hp'] = $_SESSION['opponent']['current_hp'] - $dmg;
+            if($_SESSION['opponent']['current_hp'] < 0) {
+                $_SESSION['opponent']['current_hp'] = 0;
+            }
+            if($_SESSION['opponent']['current_hp'] == 0) {
+                array_push($roundArray, array(
+                    'text' => $defMon['nick_name'] . " was defeated!",
+                    'anim' => 'death',
+                    'target' => $defending
+                ));
+            }
+        } else {
+            $_SESSION['currentPlayerMon']['current_hp'] = $_SESSION['currentPlayerMon']['current_hp'] - $dmg;
+            if($_SESSION['currentPlayerMon']['current_hp'] < 0) {
+                $_SESSION['currentPlayerMon']['current_hp'] = 0;
+            }
+            if($_SESSION['currentPlayerMon']['current_hp'] == 0) {
+                $i = 2;
+                array_push($roundArray, array(
+                    'text' => $defMon['nick_name'] . " was defeated!",
+                    'anim' => 'death',
+                    'target' => $defending
+                ));
+                $_SESSION['playerMons'][$_SESSION['pMonInd']]['current_hp'] = 0;
+                $canSwitch = false;
+                foreach($_SESSION['playerMons'] as $pMon) {
+                    if($pMon['current_hp'] > 0) {
+                        $canSwitch = true;
+                    }
+                }
+                if($canSwitch) {
+                    array_push($roundArray, array(
+                        'action' => 'switch'
+                    ));
+                } else {
+                    array_push($roundArray, array(
+                        'text' => "Your entire team was defeated!"
+                    ));
+                    array_push($roundArray, array(
+                        'action' => 'black-out'
+                    ));
+                }
+            }
+        }
         $attacking = $defending;
     }
     return $roundArray;

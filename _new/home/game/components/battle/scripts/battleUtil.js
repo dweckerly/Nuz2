@@ -31,3 +31,9 @@ function calculateImageSizeAndPosition(canvas, ind) {
         y: y
     }
 }
+
+function decreaseHealthDispaly(dmg, target, callback) {
+    if(callback) {
+        callback();
+    }
+}

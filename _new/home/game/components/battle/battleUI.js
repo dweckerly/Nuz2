@@ -182,7 +182,7 @@ function roundHandler(arg) {
             $('#battle-text').html(arg['text']);
         }
         if('dmg' in arg) {
-    
+            
         }
         if('anim' in arg) {
     
@@ -192,6 +192,7 @@ function roundHandler(arg) {
     }
     roundCount++;
 }
+
 
 function tag(x, y) {
     ctx.beginPath();
