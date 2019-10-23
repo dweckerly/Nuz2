@@ -172,7 +172,8 @@ function atkSelect(id) {
 }
 
 function roundHandler(arg) {
-    if((roundMax - 1) == roundCount) {
+    console.log(arg)
+    if(roundMax == roundCount) {
         $('#battle-text-container').fadeOut(function () {
             $('#battle-options-container').fadeOut();
         });
@@ -182,15 +183,39 @@ function roundHandler(arg) {
             $('#battle-text').html(arg['text']);
         }
         if('dmg' in arg) {
-            
-        }
-        if('anim' in arg) {
+            changeHealthBar(arg.dmg, arg.target);
+        } else if('anim' in arg && !('dmg' in arg)) {
     
         } else {
             $('#next-btn').prop('disabled', false);
         }
     }
     roundCount++;
+}
+
+function changeHealthBar(amt, target) {
+    if(target == 'player') {
+        var monHp = playerMon.current_hp;
+        var newHp = playerMon.current_hp - amt;
+        playerMon.current_hp = playerMon.current_hp - amt;
+        var hOverlay = playerMonUIDetails.healthOverlay;
+    } else if(target == 'opponent') {
+        var monHp = opponentMon.current_hp;
+        var newHp = opponentMon.current_hp - amt;
+        opponentMon.current_hp = opponentMon.current_hp - amt;
+        var hOverlay = opponentMonUIDetails.healthOverlay;
+    }
+    var newWidth = Math.round(hOverlay.w * (newHp / parseInt(monHp)));
+    console.log(newWidth);
+    damageInterval = setInterval(() => {
+        console.log(hOverlay.w);
+        hOverlay.w = lerp(hOverlay.w, newWidth, 0.05);
+        if (hOverlay.w >= (newWidth - 0.2) && hOverlay.w <= (newWidth + 0.2)) {
+            console.log("done");
+            clearInterval(damageInterval);
+            $('#next-btn').prop('disabled', false);
+        }
+    }, 20);
 }
 
 
